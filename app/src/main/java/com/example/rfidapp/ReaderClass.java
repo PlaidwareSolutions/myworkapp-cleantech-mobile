@@ -34,14 +34,9 @@ import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
 
-
 import com.example.rfidapp.activity.DeviceListActivity;
 import com.example.rfidapp.fragment.Dashboard;
 import com.example.rfidapp.fragment.KeyDownFragment;
-import com.example.rfidapp.synthetic.ReaderClass$$ExternalSyntheticLambda0;
-import com.example.rfidapp.synthetic.ReaderClass$$ExternalSyntheticLambda1;
-import com.example.rfidapp.synthetic.ReaderClass$$ExternalSyntheticLambda2;
-import com.example.rfidapp.synthetic.ReaderClass$$ExternalSyntheticLambda3;
 import com.example.rfidapp.util.FileUtils;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.SPUtils;
@@ -151,7 +146,7 @@ public class ReaderClass extends AppCompatActivity {
         void getStatus(ConnectionStatus connectionStatus);
     }
 
-    static /* synthetic */ long access$322(ReaderClass readerClass, long j) {
+    static  long access$322(ReaderClass readerClass, long j) {
         long j2 = readerClass.timeCountCur - j;
         readerClass.timeCountCur = j2;
         return j2;
@@ -316,7 +311,11 @@ public class ReaderClass extends AppCompatActivity {
     }
 
     public void stopReadingDialog() {
-        new AlertDialog.Builder(this).setTitle((CharSequence) "Stop Reading").setMessage((CharSequence) "Please Stop Reading First").setPositiveButton((CharSequence) "ok", (DialogInterface.OnClickListener) new ReaderClass$$ExternalSyntheticLambda1()).show();
+        new AlertDialog.Builder(this)
+                .setTitle("Stop Reading")
+                .setMessage("Please Stop Reading First")
+                .setPositiveButton("ok", (dialogInterface, i) -> dialogInterface.dismiss())
+                .show();
     }
 
     public void initBtUHF() {
@@ -355,13 +354,13 @@ public class ReaderClass extends AppCompatActivity {
         } else if (mBtReader != null) {
             PreferenceManager.setStringValue(Constants.BTDEVICE, str);
             mBtReader.connect(str, this.btStatus);
-            new Handler().postDelayed(new ReaderClass$$ExternalSyntheticLambda3(this), 2500);
+            new Handler().postDelayed(() -> mConnect(), 2500);
         }
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$connect$1$com-ruddersoft-rfidscanner-ReaderClass  reason: not valid java name */
-    public /* synthetic */ void m523lambda$connect$1$comruddersoftrfidscannerReaderClass() {
+    public void mConnect() {
         if (mBtReader.getConnectStatus().equals(ConnectionStatus.CONNECTED)) {
             this.isBtConnect = true;
             this.btItem.setIcon(R.drawable.bt_e);
@@ -430,14 +429,14 @@ public class ReaderClass extends AppCompatActivity {
             z = true;
         }
         if (!isLocationEnabled()) {
-            Utils.alert((Activity) this, (int) R.string.get_location_permission, getString(R.string.tips_open_the_ocation_permission), (int) R.drawable.webtext, (DialogInterface.OnClickListener) new ReaderClass$$ExternalSyntheticLambda2(this));
+            Utils.alert((Activity) this, R.string.get_location_permission, getString(R.string.tips_open_the_ocation_permission), R.drawable.webtext, (dialogInterface, i) -> this.checkLocationEnable(dialogInterface, i));
         }
         return z;
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$checkLocationEnable$2$com-ruddersoft-rfidscanner-ReaderClass  reason: not valid java name */
-    public /* synthetic */ void m522lambda$checkLocationEnable$2$comruddersoftrfidscannerReaderClass(DialogInterface dialogInterface, int i) {
+    public void checkLocationEnable(DialogInterface dialogInterface, int i) {
         startActivityForResult(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"), 3);
     }
 
@@ -499,7 +498,7 @@ public class ReaderClass extends AppCompatActivity {
             if (PreferenceManager.getStringValue(Constants.BTDEVICE).length() == 0) {
                 this.isBtConnect = false;
             } else {
-                new Handler().postDelayed(new ReaderClass$$ExternalSyntheticLambda0(this), 1000);
+                new Handler().postDelayed(() -> bTConnect(), 1000);
             }
         } catch (Exception unused) {
         }
@@ -507,7 +506,7 @@ public class ReaderClass extends AppCompatActivity {
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$checkBTConnect$3$com-ruddersoft-rfidscanner-ReaderClass  reason: not valid java name */
-    public /* synthetic */ void m521lambda$checkBTConnect$3$comruddersoftrfidscannerReaderClass() {
+    public  void bTConnect() {
         RFIDWithUHFBLE rFIDWithUHFBLE = mBtReader;
         if (rFIDWithUHFBLE == null || rFIDWithUHFBLE.getConnectStatus() != ConnectionStatus.CONNECTED) {
             connect(PreferenceManager.getStringValue(Constants.BTDEVICE));

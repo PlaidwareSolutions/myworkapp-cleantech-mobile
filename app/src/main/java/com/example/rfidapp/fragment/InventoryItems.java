@@ -45,24 +45,6 @@ import com.example.rfidapp.databinding.FragmentInventoryItemsBinding;
 import com.example.rfidapp.entity.InventoryItemsEntity;
 import com.example.rfidapp.entity.InventoryListEntity;
 import com.example.rfidapp.model.EpcModel;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda0;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda1;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda10;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda11;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda12;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda13;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda2;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda3;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda4;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda5;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda6;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda7;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda8;
-import com.example.rfidapp.synthetic.InventoryItems$$ExternalSyntheticLambda9;
-import com.example.rfidapp.synthetic.InventoryItems$ClearDataAsyncTask$$ExternalSyntheticLambda0;
-import com.example.rfidapp.synthetic.InventoryItems$ClearDataAsyncTask$$ExternalSyntheticLambda1;
-import com.example.rfidapp.synthetic.InventoryItems$MyAdapter$$ExternalSyntheticLambda0;
-import com.example.rfidapp.synthetic.InventoryItems$MySearchAdapter$$ExternalSyntheticLambda0;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.Util;
 import com.example.rfidapp.util.constants.Constants;
@@ -162,7 +144,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     String update = "";
     Util utils;
 
-    public  static /* synthetic */ void lambda$alertDialog$8(DialogInterface dialogInterface, int i) {
+    public  static void alertDialog(DialogInterface dialogInterface, int i) {
     }
 
     static int binarySearch(List<String> list, String str) {
@@ -220,13 +202,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.invItemAdapter = new InvItemAdapter(this.inv_epc, getContext());
         this.binding.rvItems.setAdapter(this.invItemAdapter);
         setHasOptionsMenu(true);
-        this.intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new InventoryItems$$ExternalSyntheticLambda4(this));
+        this.intentActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> this.resultListner(result)
+        );
         return this.binding.getRoot();
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$onCreateView$0$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ void m544lambda$onCreateView$0$comruddersoftrfidscannerviewsfragmentsInventoryItems(ActivityResult activityResult) {
+    public void resultListner(ActivityResult activityResult) {
         if (activityResult.getResultCode() == ReaderClass.barcodeResultCode) {
             Intent data = activityResult.getData();
             this.mContext.playSound(1);
@@ -423,16 +408,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             textView.setText(PreferenceManager.getStringValue(Constants.INV_ITEM_BAR));
         }
         editText.setText(textView.getText());
-        textView5.setOnClickListener(new InventoryItems$$ExternalSyntheticLambda7(this, editText, str, bottomSheetDialog));
-        textView2.setOnClickListener(new InventoryItems$$ExternalSyntheticLambda8(this, editText, str, bottomSheetDialog));
-        textView4.setOnClickListener(new InventoryItems$$ExternalSyntheticLambda9(bottomSheetDialog));
-        textView3.setOnClickListener(new InventoryItems$$ExternalSyntheticLambda10(bottomSheetDialog));
+        textView5.setOnClickListener(view -> this.editBottomSheet(editText, str, bottomSheetDialog, view));
+        textView2.setOnClickListener(view -> this.editBottomSheet2(editText, str, bottomSheetDialog, view));
+        textView4.setOnClickListener(view -> bottomSheetDialog.dismiss());
+        textView3.setOnClickListener(view -> bottomSheetDialog.dismiss());
         bottomSheetDialog.show();
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$editBottomSheet$1$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ void m540lambda$editBottomSheet$1$comruddersoftrfidscannerviewsfragmentsInventoryItems(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
+    public void editBottomSheet(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
         String trim = editText.getText().toString().trim();
         if (trim.length() <= 0) {
             this.mContext.highlightToast("Please Enter New Name...", 2);
@@ -451,7 +436,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$editBottomSheet$2$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ void m541lambda$editBottomSheet$2$comruddersoftrfidscannerviewsfragmentsInventoryItems(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
+    public void editBottomSheet2(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
         String trim = editText.getText().toString().trim();
         if (trim.length() <= 0) {
             this.mContext.highlightToast("Please Enter New Name...", 2);
@@ -517,32 +502,36 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
     /* access modifiers changed from: private */
     public String insertValues() {
-        Completable.fromAction(new InventoryItems$$ExternalSyntheticLambda13(this)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((CompletableObserver) new CompletableObserver() {
-            public void onError(Throwable th) {
-            }
+        Completable.fromAction(() -> this.mInsertValues())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable disposable) {}
 
-            public void onSubscribe(Disposable disposable) {
-            }
+                    @Override
+                    public void onComplete() {
+                        if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
+                            PreferenceManager.setStringValue(Constants.INV_ITEM_RFID, InventoryItems.this.miliSec);
+                            PreferenceManager.setStringValue(Constants.INV_ID_RFID, String.valueOf(InventoryItems.this.mContext.getInvId(InventoryItems.this.miliSec)));
+                        } else {
+                            PreferenceManager.setStringValue(Constants.INV_ITEM_BAR, InventoryItems.this.miliSec);
+                            PreferenceManager.setStringValue(Constants.INV_ID_BAR, String.valueOf(InventoryItems.this.mContext.getInvId(InventoryItems.this.miliSec)));
+                        }
+                        InventoryItems.this.binding.tvCycle.setText(InventoryItems.this.miliSec);
+                        InventoryItems.this.binding.llInvCycle.setVisibility(View.VISIBLE);
+                        InventoryItems.this.readTag();
+                    }
 
-            public void onComplete() {
-                if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE) == "Rfid") {
-                    PreferenceManager.setStringValue(Constants.INV_ITEM_RFID, InventoryItems.this.miliSec);
-                    PreferenceManager.setStringValue(Constants.INV_ID_RFID, String.valueOf(InventoryItems.this.mContext.getInvId(InventoryItems.this.miliSec)));
-                } else {
-                    PreferenceManager.setStringValue(Constants.INV_ITEM_BAR, InventoryItems.this.miliSec);
-                    PreferenceManager.setStringValue(Constants.INV_ID_BAR, String.valueOf(InventoryItems.this.mContext.getInvId(InventoryItems.this.miliSec)));
-                }
-                InventoryItems.this.binding.tvCycle.setText(InventoryItems.this.miliSec);
-                InventoryItems.this.binding.llInvCycle.setVisibility(View.VISIBLE);
-                InventoryItems.this.readTag();
-            }
-        });
+                    @Override
+                    public void onError(Throwable th) {}
+                });
         return null;
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$insertValues$5$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ void m542lambda$insertValues$5$comruddersoftrfidscannerviewsfragmentsInventoryItems() throws Exception {
+    public void mInsertValues() throws Exception {
         this.invListViewModel.insert(setInventoryValue());
     }
 
@@ -574,14 +563,14 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.csv.setVisible(true);
         this.power.setVisible(true);
         this.inv.setVisible(true);
-        this.csv.setOnMenuItemClickListener(new InventoryItems$$ExternalSyntheticLambda2(this));
-        this.inv.setOnMenuItemClickListener(new InventoryItems$$ExternalSyntheticLambda3(this));
+        this.csv.setOnMenuItemClickListener(menuItem -> this.onPrepareOptionsMenu(menuItem));
+        this.inv.setOnMenuItemClickListener(menuItem -> this.onPrepareOptionsMenuInv(menuItem));
         super.onPrepareOptionsMenu(menu);
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$onPrepareOptionsMenu$6$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ boolean m545lambda$onPrepareOptionsMenu$6$comruddersoftrfidscannerviewsfragmentsInventoryItems(MenuItem menuItem) {
+    public boolean onPrepareOptionsMenu(MenuItem menuItem) {
         if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
             loadExportData(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
             return false;
@@ -592,7 +581,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$onPrepareOptionsMenu$7$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ boolean m546lambda$onPrepareOptionsMenu$7$comruddersoftrfidscannerviewsfragmentsInventoryItems(MenuItem menuItem) {
+    public boolean onPrepareOptionsMenuInv(MenuItem menuItem) {
         this.mContext.frm = 4;
         this.mContext.setFragment(new InventoryList(), "Inventory List");
         return false;
@@ -625,8 +614,13 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     public void alertDialog() {
-        new AlertDialog.Builder(getContext()).setIcon((int) R.drawable.audit_24).setTitle((CharSequence) "hello").setMessage((CharSequence) "Do you want to create new Inventory?").setPositiveButton((CharSequence) "Yes", (DialogInterface.OnClickListener) new InventoryItems$$ExternalSyntheticLambda6()).setNegativeButton((CharSequence) "No", (DialogInterface.OnClickListener) null).show();
-    }
+        new AlertDialog.Builder(getContext())
+                .setIcon(R.drawable.audit_24)
+                .setTitle("hello")
+                .setMessage("Do you want to create new Inventory?")
+                .setPositiveButton("Yes", (dialogInterface, i) -> InventoryItems.alertDialog(dialogInterface, i))
+                .setNegativeButton("No", null)
+                .show();    }
 
     public void readTag() {
         if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1")) {
@@ -677,25 +671,28 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     private void insertValues(final InventoryItemsEntity inventoryItemsEntity, String str) {
-        Completable.fromAction(new InventoryItems$$ExternalSyntheticLambda1(this, inventoryItemsEntity)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((CompletableObserver) new CompletableObserver() {
-            @Override
-            public void onSubscribe(Disposable d) {
+        Completable.fromAction(() -> this.insertValues(inventoryItemsEntity))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
 
-            }
+                    @Override
+                    public void onComplete() {
+                        InventoryItems.this.scannedItems++;
+                    }
 
-            public void onComplete() {
-                InventoryItems.this.scannedItems++;
-            }
-
-            public void onError(Throwable th) {
-                InventoryItems.this.updateValues(inventoryItemsEntity);
-            }
-        });
+                    @Override
+                    public void onError(Throwable th) {
+                        InventoryItems.this.updateValues(inventoryItemsEntity);
+                    }
+                });
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$insertValues$9$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ void m543lambda$insertValues$9$comruddersoftrfidscannerviewsfragmentsInventoryItems(InventoryItemsEntity inventoryItemsEntity) throws Exception {
+    public void insertValues(InventoryItemsEntity inventoryItemsEntity) throws Exception {
         this.invItemsViewModel.insert(inventoryItemsEntity);
     }
 
@@ -720,21 +717,24 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
     /* access modifiers changed from: private */
     public void updateValues(InventoryItemsEntity inventoryItemsEntity) {
-        Completable.fromAction(new InventoryItems$$ExternalSyntheticLambda5(this, inventoryItemsEntity)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((CompletableObserver) new CompletableObserver() {
-            public void onComplete() {
-            }
+        Completable.fromAction(() -> this.updateValuesEntity(inventoryItemsEntity))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable disposable) {}
 
-            public void onError(Throwable th) {
-            }
+                    @Override
+                    public void onComplete() {}
 
-            public void onSubscribe(Disposable disposable) {
-            }
-        });
+                    @Override
+                    public void onError(Throwable th) {}
+                });
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$updateValues$10$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ void m550lambda$updateValues$10$comruddersoftrfidscannerviewsfragmentsInventoryItems(InventoryItemsEntity inventoryItemsEntity) throws Exception {
+    public void updateValuesEntity(InventoryItemsEntity inventoryItemsEntity) throws Exception {
         this.invItemsViewModel.update(inventoryItemsEntity);
     }
 
@@ -902,7 +902,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             viewHolder.tvEPCTID.setText((CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
             viewHolder.tvTagCount.setText((CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
             viewHolder.tvTagRssi.setText((CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
-            viewHolder.llList.setOnClickListener(new InventoryItems$MyAdapter$$ExternalSyntheticLambda0(this, i));
+            viewHolder.llList.setOnClickListener(v -> this.showPopup(i, v));
             if (i == InventoryItems.this.selectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));
             } else {
@@ -913,7 +913,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
         /* access modifiers changed from: package-private */
         /* renamed from: lambda$getView$0$com-ruddersoft-rfidscanner-views-fragments-InventoryItems$MyAdapter  reason: not valid java name */
-        public /* synthetic */ void m553lambda$getView$0$comruddersoftrfidscannerviewsfragmentsInventoryItems$MyAdapter(int i, View view) {
+        public void showPopup(int i, View view) {
             InventoryItems inventoryItems = InventoryItems.this;
             inventoryItems.showPopup(view, (String) inventoryItems.tagList.get(i).get(InventoryItems.TAG_EPC));
         }
@@ -939,14 +939,14 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         MenuItem findItem2 = popupMenu.getMenu().findItem(R.id.menu_write);
         findItem.setVisible(true);
         findItem2.setVisible(true);
-        findItem.setOnMenuItemClickListener(new InventoryItems$$ExternalSyntheticLambda11(this, str));
-        findItem2.setOnMenuItemClickListener(new InventoryItems$$ExternalSyntheticLambda12(this, str));
+        findItem.setOnMenuItemClickListener(menuItem -> this.showPopup(str, menuItem));
+        findItem2.setOnMenuItemClickListener(menuItem -> this.showPopup1(str, menuItem));
         popupMenu.show();
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$showPopup$11$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ boolean m548lambda$showPopup$11$comruddersoftrfidscannerviewsfragmentsInventoryItems(String str, MenuItem menuItem) {
+    public boolean showPopup(String str, MenuItem menuItem) {
         /*SingleSearch singleSearch = new SingleSearch();
         Bundle bundle = new Bundle();
         bundle.putString("epc", str);
@@ -957,7 +957,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$showPopup$12$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ boolean m549lambda$showPopup$12$comruddersoftrfidscannerviewsfragmentsInventoryItems(String str, MenuItem menuItem) {
+    public boolean showPopup1(String str, MenuItem menuItem) {
         /*WriteTag writeTag = new WriteTag();
         Bundle bundle = new Bundle();
         bundle.putString("epc", str);
@@ -1057,7 +1057,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             searchViewHolder.StvEPCTID.setText((CharSequence) InventoryItems.this.tagSearchList.get(i).get(InventoryItems.TAG_EPC));
             searchViewHolder.StvTagCount.setText((CharSequence) InventoryItems.this.tagSearchList.get(i).get(InventoryItems.TAG_COUNT));
             searchViewHolder.StvTagRssi.setText((CharSequence) InventoryItems.this.tagSearchList.get(i).get(InventoryItems.TAG_RSSI));
-            searchViewHolder.SllList.setOnClickListener(new InventoryItems$MySearchAdapter$$ExternalSyntheticLambda0(this, i));
+            searchViewHolder.SllList.setOnClickListener(v -> this.showPopupp(i, v));
             if (i == InventoryItems.this.SearchSelectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));
             } else {
@@ -1068,7 +1068,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
         /* access modifiers changed from: package-private */
         /* renamed from: lambda$getView$0$com-ruddersoft-rfidscanner-views-fragments-InventoryItems$MySearchAdapter  reason: not valid java name */
-        public /* synthetic */ void m554lambda$getView$0$comruddersoftrfidscannerviewsfragmentsInventoryItems$MySearchAdapter(int i, View view) {
+        public void showPopupp(int i, View view) {
             InventoryItems inventoryItems = InventoryItems.this;
             inventoryItems.showPopup(view, (String) inventoryItems.tagSearchList.get(i).get(InventoryItems.TAG_EPC));
         }
@@ -1127,7 +1127,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     InventoryItems.this.tagSearchList.clear();
                     InventoryItems.this.scannedItems = 0;
                     InventoryItems.this.binding.tvCount.setText("0");
-                    new Handler(Looper.getMainLooper()).post(new InventoryItems$ClearDataAsyncTask$$ExternalSyntheticLambda0(this));
+                    new Handler(Looper.getMainLooper()).post(() -> this.doInBackgroundClearDataAsyncTask());
                 }
             } else if (invItemsDao.delData(PreferenceManager.getStringValue(Constants.INV_ID_BAR)) > 0) {
                 build.close();
@@ -1136,21 +1136,21 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 InventoryItems.this.tagSearchList.clear();
                 InventoryItems.this.scannedItems = 0;
                 InventoryItems.this.binding.tvCount.setText("0");
-                new Handler(Looper.getMainLooper()).post(new InventoryItems$ClearDataAsyncTask$$ExternalSyntheticLambda1(this));
+                new Handler(Looper.getMainLooper()).post(() -> this.doInBackgroundClearDataAsyncTask());
             }
             return true;
         }
 
         /* access modifiers changed from: package-private */
         /* renamed from: lambda$doInBackground$0$com-ruddersoft-rfidscanner-views-fragments-InventoryItems$ClearDataAsyncTask  reason: not valid java name */
-        public /* synthetic */ void m551lambda$doInBackground$0$comruddersoftrfidscannerviewsfragmentsInventoryItems$ClearDataAsyncTask() {
+        public void doInBackgroundClearDataAsyncTask() {
             InventoryItems.this.btCancel("grey");
             InventoryItems.this.adapter.notifyDataSetChanged();
         }
 
         /* access modifiers changed from: package-private */
         /* renamed from: lambda$doInBackground$1$com-ruddersoft-rfidscanner-views-fragments-InventoryItems$ClearDataAsyncTask  reason: not valid java name */
-        public /* synthetic */ void m552lambda$doInBackground$1$comruddersoftrfidscannerviewsfragmentsInventoryItems$ClearDataAsyncTask() {
+        public void m552lambda$doInBackground$1$comruddersoftrfidscannerviewsfragmentsInventoryItems$ClearDataAsyncTask() {
             InventoryItems.this.btCancel("grey");
             InventoryItems.this.adapter.notifyDataSetChanged();
         }
@@ -1214,12 +1214,12 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
     public void open() {
         this.mContext.barcodeDecoder.open(this.mContext);
-        this.mContext.barcodeDecoder.setDecodeCallback(new InventoryItems$$ExternalSyntheticLambda0(this));
+        this.mContext.barcodeDecoder.setDecodeCallback(barcodeEntity -> this.open(barcodeEntity));
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$open$13$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
-    public /* synthetic */ void m547lambda$open$13$comruddersoftrfidscannerviewsfragmentsInventoryItems(BarcodeEntity barcodeEntity) {
+    public void open(BarcodeEntity barcodeEntity) {
         if (barcodeEntity.getResultCode() == 1) {
             this.mContext.playSound(1);
             addDataToList(barcodeEntity.getBarcodeData(), "", Util.getDateTime(), true);

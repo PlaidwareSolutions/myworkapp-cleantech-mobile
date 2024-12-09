@@ -24,8 +24,6 @@ import com.example.rfidapp.adapter.InvListAdapter;
 import com.example.rfidapp.dao.InvListDao;
 import com.example.rfidapp.databinding.FragmentInventoryListBinding;
 import com.example.rfidapp.entity.InventoryListEntity;
-import com.example.rfidapp.synthetic.InventoryList$$ExternalSyntheticLambda0;
-import com.example.rfidapp.synthetic.InventoryList$$ExternalSyntheticLambda1;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.Util;
 import com.example.rfidapp.util.constants.Constants;
@@ -39,9 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -106,7 +102,7 @@ public class InventoryList extends KeyDownFragment implements InvListAdapter.OnL
     public void initList() {
         this.mContext.setTitle("Inventory Cycles");
         this.binding.rvProd.setLayoutManager(new LinearLayoutManager(getContext()));
-        this.invListAdapter = new InvListAdapter(this.inv_list, this.mContext, new InventoryList$$ExternalSyntheticLambda1(this));
+        this.invListAdapter = new InvListAdapter(this.inv_list, this.mContext, (str, str2, str3, str4) -> onInvListClick(str, str2, str3, str4));
         this.binding.rvProd.setAdapter(this.invListAdapter);
         loadProducts("", this.page, this.limit);
         this.binding.fbAddInv.setOnClickListener(new View.OnClickListener() {
@@ -236,31 +232,27 @@ public class InventoryList extends KeyDownFragment implements InvListAdapter.OnL
     }
 
     /* access modifiers changed from: private */
+    @SuppressLint("CheckResult")
     public void insertValues() {
-        Completable.fromAction(new InventoryList$$ExternalSyntheticLambda0(this)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((CompletableObserver) new CompletableObserver() {
-            public void onError(Throwable th) {
-            }
-
-            public void onSubscribe(Disposable disposable) {
-            }
-
-            public void onComplete() {
-                if (InventoryList.this.type.equalsIgnoreCase("Rfid")) {
-                    PreferenceManager.setStringValue(Constants.INV_ITEM_RFID, InventoryList.this.miliSec);
-                    PreferenceManager.setStringValue(Constants.INV_ID_RFID, String.valueOf(InventoryList.this.mContext.getInvId(InventoryList.this.miliSec)));
-                } else {
-                    PreferenceManager.setStringValue(Constants.INV_ITEM_BAR, InventoryList.this.miliSec);
-                    PreferenceManager.setStringValue(Constants.INV_ID_BAR, String.valueOf(InventoryList.this.mContext.getInvId(InventoryList.this.miliSec)));
-                }
-                InventoryList inventoryList = InventoryList.this;
-                inventoryList.loadProducts("", inventoryList.page, InventoryList.this.limit);
-            }
-        });
-    }
+        Completable.fromAction(() -> insertValuess())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    if (type.equalsIgnoreCase("Rfid")) {
+                        PreferenceManager.setStringValue(Constants.INV_ITEM_RFID, miliSec);
+                        PreferenceManager.setStringValue(Constants.INV_ID_RFID, String.valueOf(mContext.getInvId(miliSec)));
+                    } else {
+                        PreferenceManager.setStringValue(Constants.INV_ITEM_BAR, miliSec);
+                        PreferenceManager.setStringValue(Constants.INV_ID_BAR, String.valueOf(mContext.getInvId(miliSec)));
+                    }
+                    loadProducts("", page, limit);
+                }, throwable -> {
+                    // handle error here if needed
+                });    }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$insertValues$0$com-ruddersoft-rfidscanner-views-fragments-InventoryList  reason: not valid java name */
-    public /* synthetic */ void m555lambda$insertValues$0$comruddersoftrfidscannerviewsfragmentsInventoryList() {
+    public  void insertValuess() {
         this.invListViewModel.insert(setInventoryValue());
     }
 

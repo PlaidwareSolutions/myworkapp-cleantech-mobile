@@ -1,5 +1,6 @@
 package com.example.rfidapp.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -33,16 +34,6 @@ import com.example.rfidapp.database.InvDB;
 import com.example.rfidapp.databinding.ActivityMainBinding;
 import com.example.rfidapp.fragment.Dashboard;
 import com.example.rfidapp.fragment.InventoryItems;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda0;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda1;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda2;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda3;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda4;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda5;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda6;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda7;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda8;
-import com.example.rfidapp.synthetic.MainActivity$$ExternalSyntheticLambda9;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.Utils;
 import com.example.rfidapp.util.constants.Constants;
@@ -171,15 +162,15 @@ public class MainActivity extends ReaderClass {
         builder.setView(inflate);
         builder.setCancelable(false);
         AlertDialog create = builder.create();
-        slider.addOnChangeListener(new MainActivity$$ExternalSyntheticLambda0(MainActivity.this, textView));
+        slider.addOnChangeListener((slider1, f, z) -> createDialog1(textView, slider1, f, z));
         create.show();
-        textView2.setOnClickListener(new MainActivity$$ExternalSyntheticLambda1(this, create));
-        inflate.findViewById(R.id.bt_cancel).setOnClickListener(new MainActivity$$ExternalSyntheticLambda2(create));
+        textView2.setOnClickListener(view -> createDialog(create, view));
+        inflate.findViewById(R.id.bt_cancel).setOnClickListener(view -> create.dismiss());
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$createDialog$0$com-ruddersoft-rfidscanner-MainActivity  reason: not valid java name */
-    public /* synthetic */ void m515lambda$createDialog$0$comruddersoftrfidscannerMainActivity(TextView textView, Slider slider, float f, boolean z) {
+    public  void createDialog1(TextView textView, Slider slider, float f, boolean z) {
         if (this.isBTDevice.booleanValue()) {
             if (mBtReader.isWorking()) {
                 highlightToast("Please Stop Reading First", 2);
@@ -202,7 +193,7 @@ public class MainActivity extends ReaderClass {
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$createDialog$1$com-ruddersoft-rfidscanner-MainActivity  reason: not valid java name */
-    public /* synthetic */ void m516lambda$createDialog$1$comruddersoftrfidscannerMainActivity(AlertDialog alertDialog, View view) {
+    public  void createDialog(AlertDialog alertDialog, View view) {
         boolean z;
         if (!this.isBTDevice.booleanValue()) {
             z = this.isC5Device.booleanValue() ? mReader.setPower(this.power) : false;
@@ -237,7 +228,7 @@ public class MainActivity extends ReaderClass {
                         (int) R.string.ble_disconnect,
                         getString(R.string.tips_disconnect_the_ble),
                         (int) R.drawable.webtext,
-                        (DialogInterface.OnClickListener) new MainActivity$$ExternalSyntheticLambda7(this)
+                        (dialogInterface, i) -> disConnect1(dialogInterface, i)
                 );
                 return true;
             } else if (this.isScanning) {
@@ -300,7 +291,7 @@ public class MainActivity extends ReaderClass {
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$onOptionsItemSelected$3$com-ruddersoft-rfidscanner-MainActivity  reason: not valid java name */
-    public /* synthetic */ void m518lambda$onOptionsItemSelected$3$comruddersoftrfidscannerMainActivity(DialogInterface dialogInterface, int i) {
+    public /* synthetic */ void disConnect1(DialogInterface dialogInterface, int i) {
         Log.e("as_con", "problem in connect");
         disconnect(true);
     }
@@ -350,6 +341,7 @@ public class MainActivity extends ReaderClass {
         }*/
     }
 
+    @SuppressLint("SetTextI18n")
     private void volumeDialog() {
         this.volume = this.audioManager.getStreamVolume(3);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -362,25 +354,19 @@ public class MainActivity extends ReaderClass {
         slider.setValueTo((float) this.audioManager.getStreamMaxVolume(3));
         slider.setValue((float) this.volume);
         textView.setText(this.volume + " Unit");
-        slider.addOnChangeListener(new MainActivity$$ExternalSyntheticLambda3(this, textView));
+        slider.addOnChangeListener((slider1, f, z) -> {
+            this.volume = (int) f;
+            textView.setText(this.volume + " Unit");
+        });
         create.show();
-        inflate.findViewById(R.id.bt_setvol).setOnClickListener(new MainActivity$$ExternalSyntheticLambda4(this, create));
-        inflate.findViewById(R.id.bt_cancel).setOnClickListener(new MainActivity$$ExternalSyntheticLambda5(create));
+        inflate.findViewById(R.id.bt_setvol).setOnClickListener(view -> {
+            setVolume(this.volume);
+            create.dismiss();
+        });
+        inflate.findViewById(R.id.bt_cancel).setOnClickListener(view -> create.dismiss());
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$volumeDialog$4$com-ruddersoft-rfidscanner-MainActivity  reason: not valid java name */
-    public /* synthetic */ void m519lambda$volumeDialog$4$comruddersoftrfidscannerMainActivity(TextView textView, Slider slider, float f, boolean z) {
-        this.volume = (int) f;
-        textView.setText(this.volume + " Unit");
-    }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$volumeDialog$5$com-ruddersoft-rfidscanner-MainActivity  reason: not valid java name */
-    public /* synthetic */ void m520lambda$volumeDialog$5$comruddersoftrfidscannerMainActivity(AlertDialog alertDialog, View view) {
-        setVolume(this.volume);
-        alertDialog.dismiss();
-    }
 
     public void hideKeybaord(View view) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -391,14 +377,14 @@ public class MainActivity extends ReaderClass {
     }
 
     public void exitDialog() {
-        new AlertDialog.Builder(this).setIcon(R.drawable.bt_e).setTitle((CharSequence) "Exit").setMessage((CharSequence) "Are you sure you want to exit?").setPositiveButton((CharSequence) "Yes", (DialogInterface.OnClickListener) new MainActivity$$ExternalSyntheticLambda6(this)).setNegativeButton((CharSequence) "No", (DialogInterface.OnClickListener) null).show();
-    }
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.bt_e)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", (dialogInterface, i) -> finish())
+                .setNegativeButton("No", null)
+                .show();    }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$exitDialog$7$com-ruddersoft-rfidscanner-MainActivity  reason: not valid java name */
-    public /* synthetic */ void m517lambda$exitDialog$7$comruddersoftrfidscannerMainActivity(DialogInterface dialogInterface, int i) {
-        finish();
-    }
 
     public void setFragment(Fragment fragment2, String str) {
         FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
@@ -426,7 +412,7 @@ public class MainActivity extends ReaderClass {
         toast.setGravity(17, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(inflate);
-        new Handler().postDelayed(new MainActivity$$ExternalSyntheticLambda8(toast), 100);
-        new Handler().postDelayed(new MainActivity$$ExternalSyntheticLambda9(toast), 2000);
+        new Handler().postDelayed(toast::show, 100);
+        new Handler().postDelayed(() -> toast.cancel(), 2000);
     }
 }

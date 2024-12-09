@@ -27,11 +27,6 @@ import androidx.core.internal.view.SupportMenu;
 
 import com.example.rfidapp.R;
 import com.example.rfidapp.ReaderClass;
-import com.example.rfidapp.synthetic.DeviceListActivity$$ExternalSyntheticLambda0;
-import com.example.rfidapp.synthetic.DeviceListActivity$$ExternalSyntheticLambda1;
-import com.example.rfidapp.synthetic.DeviceListActivity$$ExternalSyntheticLambda2;
-import com.example.rfidapp.synthetic.DeviceListActivity$$ExternalSyntheticLambda3;
-import com.example.rfidapp.synthetic.DeviceListActivity$$ExternalSyntheticLambda4;
 import com.example.rfidapp.util.FileUtils;
 import com.rscja.deviceapi.RFIDWithUHFBLE;
 import com.rscja.deviceapi.interfaces.ScanBTCallback;
@@ -87,14 +82,14 @@ public class DeviceListActivity extends AppCompatActivity {
     private void init() {
         this.tvTitle = (TextView) findViewById(R.id.title_devices);
         this.mEmptyList = (TextView) findViewById(R.id.empty);
-        findViewById(R.id.close).setOnClickListener(new DeviceListActivity$$ExternalSyntheticLambda2(this));
+        findViewById(R.id.close).setOnClickListener(view -> this.init(view));
         this.devRssiValues = new HashMap();
         this.deviceList = new ArrayList();
         this.deviceAdapter = new DeviceAdapter(this, this.deviceList);
         Button button = (Button) findViewById(R.id.btn_cancel);
-        button.setOnClickListener(new DeviceListActivity$$ExternalSyntheticLambda3(this));
+        button.setOnClickListener(view -> this.mInit(view));
         Button button2 = (Button) findViewById(R.id.btnClearHistory);
-        button2.setOnClickListener(new DeviceListActivity$$ExternalSyntheticLambda4(this));
+        button2.setOnClickListener(view -> this.init2(view));
         if (getIntent().getBooleanExtra(ReaderClass.SHOW_HISTORY_CONNECTED_LIST, false)) {
             this.tvTitle.setText(R.string.history_connected_device);
             this.mEmptyList.setText(R.string.no_history);
@@ -117,13 +112,13 @@ public class DeviceListActivity extends AppCompatActivity {
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$init$0$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
-    public /* synthetic */ void m510lambda$init$0$comruddersoftrfidscannerDeviceListActivity(View view) {
+    public void init(View view) {
         finish();
     }
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$init$1$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
-    public /* synthetic */ void m511lambda$init$1$comruddersoftrfidscannerDeviceListActivity(View view) {
+    public void mInit(View view) {
         if (!this.mScanning) {
             scanLeDevice(true);
         } else {
@@ -133,7 +128,7 @@ public class DeviceListActivity extends AppCompatActivity {
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$init$2$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
-    public /* synthetic */ void m512lambda$init$2$comruddersoftrfidscannerDeviceListActivity(View view) {
+    public void init2(View view) {
         FileUtils.clearXmlList();
         this.deviceList.clear();
         this.deviceAdapter.notifyDataSetChanged();
@@ -143,7 +138,7 @@ public class DeviceListActivity extends AppCompatActivity {
     private void scanLeDevice(boolean z) {
         Button button = (Button) findViewById(R.id.btn_cancel);
         if (z) {
-            this.mHandler.postDelayed(new DeviceListActivity$$ExternalSyntheticLambda1(this, button), SCAN_PERIOD);
+            this.mHandler.postDelayed(() -> scanLeDevice(button), SCAN_PERIOD);
             this.mScanning = true;
             this.uhf.startScanBTDevices(new ScanBTCallback() {
                 public void getDevices(BluetoothDevice bluetoothDevice, int i, byte[] bArr) {
@@ -152,7 +147,7 @@ public class DeviceListActivity extends AppCompatActivity {
 
                 /* access modifiers changed from: package-private */
                 /* renamed from: lambda$getDevices$0$com-ruddersoft-rfidscanner-DeviceListActivity$2  reason: not valid java name */
-                public /* synthetic */ void m514lambda$getDevices$0$comruddersoftrfidscannerDeviceListActivity$2(BluetoothDevice bluetoothDevice, int i) {
+                public void m514lambda$getDevices$0$comruddersoftrfidscannerDeviceListActivity$2(BluetoothDevice bluetoothDevice, int i) {
                     Log.d(DeviceListActivity.TAG, "扫描成功");
                     Log.d(DeviceListActivity.TAG, "扫描成功");
                     if (ActivityCompat.checkSelfPermission(DeviceListActivity.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
@@ -178,7 +173,7 @@ public class DeviceListActivity extends AppCompatActivity {
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$scanLeDevice$3$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
-    public /* synthetic */ void m513lambda$scanLeDevice$3$comruddersoftrfidscannerDeviceListActivity(Button button) {
+    public void scanLeDevice(Button button) {
         this.mScanning = false;
         this.uhf.stopScanBTDevices();
         button.setText(R.string.scan);
@@ -215,7 +210,7 @@ public class DeviceListActivity extends AppCompatActivity {
             this.deviceList.add(myDevice);
             this.mEmptyList.setVisibility(View.GONE);
         }
-        Collections.sort(this.deviceList, new DeviceListActivity$$ExternalSyntheticLambda0(this));
+        Collections.sort(this.deviceList, (obj, obj2) -> this.addDevice((DeviceListActivity.MyDevice) obj, (DeviceListActivity.MyDevice) obj2));
         if (!z) {
             this.deviceAdapter.notifyDataSetChanged();
         }
@@ -223,7 +218,7 @@ public class DeviceListActivity extends AppCompatActivity {
 
     /* access modifiers changed from: package-private */
     /* renamed from: lambda$addDevice$4$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
-    public /* synthetic */ int m509lambda$addDevice$4$comruddersoftrfidscannerDeviceListActivity(MyDevice myDevice, MyDevice myDevice2) {
+    public int addDevice(MyDevice myDevice, MyDevice myDevice2) {
         String address = myDevice.getAddress();
         String address2 = myDevice2.getAddress();
         return Integer.compare(this.devRssiValues.get(address2).intValue(), this.devRssiValues.get(address).intValue());
