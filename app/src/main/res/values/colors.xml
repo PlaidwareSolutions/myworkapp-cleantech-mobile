@@ -9,8 +9,8 @@
     <color name="accent_material_light">@color/material_deep_teal_500</color>
     <color name="androidx_core_ripple_material_light">#1f000000</color>
     <color name="androidx_core_secondary_text_default_material_light">#8a000000</color>
-    <color name="app_bg">#e8e7e3</color>
-    <color name="app_color">#2095ac</color>
+    <color name="app_bg">#ffffff</color>
+    <color name="app_color">#0e7083</color>
     <color name="app_color_red">#ffe0044e</color>
     <color name="back_color">#20808080</color>
     <color name="background_floating_material_dark">@color/material_grey_800</color>
@@ -146,4 +146,5 @@
     <color name="wine">#ff8e507f</color>
     <color name="yellow_color">#f6efb5</color>
     <color name="yellow_light">#ffffd800</color>
+    <color name="transparent">#00000000</color>
 </resources>

@@ -30,4 +30,11 @@
     <string name="uhf_msg_inventory_stop_fail">Inventory Close Fails</string>
     <string name="search_inv">Search Inventory</string>
     <string name="search_menu_title">Search</string>
+    <string name="shipping">SHIPPING</string>
+    <string name="receiving">RECEIVING</string>
+    <string name="orders">ORDERS</string>
+    <string name="bill_of_lading">BILL OF LADING</string>
+    <string name="inventory">INVENTORY</string>
+    <string name="settings">SETTINGS</string>
+    <string name="begin_scanning">BEGIN SCANNING</string>
 </resources>
