@@ -1,6 +1,7 @@
 package com.example.rfidapp.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -36,7 +37,9 @@ class HomeScreenActivity : AppCompatActivity() {
                 scanningToggleVisibility()
             }
 
-            shipping.setOnClickListener {}
+            shipping.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java))
+            }
             receiving.setOnClickListener {}
             inventory.setOnClickListener {}
             settings.setOnClickListener {}

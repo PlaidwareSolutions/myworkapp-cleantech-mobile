@@ -10,7 +10,6 @@
     <color name="androidx_core_ripple_material_light">#1f000000</color>
     <color name="androidx_core_secondary_text_default_material_light">#8a000000</color>
     <color name="app_bg">#ffffff</color>
-    <color name="app_color">#0e7083</color>
     <color name="app_color_red">#ffe0044e</color>
     <color name="back_color">#20808080</color>
     <color name="background_floating_material_dark">@color/material_grey_800</color>
@@ -28,8 +27,10 @@
     <color name="blue_bg">#30b3e5ef</color>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
     <color name="bright_foreground_disabled_material_light">#80000000</color>
-    <color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light</color>
-    <color name="bright_foreground_inverse_material_light">@color/bright_foreground_material_dark</color>
+    <color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light
+    </color>
+    <color name="bright_foreground_inverse_material_light">@color/bright_foreground_material_dark
+    </color>
     <color name="bright_foreground_material_dark">@android:color/white</color>
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
@@ -105,7 +106,9 @@
     <color name="material_grey_800">#ff424242</color>
     <color name="material_grey_850">#ff303030</color>
     <color name="material_grey_900">#ff212121</color>
-    <color name="notification_action_color_filter">@color/androidx_core_secondary_text_default_material_light</color>
+    <color name="notification_action_color_filter">
+        @color/androidx_core_secondary_text_default_material_light
+    </color>
     <color name="notification_icon_bg_color">#ff9e9e9e</color>
     <color name="primary_dark_material_dark">@android:color/black</color>
     <color name="primary_dark_material_light">@color/material_grey_600</color>
@@ -147,4 +150,14 @@
     <color name="yellow_color">#f6efb5</color>
     <color name="yellow_light">#ffffd800</color>
     <color name="transparent">#00000000</color>
+
+    <color name="divider_color">#8d9193</color>
+    <color name="app_color">#0e7083</color>
+
+    <!--    primary button colors-->
+    <color name="primary_button_border_color">#0e7083</color>
+    <color name="primary_button_enabled_color">#86BDCC</color>
+    <color name="primary_button_disabled_color">#E3F8FF</color>
+    <color name="primary_button_enabled_text_color">#0e7083</color>
+    <color name="primary_button_disabled_text_color">#86BDCC</color>
 </resources>

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -75,4 +76,16 @@ dependencies {
     implementation(files("libs/DeviceAPI20220518.aar"))
     implementation(files("libs/IGLBarDecoder.jar"))
     implementation(files("libs/API3_LIB-release.aar"))
+
+    implementation(libs.sdp.android)
+    implementation(libs.ssp.android)
+
+    // hilt library
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:1.7.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:1.7.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:1.7.2")
 }
