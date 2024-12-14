@@ -19,6 +19,7 @@
             android:textSize="@dimen/table_field_text_size" />
 
         <View
+            android:id="@+id/verticalDivider1"
             android:layout_width="@dimen/table_divider_width"
             android:layout_height="match_parent"
             android:background="@color/divider_color" />
@@ -34,6 +35,7 @@
             android:textSize="@dimen/table_field_text_size" />
 
         <View
+            android:id="@+id/verticalDivider2"
             android:layout_width="@dimen/table_divider_width"
             android:layout_height="match_parent"
             android:background="@color/divider_color" />
@@ -50,6 +52,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View
+        android:id="@+id/horizontalDivider1"
         android:layout_width="match_parent"
         android:layout_height="@dimen/table_divider_width"
         android:background="@color/divider_color" />
@@ -68,6 +71,7 @@
             android:textSize="@dimen/table_field_text_size" />
 
         <View
+            android:id="@+id/verticalDivider3"
             android:layout_width="@dimen/table_divider_width"
             android:layout_height="match_parent"
             android:background="@color/divider_color" />
@@ -83,6 +87,7 @@
             android:textSize="@dimen/table_field_text_size" />
 
         <View
+            android:id="@+id/verticalDivider4"
             android:layout_width="@dimen/table_divider_width"
             android:layout_height="match_parent"
             android:background="@color/divider_color" />
@@ -99,6 +104,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View
+        android:id="@+id/horizontalDivider2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/table_divider_width"
         android:background="@color/divider_color" />
@@ -117,6 +123,7 @@
             android:textSize="@dimen/table_field_text_size" />
 
         <View
+            android:id="@+id/verticalDivider5"
             android:layout_width="@dimen/table_divider_width"
             android:layout_height="match_parent"
             android:background="@color/divider_color" />
@@ -132,6 +139,7 @@
             android:textSize="@dimen/table_field_text_size" />
 
         <View
+            android:id="@+id/verticalDivider6"
             android:layout_width="@dimen/table_divider_width"
             android:layout_height="match_parent"
             android:background="@color/divider_color" />
