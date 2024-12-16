@@ -191,7 +191,6 @@ public class InventoryList extends KeyDownFragment implements InvListAdapter.OnL
         });
     }
 
-    /* access modifiers changed from: private */
     public void invBottomSheet() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
         bottomSheetDialog.setContentView(View.inflate(requireContext(), R.layout.create_inv, (ViewGroup) null));
@@ -231,7 +230,6 @@ public class InventoryList extends KeyDownFragment implements InvListAdapter.OnL
         bottomSheetDialog.show();
     }
 
-    /* access modifiers changed from: private */
     @SuppressLint("CheckResult")
     public void insertValues() {
         Completable.fromAction(() -> insertValuess())
@@ -250,8 +248,6 @@ public class InventoryList extends KeyDownFragment implements InvListAdapter.OnL
                     // handle error here if needed
                 });    }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$insertValues$0$com-ruddersoft-rfidscanner-views-fragments-InventoryList  reason: not valid java name */
     public  void insertValuess() {
         this.invListViewModel.insert(setInventoryValue());
     }

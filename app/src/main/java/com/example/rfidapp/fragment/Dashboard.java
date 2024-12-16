@@ -45,9 +45,7 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
     MainActivity mContext;
     private String mParam1;
     private String mParam2;
-    /* access modifiers changed from: private */
     public Handler sliderHandler = new Handler();
-    /* access modifiers changed from: private */
     public final Runnable sliderRunnable = new Runnable() {
         public void run() {
             Dashboard.this.binding.viewPagerImageSlider.setCurrentItem(Dashboard.this.binding.viewPagerImageSlider.getCurrentItem() + 1);
@@ -89,24 +87,14 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (binding.webView.getVisibility() == View.VISIBLE) {
+                        /*if (binding.webView.getVisibility() == View.VISIBLE) {
                             String str = "Android data transfer";
                             binding.webView.loadUrl("javascript:xxx('" + str + "')");
-                        }
+                        }*/
                     }
                 });
             }
         });
-        WebViewUtil.openWebView(
-                binding.webView,
-                requireActivity(),
-                "http://192.168.1.2:5173/",
-                () -> {
-
-                },
-                () -> {
-
-                });
     }
 
     public void onMyKeyDown() {
@@ -124,7 +112,7 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
         this.binding.detectedDevice.setText("Detected Device: " + Build.MODEL + " (" + Build.MANUFACTURER + ")");
         this.binding.cardRfid.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                if (!PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")) {
+                /*if (!PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")) {
                     PreferenceManager.setStringValue(Constants.TYPE, "rfid");
                     Dashboard.this.mContext.frm = 2;
                     Dashboard.this.mContext.setTitle("UHF RFID");
@@ -145,15 +133,15 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
                         public void onClick(DialogInterface dialogInterface, int i) {
                         }
                     }).show();
-                }
+                }*/
 
-                /*PreferenceManager.setStringValue(Constants.TYPE, "rfid");
+                PreferenceManager.setStringValue(Constants.TYPE, "rfid");
                 Dashboard.this.mContext.frm = 2;
                 Dashboard.this.mContext.setTitle("UHF RFID");
                 ((ActionBar) Objects.requireNonNull(((AppCompatActivity) Dashboard.this.requireActivity()).getSupportActionBar())).setDisplayHomeAsUpEnabled(true);
                 Dashboard.this.binding.llOptions.setVisibility(android.view.View.GONE);
                 Dashboard.this.binding.llQrcode.setVisibility(android.view.View.GONE);
-                Dashboard.this.binding.llRfid.setVisibility(android.view.View.VISIBLE);*/
+                Dashboard.this.binding.llRfid.setVisibility(android.view.View.VISIBLE);
             }
         });
         this.binding.cardNfc.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +149,7 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
                 NfcAdapter defaultAdapter = ((NfcManager) Dashboard.this.mContext.getSystemService(android.content.Context.NFC_SERVICE)).getDefaultAdapter();
                 if (defaultAdapter != null && defaultAdapter.isEnabled()) {
                     PreferenceManager.setStringValue(Constants.TYPE, "nfc");
-//                    Dashboard.this.mContext.setFragment(new NfcTabLayoutFragment(), "NFC Reader");
+                    Dashboard.this.mContext.setFragment(new NfcTabLayoutFragment(), "NFC Reader");
                     Dashboard.this.mContext.frm = 2;
                 } else if (defaultAdapter == null || defaultAdapter.isEnabled()) {
                     new AlertDialog.Builder(Dashboard.this.mContext).setMessage((CharSequence) "NFC is not available in your device.").setTitle((CharSequence) "Alert").setPositiveButton((CharSequence) "Ok", (DialogInterface.OnClickListener) new DialogInterface.OnClickListener() {
@@ -178,18 +166,18 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
         });
         this.binding.cardBle.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Dashboard.this.mContext.setFragment(new BleScan(), "Scan BLE");
+                Dashboard.this.mContext.setFragment(new BleScan(), "Scan BLE");
                 Dashboard.this.mContext.frm = 2;
             }
         });
         this.binding.cardQr.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Dashboard.this.mContext.frm = 2;
-//                Dashboard.this.mContext.setTitle("QR CODE");
-//                ((ActionBar) Objects.requireNonNull(((AppCompatActivity) Dashboard.this.requireActivity()).getSupportActionBar())).setDisplayHomeAsUpEnabled(true);
-//                Dashboard.this.binding.llOptions.setVisibility(View.GONE);
-//                Dashboard.this.binding.llRfid.setVisibility(android.view.View.GONE);
-//                Dashboard.this.binding.llQrcode.setVisibility(android.view.View.VISIBLE);
+                Dashboard.this.mContext.frm = 2;
+                Dashboard.this.mContext.setTitle("QR CODE");
+                ((ActionBar) Objects.requireNonNull(((AppCompatActivity) Dashboard.this.requireActivity()).getSupportActionBar())).setDisplayHomeAsUpEnabled(true);
+                Dashboard.this.binding.llOptions.setVisibility(View.GONE);
+                Dashboard.this.binding.llRfid.setVisibility(android.view.View.GONE);
+                Dashboard.this.binding.llQrcode.setVisibility(android.view.View.VISIBLE);
             }
         });
         this.binding.btContactUs.setOnClickListener(new View.OnClickListener() {
@@ -225,49 +213,49 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
         });
         this.binding.llWrite.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Dashboard.this.mContext.setFragment(new WriteTag(), "Write Tag");
+                Dashboard.this.mContext.setFragment(new WriteTag(), "Write Tag");
                 Dashboard.this.mContext.frm = 3;
             }
         });
         this.binding.llSingleSearch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Dashboard.this.mContext.setFragment(new SingleSearch(), "Single Search");
+                Dashboard.this.mContext.setFragment(new SingleSearch(), "Single Search");
                 Dashboard.this.mContext.frm = 3;
             }
         });
         this.binding.llInvList.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Dashboard.this.mContext.frm = 3;
-//                Dashboard.this.mContext.setFragment(new InventoryList(), "Inventory List");
+                Dashboard.this.mContext.setFragment(new InventoryList(), "Inventory List");
             }
         });
         this.binding.llSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Dashboard.this.mContext.setFragment(new AppSettings(), "Settings");
+                Dashboard.this.mContext.setFragment(new AppSettings(), "Settings");
                 Dashboard.this.mContext.frm = 3;
             }
         });
         this.binding.llScanNfc.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Dashboard.this.mContext.setFragment(new NfcReader(), "NFC Reader");
+                Dashboard.this.mContext.setFragment(new NfcReader(), "NFC Reader");
                 Dashboard.this.mContext.frm = 2;
             }
         });
         this.binding.llWriteNfc.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Dashboard.this.mContext.setFragment(new NfcReader(), "NFC Writer");
+                Dashboard.this.mContext.setFragment(new NfcReader(), "NFC Writer");
                 Dashboard.this.mContext.frm = 2;
             }
         });
         this.binding.llInvqrList.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Dashboard.this.mContext.frm = 3;
-//                Dashboard.this.mContext.setFragment(new InventoryList(), "Inventory List");
+                Dashboard.this.mContext.setFragment(new InventoryList(), "Inventory List");
             }
         });
         this.binding.llQrSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Dashboard.this.mContext.setFragment(new AppSettings(), "Settings");
+                Dashboard.this.mContext.setFragment(new AppSettings(), "Settings");
                 Dashboard.this.mContext.frm = 2;
             }
         });
@@ -275,7 +263,7 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
             public void onClick(View view) {
                 PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Barcode");
                 Dashboard.this.mContext.frm = 2;
-//                Dashboard.this.mContext.setFragment(new InventoryItems(), "Tag Count");
+                Dashboard.this.mContext.setFragment(new InventoryItems(), "Tag Count");
             }
         });
     }

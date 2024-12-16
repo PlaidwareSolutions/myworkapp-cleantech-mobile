@@ -15,7 +15,6 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.util.List;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHolder> {
-    /* access modifiers changed from: private */
     public OnItemClickListener onItemClickListener;
     private Runnable runnable = new Runnable() {
         public void run() {
@@ -23,7 +22,6 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
             SliderAdapter.this.notifyDataSetChanged();
         }
     };
-    /* access modifiers changed from: private */
     public List<SliderItems> sliderItems;
     private ViewPager2 viewPager2;
 
@@ -60,7 +58,6 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
     }
 
     public static class SliderViewHolder extends RecyclerView.ViewHolder {
-        /* access modifiers changed from: private */
         public RoundedImageView imageView;
 
         public SliderViewHolder(View view) {

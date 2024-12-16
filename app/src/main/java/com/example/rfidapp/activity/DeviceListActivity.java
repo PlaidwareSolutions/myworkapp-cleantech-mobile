@@ -41,10 +41,8 @@ import java.util.Map;
 public class DeviceListActivity extends AppCompatActivity {
     private static final long SCAN_PERIOD = 10000;
     public static final String TAG = "DeviceListActivity";
-    /* access modifiers changed from: private */
     public Map<String, Integer> devRssiValues;
     private DeviceAdapter deviceAdapter;
-    /* access modifiers changed from: private */
     public List<MyDevice> deviceList;
     private AdapterView.OnItemClickListener mDeviceClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long j) {
@@ -66,7 +64,7 @@ public class DeviceListActivity extends AppCompatActivity {
     private TextView tvTitle;
     RFIDWithUHFBLE uhf = RFIDWithUHFBLE.getInstance();
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView((int) R.layout.activity_device_list);
@@ -110,14 +108,12 @@ public class DeviceListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(this.mDeviceClickListener);
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$init$0$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
+
     public void init(View view) {
         finish();
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$init$1$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
+
     public void mInit(View view) {
         if (!this.mScanning) {
             scanLeDevice(true);
@@ -126,8 +122,7 @@ public class DeviceListActivity extends AppCompatActivity {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$init$2$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
+
     public void init2(View view) {
         FileUtils.clearXmlList();
         this.deviceList.clear();
@@ -145,8 +140,7 @@ public class DeviceListActivity extends AppCompatActivity {
 //                    DeviceListActivity.this.runOnUiThread(new DeviceListActivity$2$$ExternalSyntheticLambda0(this, bluetoothDevice, i));
                 }
 
-                /* access modifiers changed from: package-private */
-                /* renamed from: lambda$getDevices$0$com-ruddersoft-rfidscanner-DeviceListActivity$2  reason: not valid java name */
+
                 public void m514lambda$getDevices$0$comruddersoftrfidscannerDeviceListActivity$2(BluetoothDevice bluetoothDevice, int i) {
                     Log.d(DeviceListActivity.TAG, "扫描成功");
                     Log.d(DeviceListActivity.TAG, "扫描成功");
@@ -171,8 +165,7 @@ public class DeviceListActivity extends AppCompatActivity {
         button.setText(R.string.scan);
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$scanLeDevice$3$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
+
     public void scanLeDevice(Button button) {
         this.mScanning = false;
         this.uhf.stopScanBTDevices();
@@ -184,13 +177,12 @@ public class DeviceListActivity extends AppCompatActivity {
         this.uhf.stopScanBTDevices();
     }
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onDestroy() {
         super.onDestroy();
         this.uhf.stopScanBTDevices();
     }
 
-    /* access modifiers changed from: private */
     public void addDevice(MyDevice myDevice, int i) {
         boolean z;
         Iterator<MyDevice> it = this.deviceList.iterator();
@@ -216,15 +208,14 @@ public class DeviceListActivity extends AppCompatActivity {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$addDevice$4$com-ruddersoft-rfidscanner-DeviceListActivity  reason: not valid java name */
+
     public int addDevice(MyDevice myDevice, MyDevice myDevice2) {
         String address = myDevice.getAddress();
         String address2 = myDevice2.getAddress();
         return Integer.compare(this.devRssiValues.get(address2).intValue(), this.devRssiValues.get(address).intValue());
     }
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onPause() {
         super.onPause();
         Log.d(TAG, "scanLeDevice==============>");

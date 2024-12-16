@@ -81,12 +81,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     public static final String TAG_RSSI = "tagRssi";
     public static String[] storage_permissions = {"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE"};
     public static String[] storage_permissions_33 = {"android.permission.READ_MEDIA_IMAGES", "android.permission.MANAGE_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
-    /* access modifiers changed from: private */
     public int SearchSelectItem = -1;
     MyAdapter adapter;
     MenuItem add;
     FragmentInventoryItemsBinding binding;
-    /* access modifiers changed from: private */
     public ClearDataAsyncTask clearDataAsyncTask;
     String create = "";
     MenuItem csv;
@@ -114,7 +112,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     boolean isSearch = false;
     boolean isStart = false;
     int limit = 200000;
-    /* access modifiers changed from: private */
     public boolean loopFlag = false;
     MainActivity mContext;
     private String mParam1;
@@ -124,12 +121,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     MySearchAdapter mySearchAdapter;
     int page = 0;
     MenuItem power;
-    /* access modifiers changed from: private */
     public ProgressDialog progressDialog;
     int scannedItems = 0;
     private ArrayList<InventoryItemsEntity> searchDataArrayList;
     private HashMap<String, String> searchMap;
-    /* access modifiers changed from: private */
     public int selectItem = -1;
     String size = "";
     boolean stScn = false;
@@ -209,8 +204,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return this.binding.getRoot();
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$onCreateView$0$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
     public void resultListner(ActivityResult activityResult) {
         if (activityResult.getResultCode() == ReaderClass.barcodeResultCode) {
             Intent data = activityResult.getData();
@@ -415,8 +408,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         bottomSheetDialog.show();
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$editBottomSheet$1$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
     public void editBottomSheet(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
         String trim = editText.getText().toString().trim();
         if (trim.length() <= 0) {
@@ -434,8 +425,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$editBottomSheet$2$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
     public void editBottomSheet2(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
         String trim = editText.getText().toString().trim();
         if (trim.length() <= 0) {
@@ -463,7 +452,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.binding.btClear.setBackgroundResource(R.drawable.bt_design);
     }
 
-    /* access modifiers changed from: private */
     public void loadEpc(String str) {
         String str2;
         this.tagSearchList.clear();
@@ -500,7 +488,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return str;
     }
 
-    /* access modifiers changed from: private */
     public String insertValues() {
         Completable.fromAction(() -> this.mInsertValues())
                 .subscribeOn(Schedulers.io())
@@ -529,8 +516,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return null;
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$insertValues$5$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
     public void mInsertValues() throws Exception {
         this.invListViewModel.insert(setInventoryValue());
     }
@@ -568,8 +553,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         super.onPrepareOptionsMenu(menu);
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$onPrepareOptionsMenu$6$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
     public boolean onPrepareOptionsMenu(MenuItem menuItem) {
         if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
             loadExportData(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
@@ -579,8 +562,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return false;
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$onPrepareOptionsMenu$7$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
     public boolean onPrepareOptionsMenuInv(MenuItem menuItem) {
         this.mContext.frm = 4;
         this.mContext.setFragment(new InventoryList(), "Inventory List");
@@ -690,8 +671,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 });
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$insertValues$9$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
+
     public void insertValues(InventoryItemsEntity inventoryItemsEntity) throws Exception {
         this.invItemsViewModel.insert(inventoryItemsEntity);
     }
@@ -715,7 +695,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         });
     }
 
-    /* access modifiers changed from: private */
+
     public void updateValues(InventoryItemsEntity inventoryItemsEntity) {
         Completable.fromAction(() -> this.updateValuesEntity(inventoryItemsEntity))
                 .subscribeOn(Schedulers.io())
@@ -732,8 +712,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 });
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$updateValues$10$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
     public void updateValuesEntity(InventoryItemsEntity inventoryItemsEntity) throws Exception {
         this.invItemsViewModel.update(inventoryItemsEntity);
     }
@@ -786,7 +764,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }
 
-    /* access modifiers changed from: private */
     public String mergeTidEpc(String str, String str2, String str3) {
         String str4 = "EPC:" + str2;
         if (!TextUtils.isEmpty(str) && !str.equals("0000000000000000") && !str.equals("000000000000000000000000")) {
@@ -795,12 +772,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return (str3 == null || str3.length() <= 0) ? str4 : str4 + "\nUSER:" + str3;
     }
 
-    /* access modifiers changed from: private */
     public void setTotalTime() {
         System.currentTimeMillis();
     }
 
-    /* access modifiers changed from: private */
     public void addDataToList(String str, String str2, String str3, boolean z) {
         if (StringUtils.isNotEmpty(str)) {
             int checkIsExist = checkIsExist(str);
@@ -911,8 +886,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             return view2;
         }
 
-        /* access modifiers changed from: package-private */
-        /* renamed from: lambda$getView$0$com-ruddersoft-rfidscanner-views-fragments-InventoryItems$MyAdapter  reason: not valid java name */
+
         public void showPopup(int i, View view) {
             InventoryItems inventoryItems = InventoryItems.this;
             inventoryItems.showPopup(view, (String) inventoryItems.tagList.get(i).get(InventoryItems.TAG_EPC));
@@ -931,7 +905,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }
 
-    /* access modifiers changed from: private */
     public void showPopup(View view, String str) {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.search_menu, popupMenu.getMenu());
@@ -944,8 +917,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         popupMenu.show();
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$showPopup$11$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
     public boolean showPopup(String str, MenuItem menuItem) {
         /*SingleSearch singleSearch = new SingleSearch();
         Bundle bundle = new Bundle();
@@ -955,8 +926,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return false;
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$showPopup$12$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
+
     public boolean showPopup1(String str, MenuItem menuItem) {
         /*WriteTag writeTag = new WriteTag();
         Bundle bundle = new Bundle();
@@ -970,7 +940,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public setEpc() {
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public Boolean doInBackground(List<InventoryItemsEntity>... listArr) {
             for (int i = 0; i < listArr[0].size(); i++) {
                 if (InventoryItems.this.isSearch) {
@@ -982,12 +952,12 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             return null;
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public void onPreExecute() {
             super.onPreExecute();
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public void onPostExecute(Boolean bool) {
             InventoryItems.this.adapter.notifyDataSetChanged();
             InventoryItems.this.mySearchAdapter.notifyDataSetChanged();
@@ -996,7 +966,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }
 
-    /* access modifiers changed from: private */
     public void addDataToSearchList(String str, String str2) {
         if (StringUtils.isNotEmpty(str)) {
             HashMap<String, String> hashMap = new HashMap<>();
@@ -1066,8 +1035,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             return view2;
         }
 
-        /* access modifiers changed from: package-private */
-        /* renamed from: lambda$getView$0$com-ruddersoft-rfidscanner-views-fragments-InventoryItems$MySearchAdapter  reason: not valid java name */
+
         public void showPopupp(int i, View view) {
             InventoryItems inventoryItems = InventoryItems.this;
             inventoryItems.showPopup(view, (String) inventoryItems.tagSearchList.get(i).get(InventoryItems.TAG_EPC));
@@ -1115,7 +1083,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         private ClearDataAsyncTask() {
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public Boolean doInBackground(Void... voidArr) {
             InvDB build = Room.databaseBuilder(InventoryItems.this.getContext().getApplicationContext(), InvDB.class, "Inventory_db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
             InvItemsDao invItemsDao = build.invItemsDao();
@@ -1141,28 +1109,24 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             return true;
         }
 
-        /* access modifiers changed from: package-private */
-        /* renamed from: lambda$doInBackground$0$com-ruddersoft-rfidscanner-views-fragments-InventoryItems$ClearDataAsyncTask  reason: not valid java name */
         public void doInBackgroundClearDataAsyncTask() {
             InventoryItems.this.btCancel("grey");
             InventoryItems.this.adapter.notifyDataSetChanged();
         }
 
-        /* access modifiers changed from: package-private */
-        /* renamed from: lambda$doInBackground$1$com-ruddersoft-rfidscanner-views-fragments-InventoryItems$ClearDataAsyncTask  reason: not valid java name */
+
         public void m552lambda$doInBackground$1$comruddersoftrfidscannerviewsfragmentsInventoryItems$ClearDataAsyncTask() {
             InventoryItems.this.btCancel("grey");
             InventoryItems.this.adapter.notifyDataSetChanged();
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public void onProgressUpdate(Integer... numArr) {
             super.onProgressUpdate(numArr);
             InventoryItems.this.progressDialog.setIndeterminate(false);
             InventoryItems.this.progressDialog.setProgress(numArr[0].intValue());
         }
-
-        /* access modifiers changed from: protected */
+        @Override
         public void onPostExecute(Boolean bool) {
             super.onPostExecute(bool);
             InventoryItems.this.progressDialog.dismiss();
@@ -1182,19 +1146,19 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public InitBarcodeTask() {
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public Boolean doInBackground(String... strArr) {
             InventoryItems.this.open();
             return true;
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public void onPostExecute(Boolean bool) {
             super.onPostExecute(bool);
             this.mypDialog.cancel();
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public void onPreExecute() {
             super.onPreExecute();
             ProgressDialog progressDialog = new ProgressDialog(InventoryItems.this.mContext);
@@ -1217,8 +1181,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.mContext.barcodeDecoder.setDecodeCallback(barcodeEntity -> this.open(barcodeEntity));
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$open$13$com-ruddersoft-rfidscanner-views-fragments-InventoryItems  reason: not valid java name */
+
     public void open(BarcodeEntity barcodeEntity) {
         if (barcodeEntity.getResultCode() == 1) {
             this.mContext.playSound(1);
@@ -1278,7 +1241,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.invCycle = str;
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public Void doInBackground(Void... voidArr) {
             InventoryItems.this.exportDB(this.productDetails);
             return null;

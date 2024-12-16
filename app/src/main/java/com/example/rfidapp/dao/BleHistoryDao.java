@@ -27,6 +27,6 @@ public interface BleHistoryDao {
     @Query("SELECT * FROM ble_history")
     LiveData<List<BleEntity>> getAllBleEntities();
 
-    /*@Query("SELECT * FROM ble_items WHERE history_id = :historyID")
-    LiveData<List<BleItemEntity>> getBleItemsByHistoryID(String historyID);*/
+    @Query("SELECT * FROM BleItem WHERE historyID = :historyID1")
+    LiveData<List<BleItemEntity>> getBleItemsByHistoryID(String historyID1);
 }

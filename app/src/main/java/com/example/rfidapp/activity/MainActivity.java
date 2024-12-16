@@ -32,14 +32,20 @@ import com.example.rfidapp.R;
 import com.example.rfidapp.ReaderClass;
 import com.example.rfidapp.database.InvDB;
 import com.example.rfidapp.databinding.ActivityMainBinding;
+import com.example.rfidapp.fragment.BleItemHistoryName;
+import com.example.rfidapp.fragment.BleScan;
 import com.example.rfidapp.fragment.Dashboard;
 import com.example.rfidapp.fragment.InventoryItems;
+import com.example.rfidapp.fragment.NfcReader;
+import com.example.rfidapp.fragment.NfcWriter;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.Utils;
 import com.example.rfidapp.util.constants.Constants;
 import com.example.rfidapp.viewmodel.InvListViewModel;
 import com.google.android.material.slider.Slider;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
+
+import java.io.IOException;
 
 public class MainActivity extends ReaderClass {
     AudioManager audioManager;
@@ -53,13 +59,13 @@ public class MainActivity extends ReaderClass {
     int power = 0;
     int volume = 0;
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         ActivityMainBinding inflate = ActivityMainBinding.inflate(getLayoutInflater());
         this.binding = inflate;
         setContentView(inflate.getRoot());
-//        setSupportActionBar(this.binding.toolbar);
+        setSupportActionBar(this.binding.toolbar);
         this.nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.invListViewModel = new ViewModelProvider(this).get(InvListViewModel.class);
@@ -80,7 +86,7 @@ public class MainActivity extends ReaderClass {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.right_menu, menu);
         this.btItem = menu.findItem(R.id.menu_bt);
-        this.btItem.setVisible(/*PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")*/false);
+        this.btItem.setVisible(PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1"));
         return true;
     }
 
@@ -108,11 +114,11 @@ public class MainActivity extends ReaderClass {
             inventoryItems.setArguments(bundle);
             setFragment(inventoryItems, "Scan Tag");
         } else if (i == 5) {
-           /* this.frm = 2;
-            setFragment(new BleScan(), "Scan BLE");*/
+            this.frm = 2;
+            setFragment(new BleScan(), "Scan BLE");
         } else if (i == 6) {
-         /*  this.frm = 5;
-            setFragment(new BleItemHistoryName(), "BLE History List");*/
+           this.frm = 5;
+            setFragment(new BleItemHistoryName(), "BLE History List");
         } else if (i == 1) {
             setFragment(new Dashboard(), "Dashboard");
         }
@@ -127,11 +133,11 @@ public class MainActivity extends ReaderClass {
     }
 
     public void setInventoryItemCount(String str) {
-//        Room.databaseBuilder(getApplicationContext(), InvDB.class, "Inventory_db").fallbackToDestructiveMigration().allowMainThreadQueries().build().invListDao().update(PreferenceManager.getStringValue(Constants.INV_ID_RFID), str);
+        Room.databaseBuilder(getApplicationContext(), InvDB.class, "Inventory_db").fallbackToDestructiveMigration().allowMainThreadQueries().build().invListDao().update(PreferenceManager.getStringValue(Constants.INV_ID_RFID), str);
     }
 
     public void setInventoryItemBarCount(String str) {
-//        Room.databaseBuilder(getApplicationContext(), InvDB.class, "Inventory_db").fallbackToDestructiveMigration().allowMainThreadQueries().build().invListDao().update(PreferenceManager.getStringValue(Constants.INV_ID_BAR), str);
+        Room.databaseBuilder(getApplicationContext(), InvDB.class, "Inventory_db").fallbackToDestructiveMigration().allowMainThreadQueries().build().invListDao().update(PreferenceManager.getStringValue(Constants.INV_ID_BAR), str);
     }
 
     public int setInventoryName(String str, String str2) {
@@ -168,8 +174,6 @@ public class MainActivity extends ReaderClass {
         inflate.findViewById(R.id.bt_cancel).setOnClickListener(view -> create.dismiss());
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$createDialog$0$com-ruddersoft-rfidscanner-MainActivity  reason: not valid java name */
     public  void createDialog1(TextView textView, Slider slider, float f, boolean z) {
         if (this.isBTDevice.booleanValue()) {
             if (mBtReader.isWorking()) {
@@ -191,8 +195,6 @@ public class MainActivity extends ReaderClass {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$createDialog$1$com-ruddersoft-rfidscanner-MainActivity  reason: not valid java name */
     public  void createDialog(AlertDialog alertDialog, View view) {
         boolean z;
         if (!this.isBTDevice.booleanValue()) {
@@ -289,14 +291,12 @@ public class MainActivity extends ReaderClass {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$onOptionsItemSelected$3$com-ruddersoft-rfidscanner-MainActivity  reason: not valid java name */
-    public /* synthetic */ void disConnect1(DialogInterface dialogInterface, int i) {
+    public void disConnect1(DialogInterface dialogInterface, int i) {
         Log.e("as_con", "problem in connect");
         disconnect(true);
     }
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onResume() {
         super.onResume();
         checkBTConnect();
@@ -322,11 +322,11 @@ public class MainActivity extends ReaderClass {
         }
     }
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Fragment fragment2 = this.fragment;
-        /*if (fragment2 instanceof NfcReader) {
+        if (fragment2 instanceof NfcReader) {
             try {
                 ((NfcReader) fragment2).resolveIntent(intent);
             } catch (IOException e) {
@@ -338,7 +338,7 @@ public class MainActivity extends ReaderClass {
             } catch (Exception e2) {
                 throw new RuntimeException(e2);
             }
-        }*/
+        }
     }
 
     @SuppressLint("SetTextI18n")

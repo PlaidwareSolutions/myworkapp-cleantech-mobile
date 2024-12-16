@@ -17,4 +17,12 @@
         <item name="fontWeight">700</item>
     </style>
 
+    <style name="BottomSheetDialogTheme">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+    <style name="BottomSheetStyle">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="behavior_peekHeight">600dp</item>
+    </style>
+
 </resources>

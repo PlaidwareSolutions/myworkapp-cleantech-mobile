@@ -79,7 +79,6 @@ public class ReaderClass extends AppCompatActivity {
     BTStatus btStatus = new BTStatus();
     private Button btn_connect;
     private Button btn_search;
-    /* access modifiers changed from: private */
     public List<IConnectStatus> connectStatusList = new ArrayList();
     public KeyDownFragment currentFrag = null;
     Dashboard dashboard;
@@ -94,7 +93,6 @@ public class ReaderClass extends AppCompatActivity {
     public BluetoothAdapter mBtAdapter = null;
     public BluetoothDevice mDevice = null;
     private Timer mDisconnectTimer = new Timer();
-    /* access modifiers changed from: private */
     @SuppressLint("HandlerLeak")
     public Handler mHandler = new Handler() {
         public void handleMessage(Message message) {
@@ -103,12 +101,9 @@ public class ReaderClass extends AppCompatActivity {
             }
         }
     };
-    /* access modifiers changed from: private */
     public boolean mIsActiveDisconnect = true;
-    /* access modifiers changed from: private */
     public int mReConnectCount = Integer.MAX_VALUE;
     private FragmentTabHost mTabHost;
-    /* access modifiers changed from: private */
     public long period = 30000;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -133,7 +128,6 @@ public class ReaderClass extends AppCompatActivity {
     HashMap<Integer, Integer> soundMap = new HashMap<>();
     private SoundPool soundPool;
     String srlno = "";
-    /* access modifiers changed from: private */
     public long timeCountCur;
     private DisconnectTimerTask timerTask;
     private Toast toast;
@@ -152,7 +146,7 @@ public class ReaderClass extends AppCompatActivity {
         return j2;
     }
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView((int) R.layout.activity_reader_class);
@@ -193,13 +187,13 @@ public class ReaderClass extends AppCompatActivity {
         getApplication().registerReceiver(this.receiver, intentFilter);
     }
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onStop() {
         super.onStop();
         stopInventory();
     }
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onDestroy() {
         super.onDestroy();
         stop();
@@ -290,12 +284,12 @@ public class ReaderClass extends AppCompatActivity {
         public InitTask() {
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public void onPreExecute() {
             super.onPreExecute();
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public Boolean doInBackground(String... strArr) {
             try {
                 ReaderClass.mBtReader.free();
@@ -304,7 +298,7 @@ public class ReaderClass extends AppCompatActivity {
             return Boolean.valueOf(ReaderClass.mReader.init());
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public void onPostExecute(Boolean bool) {
             super.onPostExecute(bool);
         }
@@ -358,8 +352,6 @@ public class ReaderClass extends AppCompatActivity {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$connect$1$com-ruddersoft-rfidscanner-ReaderClass  reason: not valid java name */
     public void mConnect() {
         if (mBtReader.getConnectStatus().equals(ConnectionStatus.CONNECTED)) {
             this.isBtConnect = true;
@@ -385,12 +377,12 @@ public class ReaderClass extends AppCompatActivity {
         }
     }
 
-    /* access modifiers changed from: private */
+
     public boolean shouldShowDisconnected() {
         return this.mIsActiveDisconnect || this.mReConnectCount == 0;
     }
 
-    /* access modifiers changed from: private */
+
     public void formatConnectButton(long j) {
         if (mBtReader.getConnectStatus() == ConnectionStatus.CONNECTED && !this.isScanning && System.currentTimeMillis() - this.lastTouchTime > 30000 && this.timerTask != null) {
             long j2 = (j / 1000) / 60;
@@ -434,8 +426,6 @@ public class ReaderClass extends AppCompatActivity {
         return z;
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$checkLocationEnable$2$com-ruddersoft-rfidscanner-ReaderClass  reason: not valid java name */
     public void checkLocationEnable(DialogInterface dialogInterface, int i) {
         startActivityForResult(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"), 3);
     }
@@ -449,7 +439,6 @@ public class ReaderClass extends AppCompatActivity {
         }
     }
 
-    /* access modifiers changed from: private */
     public void startDisconnectTimer(long j) {
         this.timeCountCur = j;
         DisconnectTimerTask disconnectTimerTask = new DisconnectTimerTask();
@@ -504,8 +493,6 @@ public class ReaderClass extends AppCompatActivity {
         }
     }
 
-    /* access modifiers changed from: package-private */
-    /* renamed from: lambda$checkBTConnect$3$com-ruddersoft-rfidscanner-ReaderClass  reason: not valid java name */
     public  void bTConnect() {
         RFIDWithUHFBLE rFIDWithUHFBLE = mBtReader;
         if (rFIDWithUHFBLE == null || rFIDWithUHFBLE.getConnectStatus() != ConnectionStatus.CONNECTED) {
@@ -534,7 +521,7 @@ public class ReaderClass extends AppCompatActivity {
         return z;
     }
 
-    /* access modifiers changed from: protected */
+    @Override
     public void onResume() {
         super.onResume();
         checkBTConnect();
@@ -546,7 +533,7 @@ public class ReaderClass extends AppCompatActivity {
         public InitBtReader() {
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public Boolean doInBackground(String... strArr) {
             try {
                 ReaderClass.mReader.free();
@@ -555,7 +542,7 @@ public class ReaderClass extends AppCompatActivity {
             return Boolean.valueOf(ReaderClass.mBtReader.init(ReaderClass.this));
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public void onPostExecute(Boolean bool) {
             super.onPostExecute(bool);
             this.mypDialog.cancel();
@@ -564,7 +551,7 @@ public class ReaderClass extends AppCompatActivity {
             }
         }
 
-        /* access modifiers changed from: protected */
+        @Override
         public void onPreExecute() {
             super.onPreExecute();
             ProgressDialog progressDialog = new ProgressDialog(ReaderClass.this);
