@@ -25,6 +25,8 @@ rxjava = "2.2.10"
 sdpAndroid = "1.1.1"
 sspAndroid = "1.1.1"
 firebaseCrashlyticsBuildtoolsVersion = "3.0.2"
+activity = "1.9.3"
+constraintlayout = "2.2.0"
 
 
 [libraries]
@@ -56,6 +58,8 @@ rxjava = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava" }
 ssp-android = { module = "com.intuit.ssp:ssp-android", version.ref = "sspAndroid" }
 sdp-android = { module = "com.intuit.sdp:sdp-android", version.ref = "sdpAndroid" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtoolsVersion" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 
 [plugins]

@@ -38,9 +38,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/bg_circle"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:background="@drawable/ic_files"
                 android:elevation="1dp"
                 android:importantForAccessibility="no"
                 android:scaleType="centerInside" />
@@ -75,9 +75,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/bg_circle"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:src="@drawable/ic_bill_of_lading"
                 android:elevation="1dp"
                 android:importantForAccessibility="no"
                 android:scaleType="centerInside" />
@@ -110,10 +110,10 @@
 
             <ImageView
                 android:id="@+id/iconImage"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:background="@drawable/bg_circle"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
                 android:elevation="1dp"
+                android:src="@drawable/ic_begin_scanning"
                 android:fontFamily="@font/figtree_medium"
                 android:importantForAccessibility="no"
                 android:scaleType="centerInside" />
@@ -196,14 +196,12 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/bg_circle"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
                 android:elevation="1dp"
-                android:padding="20dp"
                 android:src="@drawable/ic_inventory"
                 android:importantForAccessibility="no"
-                android:scaleType="centerInside" />
+                android:scaleType="fitXY" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -235,14 +233,12 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/bg_circle"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
                 android:elevation="1dp"
                 android:importantForAccessibility="no"
                 android:scaleType="centerInside"
-                android:src="@drawable/settings_42"
-                app:tint="@color/black" />
+                android:src="@drawable/ic_settings" />
 
             <LinearLayout
                 android:layout_width="0dp"

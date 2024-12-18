@@ -1,5 +1,6 @@
 package com.example.rfidapp.activity
 
+import android.content.Intent
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +37,10 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
                     binding.orderDetailsButton.isEnabled = order != null
                 }
             }
+        }
+
+        binding.orderDetailsButton.setOnClickListener {
+            startActivity(Intent(this, OrderDetailActivity::class.java))
         }
     }
 

@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +39,8 @@ import androidx.room.Room;
 
 import com.example.rfidapp.R;
 import com.example.rfidapp.ReaderClass;
+import com.example.rfidapp.activity.HomeScreenActivity;
+import com.example.rfidapp.activity.InventoryItemsActivity;
 import com.example.rfidapp.activity.MainActivity;
 import com.example.rfidapp.adapter.InvItemAdapter;
 import com.example.rfidapp.dao.InvItemsDao;
@@ -113,7 +117,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     boolean isStart = false;
     int limit = 200000;
     public boolean loopFlag = false;
-    MainActivity mContext;
+    InventoryItemsActivity mContext;
     private String mParam1;
     private String mParam2;
     private HashMap<String, String> map;
@@ -207,17 +211,17 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     public void resultListner(ActivityResult activityResult) {
         if (activityResult.getResultCode() == ReaderClass.barcodeResultCode) {
             Intent data = activityResult.getData();
-            this.mContext.playSound(1);
+            mContext.playSound(1);
             addDataToList(data.getStringExtra(OptionalModuleUtils.BARCODE).trim(), "", Util.getDateTime(), true);
         }
     }
 
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
-        MainActivity mainActivity = (MainActivity) getActivity();
+        InventoryItemsActivity mainActivity = (InventoryItemsActivity) getActivity();
         this.mContext = mainActivity;
         mainActivity.currentFrag = this;
-        this.mContext.initSound();
+        mContext.initSound();
         init();
     }
 
@@ -563,8 +567,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     public boolean onPrepareOptionsMenuInv(MenuItem menuItem) {
-        this.mContext.frm = 4;
-        this.mContext.setFragment(new InventoryList(), "Inventory List");
+//        this.mContext.frm = 4;
+//        this.mContext.setFragment(new InventoryList(), "Inventory List");
         return false;
     }
 
@@ -734,11 +738,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
         }
         if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
-            MainActivity mainActivity = this.mContext;
+            InventoryItemsActivity mainActivity = this.mContext;
             mainActivity.setInventoryItemCount(mainActivity.getItemCount());
             return;
         }
-        MainActivity mainActivity2 = this.mContext;
+        InventoryItemsActivity mainActivity2 = this.mContext;
         mainActivity2.setInventoryItemBarCount(mainActivity2.getItemBarCount());
     }
 
@@ -1073,7 +1077,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     bundle.putString("inv_type", "Barcode");
                 }
                 inventoryItems.setArguments(bundle);
-                InventoryItems.this.mContext.setFragment(inventoryItems, "");
+//                InventoryItems.this.mContext.setFragment(inventoryItems, "");
                 dialogInterface.dismiss();
             }
         }).setNegativeButton((CharSequence) "No", (DialogInterface.OnClickListener) null).show();
