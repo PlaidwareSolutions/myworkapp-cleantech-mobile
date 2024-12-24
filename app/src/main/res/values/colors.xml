@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="divider_color">#8d9193</color>
+    <color name="app_color">#0e7083</color>
+
+    <color name="colorPrimary">#003366</color>
+
+    <!--    primary button colors-->
+    <color name="primary_button_border_color">#0e7083</color>
+    <color name="primary_button_enabled_color">@color/colorPrimary</color>
+    <color name="primary_button_disabled_color">#80003366</color>
+    <color name="primary_button_enabled_text_color">@color/white</color>
+    <color name="primary_button_disabled_text_color">@color/white</color>
+
+    <color name="tab_unselected_text_color">#80FFFFFF</color>
+    <color name="tab_selected_text_color">#FFFFFF</color>
+
+
     <color name="abc_decor_view_status_guard">#ff000000</color>
     <color name="abc_decor_view_status_guard_light">#ffffffff</color>
     <color name="abc_search_url_text_normal">#7fa87f</color>
@@ -150,14 +167,6 @@
     <color name="yellow_color">#f6efb5</color>
     <color name="yellow_light">#ffffd800</color>
     <color name="transparent">#00000000</color>
-
-    <color name="divider_color">#8d9193</color>
-    <color name="app_color">#0e7083</color>
-
-    <!--    primary button colors-->
-    <color name="primary_button_border_color">#0e7083</color>
-    <color name="primary_button_enabled_color">#86BDCC</color>
-    <color name="primary_button_disabled_color">#E3F8FF</color>
-    <color name="primary_button_enabled_text_color">#0e7083</color>
-    <color name="primary_button_disabled_text_color">#86BDCC</color>
+    <color name="secondary_text_color">#6A6F73</color>
+    <color name="secondary_dark_text_color">#33383C</color>
 </resources>

@@ -17,18 +17,18 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@color/white"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
-        app:tabIndicatorColor="@color/black"
-        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorColor="@color/tab_selected_text_color"
+        app:tabIndicatorHeight="@dimen/_2sdp"
         app:tabMode="fixed"
         app:textAllCaps="false"
-        app:tabSelectedTextColor="@android:color/black"
-        app:tabTextColor="@android:color/darker_gray" />
+        app:tabSelectedTextColor="@color/tab_selected_text_color"
+        app:tabTextColor="@color/tab_unselected_text_color" />
 
     <EditText
         android:id="@+id/search"
@@ -47,6 +47,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order Search"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_margin="@dimen/_12sdp"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvOrders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/lookupBol"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@drawable/button_background"
+            android:text="View Order Details"
+            android:enabled="false"
+            android:layout_gravity="bottom"
+            android:textColor="@drawable/button_text_color"
+            android:padding="@dimen/_12sdp"
+            android:layout_margin="@dimen/_12sdp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

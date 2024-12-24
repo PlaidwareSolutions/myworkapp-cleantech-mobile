@@ -23,14 +23,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:fontFamily="@font/inter_bold"
-                android:textColor="#6A6F73"
-                android:text="Asset form" />
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/secondary_text_color"
+                android:text="Order:" />
 
             <TextView
                 android:id="@+id/txtLastUpdatedTime"
@@ -38,8 +37,8 @@
                 android:fontFamily="@font/inter_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#868686"
-                tools:text="3:43pm" />
+                android:textColor="@color/secondary_dark_text_color"
+                tools:text="12/12/2024" />
 
         </LinearLayout>
 
@@ -48,100 +47,82 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:textColor="@color/secondary_dark_text_color"
+            tools:text="I23246T5" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/secondary_text_color"
+                android:text="Carrier:" />
+
+            <TextView
+                android:layout_gravity="center"
+                android:fontFamily="@font/inter_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_dark_text_color"
+                tools:text="12/12/2024" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:textColor="@color/secondary_dark_text_color"
+            tools:text="Cleantec Logistics" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/secondary_text_color"
+                android:text="Request By:" />
+
+            <TextView
+                android:layout_gravity="center"
+                android:fontFamily="@font/inter_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_dark_text_color"
+                tools:text="12/12/2024" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginBottom="16dp"
-            style="@style/inter_400_12_16"
-            android:textColor="#6A6F73"
-            tools:text="This is the first form with all questions for testing on android app. App should support all question types now." />
-
-
-        <View
-            android:id="@+id/view"
-            tools:visibility="visible"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="#F2F2F2" />
-
-        <LinearLayout
-            android:id="@+id/lnrAssetName"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginBottom="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="8dp"
-                android:layout_marginStart="5dp"
-                android:textColor="#868686"
-                android:text="Asset name" />
-
-
-            <TextView
-                tools:text="Block elevator"
-                android:id="@+id/assetName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="end"
-                android:textSize="12sp"
-                android:textColor="#121212"
-                tools:visibility="visible" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnrLastUpdate"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginBottom="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                tools:ignore="ContentDescription" />
-
-
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="8dp"
-                android:layout_marginStart="5dp"
-                android:textColor="#868686"
-                android:text="last update"/>
-
-
-            <TextView
-                android:id="@+id/txtLastUpdatedDate"
-                tools:text="07 Jan 2023"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="end"
-                android:textSize="12sp"
-                android:textColor="#121212"
-                tools:visibility="visible" />
-
-        </LinearLayout>
+            android:textColor="@color/secondary_dark_text_color"
+            tools:text="Tony Blair-Texas Grains" />
 
 
     </LinearLayout>
