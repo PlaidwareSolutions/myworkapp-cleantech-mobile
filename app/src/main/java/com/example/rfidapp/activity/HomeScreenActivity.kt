@@ -26,9 +26,13 @@ class HomeScreenActivity : AppCompatActivity() {
                 textViewTitle.text = "MY Work App"
             }
 
-            orders.setOnClickListener {}
-            billOfLading.setOnClickListener {}
-            iconImage.setOnClickListener {}
+            orders.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java).putExtra("shipmentType", "orders"))
+            }
+
+            billOfLading.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, BoLActivity::class.java))
+            }
             iconImage.setOnClickListener {
                 scanningToggleVisibility()
             }
@@ -38,11 +42,19 @@ class HomeScreenActivity : AppCompatActivity() {
             }
 
             shipping.setOnClickListener {
-                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java))
+                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java).putExtra("shipmentType", "shipping"))
             }
-            receiving.setOnClickListener {}
-            inventory.setOnClickListener {}
-            settings.setOnClickListener {}
+
+            receiving.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java).putExtra("shipmentType", "receiving"))
+            }
+
+            inventory.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, InventoryActivity::class.java))
+            }
+            settings.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, SettingsActivity::class.java))
+            }
         }
     }
 

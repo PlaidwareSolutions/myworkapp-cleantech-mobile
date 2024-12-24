@@ -38,9 +38,13 @@
     <string name="settings">SETTINGS</string>
     <string name="begin_scanning">BEGIN SCANNING</string>
     <string name="prepare_shipment">Prepare Shipment</string>
+    <string name="receive_shipment">Receive Shipment</string>
+    <string name="order_search">Order Search</string>
     <string name="carrier">Carrier</string>
     <string name="customer">Customer</string>
+    <string name="bill_of_lading_">BOL</string>
     <string name="order">Order</string>
     <string name="search">Search</string>
     <string name="device_counter">Devices Found: %d</string>
+    <string name="search_ellipse">Search...</string>
 </resources>

@@ -154,6 +154,7 @@
                                 android:stepSize="1"
                                 android:theme="@style/Theme.RFIDApp"
                                 android:valueFrom="0"
+                                android:valueTo="30"
                                 app:haloColor="@color/white"
                                 app:thumbColor="@color/app_color"
                                 app:tickColorActive="@color/rs_red"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="inter_400_12_16">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">16sp</item>
+    </style>
+</resources>

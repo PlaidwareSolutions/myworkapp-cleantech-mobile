@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.InventoryItemsActivity">
+    tools:context=".activity.OrderDetailActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -40,13 +42,30 @@
             android:gravity="center"
             android:maxLines="1"
             android:textColor="@color/white"
-            android:text="Scan Item" />
+            android:text="Bill of Lading" />
 
     </FrameLayout>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
+    <Button
+        android:id="@+id/createBol"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:text="Create BOL"
+        android:textColor="@drawable/button_text_color"
+        android:padding="@dimen/_12sdp"
+        android:layout_margin="@dimen/_12sdp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/lookupBol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:text="LookUp BOL"
+        android:textColor="@drawable/button_text_color"
+        android:padding="@dimen/_12sdp"
+        android:layout_margin="@dimen/_12sdp"
+        android:textStyle="bold" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

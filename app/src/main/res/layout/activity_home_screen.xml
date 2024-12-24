@@ -18,13 +18,11 @@
     </FrameLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/frameToolbar"
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -33,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -56,7 +53,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
-                    android:fontFamily="@font/figtree_medium"
+                    android:fontFamily="@font/inter_medium"
                     android:gravity="center_vertical"
                     android:text="@string/orders"
                     android:textSize="18sp" />
@@ -70,7 +67,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -93,7 +89,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
-                    android:fontFamily="@font/figtree_medium"
+                    android:fontFamily="@font/inter_medium"
                     android:gravity="center_vertical"
                     android:text="@string/bill_of_lading"
                     android:textSize="18sp" />
@@ -114,7 +110,7 @@
                 android:layout_height="160dp"
                 android:elevation="1dp"
                 android:src="@drawable/ic_begin_scanning"
-                android:fontFamily="@font/figtree_medium"
+                android:fontFamily="@font/inter_medium"
                 android:importantForAccessibility="no"
                 android:scaleType="centerInside" />
 
@@ -140,7 +136,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/figtree_medium"
+                        android:fontFamily="@font/inter_medium"
                         android:gravity="center"
                         android:text="@string/shipping"
                         android:textSize="18sp" />
@@ -156,7 +152,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/figtree_medium"
+                        android:fontFamily="@font/inter_medium"
                         android:gravity="center"
                         android:text="@string/receiving"
                         android:textSize="18sp" />
@@ -191,7 +187,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -214,7 +209,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
-                    android:fontFamily="@font/figtree_medium"
+                    android:fontFamily="@font/inter_medium"
                     android:gravity="center_vertical"
                     android:text="@string/inventory"
                     android:textSize="18sp" />
@@ -228,7 +223,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -251,7 +245,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="12dp"
-                    android:fontFamily="@font/figtree_medium"
+                    android:fontFamily="@font/inter_medium"
                     android:gravity="center_vertical"
                     android:text="@string/settings"
                     android:textSize="18sp" />

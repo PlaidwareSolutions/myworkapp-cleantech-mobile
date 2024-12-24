@@ -54,7 +54,7 @@ abstract class ActBase<actBinding : ViewBinding> : ReaderClass() {
             i2 = R.drawable.toast_red_style
         }
         val inflate = LayoutInflater.from(this)
-            .inflate(R.layout.custom_toast, findViewById<View>(R.id.ll_custom_toast) as ViewGroup)
+            .inflate(R.layout.custom_toast, findViewById<View>(R.id.ll_custom_toast) as ViewGroup?)
         (inflate.findViewById<View>(R.id.ll_custom_toast) as LinearLayout).setBackgroundResource(i2)
         (inflate.findViewById<View>(R.id.toast_text) as TextView).text =
             str

@@ -16,6 +16,11 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         binding.scanButton.setOnClickListener {
             startActivity(Intent(this, InventoryItemsActivity::class.java))
         }
+
+        binding.imageButtonBack.setOnClickListener {
+            finish()
+        }
+
     }
 
     override fun bindMethods() {

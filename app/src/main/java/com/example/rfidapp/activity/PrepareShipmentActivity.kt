@@ -2,6 +2,7 @@ package com.example.rfidapp.activity
 
 import android.content.Intent
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.R
@@ -27,7 +28,47 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
     override fun setViewBinding() = ActivityPrepareShipmentBinding.inflate(layoutInflater)
 
     override fun bindObjects() {
+        val shipmentType = intent.getStringExtra("shipmentType")
+        binding.apply {
+            if (shipmentType == "receiving" || shipmentType == "lookup") {
+                customerButton.text = getString(R.string.bill_of_lading_)
+            } else {
+                customerButton.text = getString(R.string.customer)
+            }
+            when (shipmentType) {
+                "shipping" -> {
+                    orderButton.visibility = View.VISIBLE
+                    customerButton.visibility = View.VISIBLE
+                    carrierButton.visibility = View.VISIBLE
+                    textViewTitle.text = getString(R.string.prepare_shipment)
+                }
+                "receiving" -> {
+                    orderButton.visibility = View.GONE
+                    customerButton.visibility = View.VISIBLE
+                    carrierButton.visibility = View.VISIBLE
+                    textViewTitle.text = getString(R.string.receive_shipment)
 
+                }
+                "orders" -> {
+                    orderButton.visibility = View.VISIBLE
+                    customerButton.visibility = View.VISIBLE
+                    carrierButton.visibility = View.GONE
+                    textViewTitle.text = getString(R.string.order_search)
+
+                }
+                "lookup" -> {
+                    orderButton.visibility = View.GONE
+                    customerButton.visibility = View.VISIBLE
+                    carrierButton.visibility = View.VISIBLE
+                    textViewTitle.text = getString(R.string.receive_shipment)
+                }
+                else -> {
+                    orderButton.visibility = View.GONE
+                    customerButton.visibility = View.GONE
+                    carrierButton.visibility = View.GONE
+                }
+            }
+        }
     }
 
     override fun bindListeners() {
@@ -41,6 +82,10 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
 
         binding.orderDetailsButton.setOnClickListener {
             startActivity(Intent(this, OrderDetailActivity::class.java))
+        }
+
+        binding.imageButtonBack.setOnClickListener {
+            finish()
         }
     }
 
