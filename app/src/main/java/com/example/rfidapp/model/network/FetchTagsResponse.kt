@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateContactResponse(
-    @SerialName("data") var contact: Contact = Contact(),
+data class FetchTagsResponse(
+    @SerialName("data") var tagList: ArrayList<Tag> = arrayListOf(),
     @SerialName("success") var success: Boolean = false
 )

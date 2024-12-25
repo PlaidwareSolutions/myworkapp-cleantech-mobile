@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LocationX(
-    @SerialName("coordinates")
-    var coordinates: List<Double> = listOf()
+data class CreateAssetRequest(
+    @SerialName("product") var product: String? = null,
+    @SerialName("tag") var tag: String? = null
 )

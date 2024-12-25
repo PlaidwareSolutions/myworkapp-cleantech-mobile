@@ -1,6 +1,7 @@
 package com.example.rfidapp.data.network
 
 import com.example.rfidapp.model.network.ContactUpdateRequest
+import com.example.rfidapp.model.network.Contacts
 import com.example.rfidapp.model.network.CreateContactRequest
 import com.example.rfidapp.model.network.CreateContactResponse
 import com.example.rfidapp.model.network.ProductListResponse
@@ -28,5 +29,10 @@ interface ContactApi {
         @Header("authorization") token: String,
         @Path("id") contactId: String,
         @Body contactUpdateRequest: ContactUpdateRequest
-    ): ContactResponse
+    ): CreateContactResponse
+
+    @GET("v1/contact")
+    suspend fun getContact(
+        @Header("authorization") token: String
+    ): Contacts
 }
