@@ -13,14 +13,33 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
     }
 
     override fun bindListeners() {
-        binding.scanButton.setOnClickListener {
-            startActivity(Intent(this, InventoryItemsActivity::class.java))
-        }
+        binding.apply {
+            toolbar.apply {
+                btnBack.setOnClickListener {
+                    finish()
+                }
+            }
 
-        binding.imageButtonBack.setOnClickListener {
-            finish()
-        }
+            footer.apply {
+                filledButton.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@OrderDetailActivity,
+                            InventoryItemsActivity::class.java
+                        )
+                    )
+                }
 
+                outlinedOutlined.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@OrderDetailActivity,
+                            InventoryItemsActivity::class.java
+                        )
+                    )
+                }
+            }
+        }
     }
 
     override fun bindMethods() {

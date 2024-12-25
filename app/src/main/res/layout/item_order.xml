@@ -2,27 +2,31 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/bg_border">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="@dimen/_50sdp"
+            android:layout_width="@dimen/_14sdp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_inside_table_field"
             android:layout_marginVertical="@dimen/padding_inside_table_field"
-            android:layout_marginStart="@dimen/padding_inside_table_field"
-            android:text="@string/order"
+            android:fontFamily="@font/inter_semi_bold"
+            android:letterSpacing="-0.01"
+            android:text="9"
+            android:gravity="center"
             android:textAllCaps="true"
-            android:textSize="@dimen/table_field_text_size" />
+            android:textAppearance="@style/inter_400_10_16"
+            android:textColor="@color/color_181818" />
 
         <View
             android:id="@+id/verticalDivider1"
             android:layout_width="@dimen/table_divider_width"
             android:layout_height="match_parent"
-            android:background="@color/divider_color" />
+            android:background="@color/bg_stroke_color" />
 
         <TextView
             android:id="@+id/orderId"
@@ -31,127 +35,29 @@
             android:layout_marginVertical="@dimen/padding_inside_table_field"
             android:layout_marginStart="@dimen/padding_inside_table_field"
             android:layout_weight="1"
-            android:text="11111111111"
-            android:textSize="@dimen/table_field_text_size" />
+            android:text="Tote bin- Large"
+            android:textColor="@color/secondary_dark_text_color"
+            android:fontFamily="@font/inter_regular"
+            android:textAppearance="@style/inter_400_10_16"
+            android:letterSpacing="-0.01" />
 
         <View
             android:id="@+id/verticalDivider2"
             android:layout_width="@dimen/table_divider_width"
             android:layout_height="match_parent"
-            android:background="@color/divider_color" />
+            android:background="@color/bg_stroke_color" />
 
         <TextView
-            android:layout_width="@dimen/_50sdp"
+            android:layout_width="@dimen/_100sdp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/padding_inside_table_field"
             android:layout_marginStart="@dimen/padding_inside_table_field"
-            android:text="@string/order"
+            android:text="TBD"
             android:textAllCaps="true"
-            android:textSize="@dimen/table_field_text_size" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <View
-        android:id="@+id/horizontalDivider1"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/table_divider_width"
-        android:background="@color/divider_color" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/padding_inside_table_field"
-            android:layout_marginStart="@dimen/padding_inside_table_field"
-            android:text="@string/order"
-            android:textAllCaps="true"
-            android:textSize="@dimen/table_field_text_size" />
-
-        <View
-            android:id="@+id/verticalDivider3"
-            android:layout_width="@dimen/table_divider_width"
-            android:layout_height="match_parent"
-            android:background="@color/divider_color" />
-
-        <TextView
-            android:id="@+id/carrierName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/padding_inside_table_field"
-            android:layout_marginStart="@dimen/padding_inside_table_field"
-            android:layout_weight="1"
-            android:text="@string/order"
-            android:textSize="@dimen/table_field_text_size" />
-
-        <View
-            android:id="@+id/verticalDivider4"
-            android:layout_width="@dimen/table_divider_width"
-            android:layout_height="match_parent"
-            android:background="@color/divider_color" />
-
-        <TextView
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/padding_inside_table_field"
-            android:layout_marginStart="@dimen/padding_inside_table_field"
-            android:text="@string/order"
-            android:textAllCaps="true"
-            android:textSize="@dimen/table_field_text_size" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <View
-        android:id="@+id/horizontalDivider2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/table_divider_width"
-        android:background="@color/divider_color" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/padding_inside_table_field"
-            android:layout_marginStart="@dimen/padding_inside_table_field"
-            android:text="@string/order"
-            android:textAllCaps="true"
-            android:textSize="@dimen/table_field_text_size" />
-
-        <View
-            android:id="@+id/verticalDivider5"
-            android:layout_width="@dimen/table_divider_width"
-            android:layout_height="match_parent"
-            android:background="@color/divider_color" />
-
-        <TextView
-            android:id="@+id/reqBy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/padding_inside_table_field"
-            android:layout_marginStart="@dimen/padding_inside_table_field"
-            android:layout_weight="1"
-            android:text="@string/order"
-            android:textSize="@dimen/table_field_text_size" />
-
-        <View
-            android:id="@+id/verticalDivider6"
-            android:layout_width="@dimen/table_divider_width"
-            android:layout_height="match_parent"
-            android:background="@color/divider_color" />
-
-        <TextView
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/padding_inside_table_field"
-            android:layout_marginStart="@dimen/padding_inside_table_field"
-            android:text="@string/order"
-            android:textAllCaps="true"
-            android:textSize="@dimen/table_field_text_size" />
+            android:textColor="@color/secondary_dark_text_color"
+            android:fontFamily="@font/inter_regular"
+            android:textAppearance="@style/inter_400_10_16"
+            android:letterSpacing="-0.01" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

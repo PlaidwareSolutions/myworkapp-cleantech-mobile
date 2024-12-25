@@ -22,8 +22,20 @@ class OrderSearchActivity : ActBase<ActivityOrderSearchBinding>() {
     }
 
     override fun bindMethods() {
+        initToolbar()
         initTabs()
     }
+
+    private fun initToolbar() {
+        binding.apply {
+            toolbar.btnBack.setOnClickListener {
+                finish()
+            }
+
+            toolbar.toolbarTitle.text = "Order Search"
+        }
+    }
+
 
     private fun initTabs() {
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Order"))

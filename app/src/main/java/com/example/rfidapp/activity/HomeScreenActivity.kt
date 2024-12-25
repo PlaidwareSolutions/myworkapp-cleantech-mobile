@@ -22,8 +22,8 @@ class HomeScreenActivity : AppCompatActivity() {
     private fun setupUI() {
         binding.apply {
             toolbar.apply {
-                imageButtonBack.isVisible = false
-                textViewTitle.text = "MY Work App"
+                btnBack.isVisible = false
+                toolbarTitle.text = "MyWorkApp"
             }
 
             orders.setOnClickListener {

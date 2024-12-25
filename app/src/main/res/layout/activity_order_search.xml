@@ -31,10 +31,11 @@
         app:tabTextColor="@color/tab_unselected_text_color" />
 
     <EditText
+        android:singleLine="true"
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="@dimen/_24sdp"
         android:background="@drawable/bg_edit_text"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="12dp"
@@ -54,30 +55,37 @@
         android:textSize="@dimen/_16ssp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:layout_margin="@dimen/_12sdp"/>
+        android:layout_marginHorizontal="@dimen/_24sdp"
+        android:layout_marginVertical="@dimen/_12sdp"/>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_above="@+id/lookupBol"
             android:id="@+id/rcvOrders"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:layout_alignParentBottom="true"
             android:id="@+id/lookupBol"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_42sdp"
             android:background="@drawable/button_background"
-            android:text="View Order Details"
+            android:text="@string/view_order_details"
             android:enabled="false"
+            android:textAllCaps="false"
             android:layout_gravity="bottom"
             android:textColor="@drawable/button_text_color"
             android:padding="@dimen/_12sdp"
-            android:layout_margin="@dimen/_12sdp"
+            android:layout_marginHorizontal="@dimen/_24sdp"
+            android:layout_marginVertical="@dimen/_12sdp"
             android:textStyle="bold" />
 
-    </FrameLayout>
+    </RelativeLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

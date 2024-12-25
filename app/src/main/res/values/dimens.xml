@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="table_divider_width">2dp</dimen>
+    <dimen name="table_divider_width">1dp</dimen>
     <dimen name="table_field_text_size">12sp</dimen>
     <dimen name="item_margin">16dp</dimen>
     <dimen name="padding_inside_table_field">@dimen/_4sdp</dimen>

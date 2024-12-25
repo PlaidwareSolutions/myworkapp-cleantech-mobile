@@ -2,16 +2,15 @@
 <resources>
 
     <color name="divider_color">#8d9193</color>
-    <color name="app_color">#0e7083</color>
-
+    <color name="app_color">#003366</color>
     <color name="colorPrimary">#003366</color>
 
     <!--    primary button colors-->
-    <color name="primary_button_border_color">#0e7083</color>
+    <color name="primary_button_border_color">#003366</color>
     <color name="primary_button_enabled_color">@color/colorPrimary</color>
-    <color name="primary_button_disabled_color">#80003366</color>
+    <color name="primary_button_disabled_color">#E8E8EC</color>
     <color name="primary_button_enabled_text_color">@color/white</color>
-    <color name="primary_button_disabled_text_color">@color/white</color>
+    <color name="primary_button_disabled_text_color">#80181818</color>
 
     <color name="tab_unselected_text_color">#80FFFFFF</color>
     <color name="tab_selected_text_color">#FFFFFF</color>
@@ -169,4 +168,8 @@
     <color name="transparent">#00000000</color>
     <color name="secondary_text_color">#6A6F73</color>
     <color name="secondary_dark_text_color">#33383C</color>
+    <color name="bg_stroke_color">#DDDDDD</color>
+    <color name="color_CFDAE5">#CFDAE5</color>
+    <color name="color_909090">#909090</color>
+    <color name="color_181818">#181818</color>
 </resources>
