@@ -21,7 +21,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", getValue("prodBaseUrl", ""))
+        }
         release {
+            buildConfigField("String", "BASE_URL", getValue("prodBaseUrl", ""))
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -39,6 +43,9 @@ android {
 
     viewBinding {
         enable = true
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
@@ -98,4 +105,23 @@ dependencies {
 
     //GIF Drawable
     implementation(libs.android.gif.drawable)
+
+    //==================== Networking ====================
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+    //==================== HTTP inspector ====================
+    debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+
+    implementation(libs.kotlinx.serialization.json.jvm)
+}
+
+
+fun getValue(key: String, defaultValue: String): String {
+    val value = project.findProperty(key) as String?
+    return if (value != null) "\"$value\"" else "\"$defaultValue\""
 }
