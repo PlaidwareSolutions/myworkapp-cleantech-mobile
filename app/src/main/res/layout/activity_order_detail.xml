@@ -57,7 +57,7 @@
                         android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/inter_regular"
                         android:textColor="@color/secondary_dark_text_color"
-                        tools:text="I23246T5" />
+                        android:text="I23246T5" />
 
                 </LinearLayout>
 
@@ -239,6 +239,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/lnrContent"
+            android:background="@drawable/bg_top_curve_right_outlined_4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lnrItem"
@@ -273,7 +274,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/inter_semi_bold"
                 android:letterSpacing="-0.01"
-                android:text="Item Name - Type"
+                android:text="@string/item_name_type"
                 android:textAppearance="@style/inter_400_10_16"
                 android:textColor="@color/color_181818" />
 
@@ -290,7 +291,7 @@
                 android:layout_marginStart="@dimen/padding_inside_table_field"
                 android:fontFamily="@font/inter_semi_bold"
                 android:letterSpacing="-0.01"
-                android:text="Qty"
+                android:text="@string/qty"
                 android:textAllCaps="true"
                 android:textAppearance="@style/inter_400_10_16"
                 android:textColor="@color/color_181818" />
@@ -298,6 +299,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:background="@drawable/bg_bottom_curve_right_outlined_4dp"
             android:id="@+id/rcvOrders"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

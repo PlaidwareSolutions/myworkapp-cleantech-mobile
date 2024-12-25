@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.R
 import com.example.rfidapp.adapter.OrderAdapter
+import com.example.rfidapp.adapter.OrderDetailAdapter
 import com.example.rfidapp.databinding.ActivityPrepareShipmentBinding
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ItemMarginDecoration

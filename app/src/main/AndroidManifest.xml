@@ -82,6 +82,9 @@
             android:name=".activity.BoLActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.InspectionProcessActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.HomeScreenActivity"
             android:exported="true">
             <intent-filter>

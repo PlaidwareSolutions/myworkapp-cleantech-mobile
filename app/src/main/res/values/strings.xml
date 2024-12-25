@@ -30,19 +30,20 @@
     <string name="uhf_msg_inventory_stop_fail">Inventory Close Fails</string>
     <string name="search_inv">Search Inventory</string>
     <string name="search_menu_title">Search</string>
-    <string name="shipping">Shipping</string>
+    <string name="shipping"> Shipping</string>
     <string name="receiving">Receiving</string>
     <string name="orders">Orders</string>
     <string name="bill_of_lading">Bill of Lading</string>
     <string name="inventory">Inventory</string>
     <string name="settings">Settings</string>
+    <string name="inspection_process">Inspection Process</string>
     <string name="begin_scanning">Begin Scanning</string>
     <string name="prepare_shipment">Prepare Shipment</string>
     <string name="receive_shipment">Receive Shipment</string>
     <string name="order_search">Order Search</string>
     <string name="carrier">Carrier</string>
     <string name="customer">Customer</string>
-    <string name="bill_of_lading_">BOL</string>
+    <string name="bill_of_lading_">#BOL</string>
     <string name="order">Order</string>
     <string name="search">Search</string>
     <string name="device_counter">Devices Found: %d</string>
@@ -52,4 +53,10 @@
     <string name="lookup_bol">Lookup BOL</string>
     <string name="inspect_items_at_any_stage_of_the_processes_mark_their_service_ability_condition_assign_next_actions_for_item">Inspect items at any stage of the processes mark their service ability condition assign next actions for item.</string>
     <string name="create_bill_of_lading_for_new_shipment">Create Bill of Lading for new shipment.</string>
+    <string name="item_name_type">Item Name - Type</string>
+    <string name="qty">Qty</string>
+    <string name="inspection">Inspection</string>
+    <string name="cycle_count">Cycle Count</string>
+    <string name="tag_finder">Tag Finder</string>
+    <string name="inspect_items_at_any_stage_of_the_processes_mark_their_serviceability_condition_assign_next_actions_for_item">Inspect items at any stage of the processes, mark their serviceability condition, assign next actions for item.</string>
 </resources>

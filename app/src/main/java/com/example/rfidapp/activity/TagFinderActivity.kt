@@ -1,5 +1,6 @@
 package com.example.rfidapp.activity
 
+import com.example.rfidapp.R
 import com.example.rfidapp.databinding.ActivityInventoryBinding
 import com.example.rfidapp.databinding.ActivityTagFinderBinding
 import com.example.rfidapp.fragment.InventoryItems
@@ -15,8 +16,13 @@ class TagFinderActivity : ActBase<ActivityTagFinderBinding>() {
     }
 
     override fun bindListeners() {
-        binding.imageButtonBack.setOnClickListener {
-            finish()
+        binding.apply {
+            toolbar.apply {
+                toolbarTitle.text = getString(R.string.tag_finder)
+                btnBack.setOnClickListener {
+                    finish()
+                }
+            }
         }
     }
 
