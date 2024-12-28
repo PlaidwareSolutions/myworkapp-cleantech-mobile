@@ -35,11 +35,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.example.rfidapp.R;
-import com.example.rfidapp.ReaderClass;
-import com.example.rfidapp.activity.HomeScreenActivity;
 import com.example.rfidapp.activity.InventoryItemsActivity;
 import com.example.rfidapp.activity.MainActivity;
 import com.example.rfidapp.adapter.InvItemAdapter;
@@ -68,6 +67,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -209,7 +209,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     public void resultListner(ActivityResult activityResult) {
-        if (activityResult.getResultCode() == ReaderClass.barcodeResultCode) {
+        if (activityResult.getResultCode() == InventoryItemsActivity.barcodeResultCode) {
             Intent data = activityResult.getData();
             mContext.playSound(1);
             addDataToList(data.getStringExtra(OptionalModuleUtils.BARCODE).trim(), "", Util.getDateTime(), true);
@@ -244,8 +244,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 this.binding.tvCycle.setText(PreferenceManager.getStringValue(Constants.INV_ITEM_BAR));
             }
         }
-        if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") && ReaderClass.mBtReader != null) {
-            ReaderClass.mBtReader.setKeyEventCallback(new KeyEventCallback() {
+        if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") && InventoryItemsActivity.mBtReader != null) {
+            InventoryItemsActivity.mBtReader.setKeyEventCallback(new KeyEventCallback() {
                 public void onKeyUp(int i) {
                 }
 
@@ -281,7 +281,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
             public void afterTextChanged(Editable editable) {
                 String trim = InventoryItems.this.binding.etSearch.getText().toString().trim();
-                if (trim.length() > 0) {
+                if (!trim.isEmpty()) {
                     InventoryItems.this.isSearch = true;
                     InventoryItems.this.loadEpc(trim);
                     InventoryItems.this.binding.LvTags.setVisibility(android.view.View.GONE);
@@ -311,21 +311,21 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.mContext.hideKeybaord(view);
         } else if (view.getId() == R.id.bt_clear) {
             if (this.mContext.isBTDevice.booleanValue()) {
-                if (ReaderClass.mBtReader.isWorking()) {
+                if (InventoryItemsActivity.mBtReader.isWorking()) {
                     this.mContext.highlightToast("Kindly Stop Reading First..", 2);
                 } else {
                     clearDialog();
                 }
             } else if (!this.mContext.isC5Device.booleanValue()) {
                 clearDialog();
-            } else if (ReaderClass.mReader.isWorking()) {
+            } else if (InventoryItemsActivity.mReader.isWorking()) {
                 this.mContext.highlightToast("Kindly Stop Reading First..", 2);
             } else {
                 clearDialog();
             }
         } else if (view.getId() == R.id.bt_sch) {
             if (this.mContext.isBTDevice.booleanValue()) {
-                if (ReaderClass.mBtReader.isWorking()) {
+                if (InventoryItemsActivity.mBtReader.isWorking()) {
                     this.mContext.highlightToast("Kindly Stop Reading First..", 2);
                 } else {
                     this.binding.llTitle.setVisibility(View.GONE);
@@ -334,7 +334,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else if (!this.mContext.isC5Device.booleanValue()) {
                 this.binding.llTitle.setVisibility(View.GONE);
                 this.binding.llSch.setVisibility(View.VISIBLE);
-            } else if (ReaderClass.mReader.isWorking()) {
+            } else if (InventoryItemsActivity.mReader.isWorking()) {
                 this.mContext.highlightToast("Kindly Stop Reading First..", 2);
             } else {
                 this.binding.llTitle.setVisibility(View.GONE);
@@ -369,7 +369,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             if (!PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
                 editBottomSheet(PreferenceManager.getStringValue(Constants.INV_ID_BAR));
             } else if (this.mContext.isBTDevice.booleanValue()) {
-                if (ReaderClass.mBtReader.isWorking()) {
+                if (InventoryItemsActivity.mBtReader.isWorking()) {
                     this.mContext.highlightToast("Kindly Stop Reading First..", 2);
                 } else {
                     editBottomSheet(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
@@ -377,7 +377,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else if (!this.mContext.isC5Device.booleanValue()) {
                 // No operation as per the original code
             } else {
-                if (ReaderClass.mReader.isWorking()) {
+                if (InventoryItemsActivity.mReader.isWorking()) {
                     this.mContext.highlightToast("Kindly Stop Reading First..", 2);
                 } else {
                     editBottomSheet(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
@@ -456,6 +456,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.binding.btClear.setBackgroundResource(R.drawable.bt_design);
     }
 
+    @SuppressLint("CheckResult")
     public void loadEpc(String str) {
         String str2;
         this.tagSearchList.clear();
@@ -567,8 +568,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     public boolean onPrepareOptionsMenuInv(MenuItem menuItem) {
-//        this.mContext.frm = 4;
-//        this.mContext.setFragment(new InventoryList(), "Inventory List");
+        /*this.mContext.frm = 4;
+        this.mContext.setFragment(new InventoryList(), "Inventory List");*/
         return false;
     }
 
@@ -613,7 +614,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 startBarcode();
             } else if (!this.mContext.isBtConnect) {
                 this.mContext.highlightToast("Kindly Connect Device First..", 2);
-            } else if (ReaderClass.mBtReader.startInventoryTag()) {
+            } else if (InventoryItemsActivity.mBtReader.startInventoryTag()) {
                 this.binding.btStart.setText(this.mContext.getString(R.string.title_stop_Inventory));
                 this.loopFlag = true;
                 this.time = System.currentTimeMillis();
@@ -621,7 +622,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else {
                 stopInventory();
             }
-        } else if (ReaderClass.mReader == null) {
+        } else if (InventoryItemsActivity.mReader == null) {
         } else {
             if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Barcode")) {
                 if (!this.isBar) {
@@ -630,7 +631,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     return;
                 }
                 this.mContext.stop();
-            } else if (ReaderClass.mReader.startInventoryTag()) {
+            } else if (InventoryItemsActivity.mReader.startInventoryTag()) {
                 this.binding.btStart.setText(this.mContext.getString(R.string.title_stop_Inventory));
                 this.loopFlag = true;
                 this.time = System.currentTimeMillis();
@@ -723,27 +724,26 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     private void stopInventory() {
         if (this.loopFlag) {
             this.loopFlag = false;
-            if (!PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") || ReaderClass.mBtReader == null || !this.mContext.isBtConnect) {
-                if (ReaderClass.mReader != null) {
-                    if (ReaderClass.mReader.stopInventory()) {
+            if (!PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") || InventoryItemsActivity.mBtReader == null || !this.mContext.isBtConnect) {
+                if (InventoryItemsActivity.mReader != null) {
+                    if (InventoryItemsActivity.mReader.stopInventory()) {
                         this.binding.btStart.setText(this.mContext.getString(R.string.btInventory));
                     } else {
                         UIHelper.ToastMessage((Context) this.mContext, (int) R.string.uhf_msg_inventory_stop_fail);
                     }
                 }
-            } else if (ReaderClass.mBtReader.stopInventory()) {
+            } else if (InventoryItemsActivity.mBtReader.stopInventory()) {
                 this.binding.btStart.setText(this.mContext.getString(R.string.btInventory));
             } else {
                 UIHelper.ToastMessage((Context) this.mContext, (int) R.string.uhf_msg_inventory_stop_fail);
             }
         }
+        InventoryItemsActivity mainActivity = this.mContext;
         if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
-            InventoryItemsActivity mainActivity = this.mContext;
             mainActivity.setInventoryItemCount(mainActivity.getItemCount());
             return;
         }
-        InventoryItemsActivity mainActivity2 = this.mContext;
-        mainActivity2.setInventoryItemBarCount(mainActivity2.getItemBarCount());
+        mainActivity.setInventoryItemBarCount(mainActivity.getItemBarCount());
     }
 
     class TagThread extends Thread {
@@ -753,10 +753,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public void run() {
             UHFTAGInfo uHFTAGInfo = null;
             while (InventoryItems.this.loopFlag) {
-                if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") && ReaderClass.mBtReader != null && InventoryItems.this.mContext.isBtConnect) {
-                    uHFTAGInfo = ReaderClass.mBtReader.readTagFromBuffer();
-                } else if (ReaderClass.mReader != null) {
-                    uHFTAGInfo = ReaderClass.mReader.readTagFromBuffer();
+                if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") && InventoryItemsActivity.mBtReader != null && InventoryItems.this.mContext.isBtConnect) {
+                    uHFTAGInfo = InventoryItemsActivity.mBtReader.readTagFromBuffer();
+                } else if (InventoryItemsActivity.mReader != null) {
+                    uHFTAGInfo = InventoryItemsActivity.mReader.readTagFromBuffer();
                 }
                 if (uHFTAGInfo != null) {
                     Message obtainMessage = InventoryItems.this.handler.obtainMessage();
@@ -909,6 +909,80 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }
 
+    /*public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+        private final LayoutInflater mInflater;
+        private final Context mContext;
+        private List<Map<String, String>> tagList = new ArrayList<>();
+        private int selectItem = -1;
+
+        public MyAdapter(Context context) {
+            this.mInflater = LayoutInflater.from(context);
+            this.mContext = context;
+        }
+
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            TextView tvEPCTID, tvTagCount, tvTagRssi;
+            LinearLayout llList;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                tvEPCTID = itemView.findViewById(R.id.TvTagUii);
+                tvTagCount = itemView.findViewById(R.id.TvTagCount);
+                tvTagRssi = itemView.findViewById(R.id.TvTagRssi);
+                llList = itemView.findViewById(R.id.ll_list);
+            }
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = mInflater.inflate(R.layout.listtag_items, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.tvEPCTID.setText(tagList.get(position).get(InventoryItems.TAG_EPC));
+            holder.tvTagCount.setText(tagList.get(position).get(InventoryItems.TAG_COUNT));
+            holder.tvTagRssi.setText(tagList.get(position).get(InventoryItems.TAG_RSSI));
+
+            holder.llList.setOnClickListener(v -> showPopup(position, v));
+
+            if (position == selectItem) {
+                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.app_color));
+            } else {
+                holder.itemView.setBackgroundColor(0);
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return tagList.size();
+        }
+
+        public void updateList(List<Map<String, String>> newList) {
+            this.tagList = newList != null ? newList : new ArrayList<>();
+            notifyDataSetChanged();
+        }
+
+        private void showPopup(int position, View view) {
+            InventoryItems inventoryItems = InventoryItems.this; // Replace with appropriate access to InventoryItems instance
+            inventoryItems.showPopup(view, tagList.get(position).get(InventoryItems.TAG_EPC));
+        }
+
+        public void setSelectItem(int position) {
+            if (selectItem == position) {
+                selectItem = -1;
+                InventoryItems.this.uhfInfo.setSelectItem("");
+                InventoryItems.this.uhfInfo.setSelectIndex(selectItem);
+            } else {
+                selectItem = position;
+                InventoryItems.this.uhfInfo.setSelectItem(tagList.get(position).get(InventoryItems.TAG_EPC));
+                InventoryItems.this.uhfInfo.setSelectIndex(selectItem);
+            }
+            notifyDataSetChanged();
+        }
+    }*/
+
     public void showPopup(View view, String str) {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.search_menu, popupMenu.getMenu());
@@ -922,21 +996,21 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     public boolean showPopup(String str, MenuItem menuItem) {
-        /*SingleSearch singleSearch = new SingleSearch();
+        SingleSearch singleSearch = new SingleSearch();
         Bundle bundle = new Bundle();
         bundle.putString("epc", str);
         singleSearch.setArguments(bundle);
-        this.mContext.setFragment(singleSearch, "Single Search");*/
+        /*this.mContext.setFragment(singleSearch, "Single Search");*/
         return false;
     }
 
 
     public boolean showPopup1(String str, MenuItem menuItem) {
-        /*WriteTag writeTag = new WriteTag();
+        WriteTag writeTag = new WriteTag();
         Bundle bundle = new Bundle();
         bundle.putString("epc", str);
         writeTag.setArguments(bundle);
-        this.mContext.setFragment(writeTag, "Write Tag");*/
+        /*this.mContext.setFragment(writeTag, "Write Tag");*/
         return false;
     }
 
@@ -1077,7 +1151,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     bundle.putString("inv_type", "Barcode");
                 }
                 inventoryItems.setArguments(bundle);
-//                InventoryItems.this.mContext.setFragment(inventoryItems, "");
+                /*InventoryItems.this.mContext.setFragment(inventoryItems, "");*/
                 dialogInterface.dismiss();
             }
         }).setNegativeButton((CharSequence) "No", (DialogInterface.OnClickListener) null).show();
@@ -1252,10 +1326,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:26:0x00c1  */
-    /* JADX WARNING: Removed duplicated region for block: B:28:0x00c7  */
-    /* JADX WARNING: Removed duplicated region for block: B:33:? A[RETURN, SYNTHETIC] */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
     public void exportDB(List<InventoryItemsEntity> r8) {
         /*
             r7 = this;

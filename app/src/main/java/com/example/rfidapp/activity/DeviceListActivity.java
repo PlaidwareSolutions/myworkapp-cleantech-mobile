@@ -137,11 +137,11 @@ public class DeviceListActivity extends AppCompatActivity {
             this.mScanning = true;
             this.uhf.startScanBTDevices(new ScanBTCallback() {
                 public void getDevices(BluetoothDevice bluetoothDevice, int i, byte[] bArr) {
-//                    DeviceListActivity.this.runOnUiThread(new DeviceListActivity$2$$ExternalSyntheticLambda0(this, bluetoothDevice, i));
+                    DeviceListActivity.this.runOnUiThread(() -> getDevicesList(bluetoothDevice, i));
                 }
 
 
-                public void m514lambda$getDevices$0$comruddersoftrfidscannerDeviceListActivity$2(BluetoothDevice bluetoothDevice, int i) {
+                public void getDevicesList(BluetoothDevice bluetoothDevice, int i) {
                     Log.d(DeviceListActivity.TAG, "扫描成功");
                     Log.d(DeviceListActivity.TAG, "扫描成功");
                     if (ActivityCompat.checkSelfPermission(DeviceListActivity.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {

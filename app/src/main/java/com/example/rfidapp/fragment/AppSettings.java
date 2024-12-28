@@ -1,5 +1,7 @@
 package com.example.rfidapp.fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -11,18 +13,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.exifinterface.media.ExifInterface;
 
 import com.example.rfidapp.R;
 import com.example.rfidapp.ReaderClass;
-import com.example.rfidapp.activity.MainActivity;
+import com.example.rfidapp.activity.SettingsActivity;
 import com.example.rfidapp.databinding.FragmentSettingsBinding;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.constants.Constants;
-import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class AppSettings extends KeyDownFragment {
     FragmentSettingsBinding binding;
     MenuItem btMenu;
     List<String> listPwr = new ArrayList();
-    MainActivity mContext;
+    SettingsActivity mContext;
     private String mParam1;
     private String mParam2;
     public String modelNo = "";
@@ -56,38 +56,38 @@ public class AppSettings extends KeyDownFragment {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         if (getArguments() != null) {
-            this.mParam1 = getArguments().getString(ARG_PARAM1);
-            this.mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         FragmentSettingsBinding inflate = FragmentSettingsBinding.inflate(layoutInflater, viewGroup, false);
-        this.binding = inflate;
+        binding = inflate;
         return inflate.getRoot();
     }
 
     public void onActivityCreated(Bundle bundle) {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        this.mContext = mainActivity;
-        mainActivity.currentFrag = this;
-        this.modelNo = Build.MODEL;
+        SettingsActivity settingsActivity = (SettingsActivity) getActivity();
+        mContext = settingsActivity;
+        settingsActivity.currentFrag = this;
+        modelNo = Build.MODEL;
         setHasOptionsMenu(true);
-       /* init();*/
+        init();
         super.onActivityCreated(bundle);
     }
 
     public void onResume() {
-        this.mContext.checkBTConnect();
+        mContext.checkBTConnect();
         super.onResume();
     }
 
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem findItem = menu.findItem(R.id.menu_volume);
-        this.btMenu = menu.findItem(R.id.menu_bt);
+        btMenu = menu.findItem(R.id.menu_bt);
         findItem.setVisible(false);
-        if (this.mContext.isBTDevice.booleanValue()) {
-            this.btMenu.setVisible(true);
+        if (mContext.isBTDevice.booleanValue()) {
+            btMenu.setVisible(true);
         }
         super.onPrepareOptionsMenu(menu);
     }
@@ -96,10 +96,66 @@ public class AppSettings extends KeyDownFragment {
         super.onMyKeyDown();
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:23:0x0087  */
-    /* JADX WARNING: Removed duplicated region for block: B:24:0x0091  */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
+
     public void init() {
+        audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+
+        setPower();
+        setVolume();
+        binding.rgGroup.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (radioGroup.getCheckedRadioButtonId() == R.id.rb_barcode) {
+                selectedDevice = 3;
+                PreferenceManager.setStringValue(Constants.GET_DEVICE, ExifInterface.GPS_MEASUREMENT_3D);
+            } else if (radioGroup.getCheckedRadioButtonId() == R.id.rb_bluetooth) {
+                selectedDevice = 1;
+            } else if (radioGroup.getCheckedRadioButtonId() == R.id.rb_screen) {
+                if (modelNo.equals("C5P")) {
+                    selectedDevice = 2;
+                } else {
+                    selectedDevice = 3;
+                    mContext.highlightToast("Kindly Use RFID Device..", 2);
+                    selectedDevice = 1;
+                    binding.rbBluetooth.setChecked(true);
+                    mContext.highlightToast("Kindly Use C5P Device..", 2);
+                }
+            }
+        });
+        binding.rgGroup.setOnClickListener(view -> {
+            int i = selectedDevice;
+            if (i == 1) {
+                if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase(ExifInterface.GPS_MEASUREMENT_2D)) {
+                    mContext.isC5Device = false;
+                    mContext.isBTDevice = true;
+                    if (ReaderClass.mReader != null) {
+                        ReaderClass.mReader.free();
+                    }
+                    btMenu.setVisible(true);
+                }
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        mContext.initBtUHF();
+                    }
+                }, 1000);
+                PreferenceManager.setStringValue(Constants.GET_DEVICE, "1");
+                mContext.highlightToast("R6 Bluetooth Device Selected..", 1);
+            } else if (i == 2) {
+                if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")) {
+                    mContext.isBTDevice = false;
+                    mContext.isC5Device = true;
+                    if (SettingsActivity.mBtReader != null) {
+                        SettingsActivity.mBtReader.free();
+                    }
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            mContext.initUHF();
+                        }
+                    }, 1000);
+                    btMenu.setVisible(false);
+                }
+                mContext.highlightToast("C5 Screen Device Selected..", 1);
+                PreferenceManager.setStringValue(Constants.GET_DEVICE, ExifInterface.GPS_MEASUREMENT_2D);
+            }
+        });
         /*
             r4 = this;
             com.ruddersoft.rfidscanner.MainActivity r0 = r4.mContext
@@ -191,16 +247,7 @@ public class AppSettings extends KeyDownFragment {
             android.widget.RadioButton r0 = r0.rbBarcode
             r0.setChecked(r2)
         L_0x00af:
-            com.ruddersoft.rfidscanner.databinding.FragmentSettingsBinding r0 = r4.binding
-            android.widget.RadioGroup r0 = r0.rgGroup
-            com.ruddersoft.rfidscanner.views.fragments.AppSettings$$ExternalSyntheticLambda0 r1 = new com.ruddersoft.rfidscanner.views.fragments.AppSettings$$ExternalSyntheticLambda0
-            r1.<init>(r4)
-            r0.setOnCheckedChangeListener(r1)
-            com.ruddersoft.rfidscanner.databinding.FragmentSettingsBinding r0 = r4.binding
-            android.widget.TextView r0 = r0.btSelect
-            com.ruddersoft.rfidscanner.views.fragments.AppSettings$$ExternalSyntheticLambda1 r1 = new com.ruddersoft.rfidscanner.views.fragments.AppSettings$$ExternalSyntheticLambda1
-            r1.<init>(r4)
-            r0.setOnClickListener(r1)
+
             com.ruddersoft.rfidscanner.databinding.FragmentSettingsBinding r0 = r4.binding
             androidx.cardview.widget.CardView r0 = r0.llExportExl
             com.ruddersoft.rfidscanner.views.fragments.AppSettings$3 r1 = new com.ruddersoft.rfidscanner.views.fragments.AppSettings$3
@@ -208,66 +255,9 @@ public class AppSettings extends KeyDownFragment {
             r0.setOnClickListener(r1)
             return
         */
-        throw new UnsupportedOperationException("Method not decompiled: com.ruddersoft.rfidscanner.views.fragments.AppSettings.init():void");
+//        throw new UnsupportedOperationException("Method not decompiled: com.ruddersoft.rfidscanner.views.fragments.AppSettings.init():void");
     }
 
-
-    public  void m528lambda$init$0$comruddersoftrfidscannerviewsfragmentsAppSettings(RadioGroup radioGroup, int i) {
-        if (radioGroup.getCheckedRadioButtonId() == R.id.rb_barcode) {
-            this.selectedDevice = 3;
-            PreferenceManager.setStringValue(Constants.GET_DEVICE, ExifInterface.GPS_MEASUREMENT_3D);
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rb_bluetooth) {
-            this.selectedDevice = 1;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rb_screen) {
-            if (this.modelNo.equals("C5P")) {
-                this.selectedDevice = 2;
-            } else {
-                this.selectedDevice = 3;
-                this.mContext.highlightToast("Kindly Use RFID Device..", 2);
-                this.selectedDevice = 1;
-                this.binding.rbBluetooth.setChecked(true);
-                this.mContext.highlightToast("Kindly Use C5P Device..", 2);
-            }
-        }
-    }
-
-
-    public void m529lambda$init$1$comruddersoftrfidscannerviewsfragmentsAppSettings(View view) {
-        int i = this.selectedDevice;
-        if (i == 1) {
-            if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase(ExifInterface.GPS_MEASUREMENT_2D)) {
-                this.mContext.isC5Device = false;
-                this.mContext.isBTDevice = true;
-                if (ReaderClass.mReader != null) {
-                    ReaderClass.mReader.free();
-                }
-                this.btMenu.setVisible(true);
-            }
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    AppSettings.this.mContext.initBtUHF();
-                }
-            }, 1000);
-            PreferenceManager.setStringValue(Constants.GET_DEVICE, "1");
-            this.mContext.highlightToast("R6 Bluetooth Device Selected..", 1);
-        } else if (i == 2) {
-            if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")) {
-                this.mContext.isBTDevice = false;
-                this.mContext.isC5Device = true;
-                if (ReaderClass.mBtReader != null) {
-                    ReaderClass.mBtReader.free();
-                }
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        AppSettings.this.mContext.initUHF();
-                    }
-                }, 1000);
-                this.btMenu.setVisible(false);
-            }
-            this.mContext.highlightToast("C5 Screen Device Selected..", 1);
-            PreferenceManager.setStringValue(Constants.GET_DEVICE, ExifInterface.GPS_MEASUREMENT_2D);
-        }
-    }
 
     public void onActivityResult(int i, int i2, Intent intent) {
         super.onActivityResult(i, i2, intent);
@@ -281,7 +271,7 @@ public class AppSettings extends KeyDownFragment {
             Intent intent = new Intent("android.intent.action.VIEW");
             intent.setDataAndType(uri, "*/*");
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            if (intent.resolveActivity(this.mContext.getPackageManager()) != null) {
+            if (intent.resolveActivity(mContext.getPackageManager()) != null) {
                 startActivity(intent);
             } else {
                 showToast("No app available to open the CSV file");
@@ -293,77 +283,64 @@ public class AppSettings extends KeyDownFragment {
     }
 
     private void showToast(String str) {
-        Toast.makeText(this.mContext, str, Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, str, Toast.LENGTH_LONG).show();
     }
 
     public void setPower() {
-        if (this.mContext.isC5Device.booleanValue()) {
-            this.power = ReaderClass.mReader.getPower();
-        } else if (!this.mContext.isBTDevice.booleanValue()) {
-            this.mContext.highlightToast("Please Use Any RFID Device", 2);
-        } else if (this.mContext.isBtConnect) {
-            this.power = MainActivity.mBtReader.getPower();
+        if (mContext.isC5Device.booleanValue()) {
+            power = ReaderClass.mReader.getPower();
+        } else if (!mContext.isBTDevice.booleanValue()) {
+            mContext.highlightToast("Please Use Any RFID Device", 2);
+        } else if (mContext.isBtConnect) {
+            power = SettingsActivity.mBtReader.getPower();
         } else {
-            this.mContext.highlightToast("Please Connect Device First..", 2);
+            mContext.highlightToast("Please Connect Device First..", 2);
         }
-        this.binding.slPwr.setValue(Float.parseFloat("" + this.power));
-        this.binding.tvPwr.setText(this.power + " dBm");
-        this.binding.slPwr.addOnChangeListener((slider, f, z) -> {
-            this.m530lambda$setPower$2$comruddersoftrfidscannerviewsfragmentsAppSettings(slider, f, z);
-        });
-        this.binding.btSetPwr.setOnClickListener(view -> {
-            this.m531lambda$setPower$3$comruddersoftrfidscannerviewsfragmentsAppSettings(view);
-        });    }
-
-
-    public void m530lambda$setPower$2$comruddersoftrfidscannerviewsfragmentsAppSettings(Slider slider, float f, boolean z) {
-        if ((!PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase(ExifInterface.GPS_MEASUREMENT_2D) || !ReaderClass.mReader.isWorking()) && (!PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1") || !this.mContext.isBtConnect || !ReaderClass.mBtReader.isWorking())) {
-            int i = (int) f;
-            this.power = i;
-            this.binding.tvPwr.setText(i + " dBm");
-            return;
-        }
-        this.mContext.highlightToast("Please Stop Reading First", 2);
-    }
-
-    public void m531lambda$setPower$3$comruddersoftrfidscannerviewsfragmentsAppSettings(View view) {
-        if (this.mContext.isC5Device.booleanValue()) {
-            if (ReaderClass.mReader.setPower(this.power)) {
-                this.mContext.highlightToast("Power Set Successfull", 1);
-            } else {
-                this.mContext.highlightToast("Power Set Failure", 2);
+        binding.slPwr.setValue(Float.parseFloat("" + power));
+        binding.tvPwr.setText(power + " dBm");
+        
+        binding.slPwr.addOnChangeListener((slider, f, z) -> {
+            if ((!PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase(ExifInterface.GPS_MEASUREMENT_2D) || !ReaderClass.mReader.isWorking()) && (!PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1") || !mContext.isBtConnect || !SettingsActivity.mBtReader.isWorking())) {
+                int i = (int) f;
+                power = i;
+                binding.tvPwr.setText(i + " dBm");
+                return;
             }
-        } else if (!this.mContext.isBTDevice.booleanValue()) {
-            this.mContext.highlightToast("Please Use Any RFID Device", 2);
-        } else if (!this.mContext.isBtConnect) {
-            this.mContext.highlightToast("Please Connect Device First..", 2);
-        } else if (ReaderClass.mBtReader.setPower(this.power)) {
-            this.mContext.highlightToast("Power Set Successfull", 1);
-        } else {
-            this.mContext.highlightToast("Power Set Failure", 2);
-        }
+            mContext.highlightToast("Please Stop Reading First", 2);
+        });
+        
+        binding.btSetPwr.setOnClickListener(view -> {
+            if (mContext.isC5Device.booleanValue()) {
+                if (ReaderClass.mReader.setPower(power)) {
+                    mContext.highlightToast("Power Set Successfully", 1);
+                } else {
+                    mContext.highlightToast("Power Set Failure", 2);
+                }
+            } else if (!mContext.isBTDevice.booleanValue()) {
+                mContext.highlightToast("Please Use Any RFID Device", 2);
+            } else if (!mContext.isBtConnect) {
+                mContext.highlightToast("Please Connect Device First..", 2);
+            } else if (SettingsActivity.mBtReader.setPower(power)) {
+                mContext.highlightToast("Power Set Successfully", 1);
+            } else {
+                mContext.highlightToast("Power Set Failure", 2);
+            }
+        });
     }
-
+    
+    @SuppressLint("SetTextI18n")
     private void setVolume() {
-        this.binding.slVol.setValueTo((float) this.audioManager.getStreamMaxVolume(3));
-        this.volume = this.audioManager.getStreamVolume(3);
-        this.binding.slVol.setValue((float) this.volume);
-        this.binding.tvVol.setText(this.volume + " Unit");
-        this.binding.slVol.addOnChangeListener((slider, f, z) -> {
-            this.m532lambda$setVolume$4$comruddersoftrfidscannerviewsfragmentsAppSettings(slider, f, z);
-        });        this.binding.btSetVol.setOnClickListener(view -> {
-            this.m533lambda$setVolume$5$comruddersoftrfidscannerviewsfragmentsAppSettings(view);
-        });    }
-
-
-    public void m532lambda$setVolume$4$comruddersoftrfidscannerviewsfragmentsAppSettings(Slider slider, float f, boolean z) {
-        this.volume = (int) f;
-        this.binding.tvVol.setText(this.volume + " Unit");
-    }
-
-
-    public void m533lambda$setVolume$5$comruddersoftrfidscannerviewsfragmentsAppSettings(View view) {
-        this.audioManager.setStreamVolume(3, this.volume, 0);
-        this.mContext.highlightToast("Volume Set Successfull", 1);
+        binding.slVol.setValueTo((float) audioManager.getStreamMaxVolume(3));
+        volume = audioManager.getStreamVolume(3);
+        binding.slVol.setValue((float) volume);
+        binding.tvVol.setText(volume + " Unit");
+        binding.slVol.addOnChangeListener((slider, f, z) -> {
+            volume = (int) f;
+            binding.tvVol.setText(volume + " Unit");
+        });
+        binding.btSetVol.setOnClickListener(view -> {
+            audioManager.setStreamVolume(3, volume, 0);
+            mContext.highlightToast("Volume Set Successfully", 1);
+        });
     }
 }
