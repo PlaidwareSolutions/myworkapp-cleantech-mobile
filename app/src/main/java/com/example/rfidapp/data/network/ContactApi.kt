@@ -4,11 +4,6 @@ import com.example.rfidapp.model.network.ContactUpdateRequest
 import com.example.rfidapp.model.network.Contacts
 import com.example.rfidapp.model.network.CreateContactRequest
 import com.example.rfidapp.model.network.CreateContactResponse
-import com.example.rfidapp.model.network.ProductListResponse
-import com.example.rfidapp.model.network.ProductRequest
-import com.example.rfidapp.model.network.ProductResponse
-import com.example.rfidapp.model.network.UpdateProductRequest
-import com.example.rfidapp.model.network.UpdateProductResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header

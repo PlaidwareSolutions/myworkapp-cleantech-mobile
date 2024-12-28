@@ -15,5 +15,6 @@ data class Order(
     @SerialName("requiredDate") var requiredDate: String? = "",
     @SerialName("status") var status: String? = "",
     @SerialName("updatedAt") var updatedAt: String? = "",
+    @SerialName("updatedBy") var updatedBy: String? = "",
     @SerialName("__v") var v: Int? = 0
 )

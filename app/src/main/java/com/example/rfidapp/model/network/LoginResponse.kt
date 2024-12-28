@@ -13,7 +13,7 @@ data class LoginResponse(
 ) {
     data class Contact(
         @SerialName("active") var active: Boolean = false,
-        @SerialName("address") var address: Address = Address(),
+        @SerialName("address") var address: Address? = null,
         @SerialName("createdAt") var createdAt: String = "",
         @SerialName("email") var email: List<String> = listOf(),
         @SerialName("_id") var id: String = "",
@@ -32,20 +32,6 @@ data class LoginResponse(
         ) {
             data class Password(
                 @SerialName("lastChanged") var lastChanged: String = ""
-            )
-        }
-
-        data class Type(
-            @SerialName("createdAt") var createdAt: String = "",
-            @SerialName("_id") var _id: String = "",
-            @SerialName("id") var id: String = "",
-            @SerialName("name") var name: String = "",
-            @SerialName("permissions") var permissions: Permissions = Permissions(),
-            @SerialName("updatedAt") var updatedAt: String = "",
-            @SerialName("__v") var v: Int = 0
-        ) {
-            data class Permissions(
-                @SerialName("admin") var admin: Boolean = false
             )
         }
     }
