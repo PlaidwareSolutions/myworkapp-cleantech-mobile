@@ -33,7 +33,7 @@
     <uses-permission android:name="android.permission.WRITE_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="com.ruddersoft.rfidscanner.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+    <uses-permission android:name="com.example.rfidapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
         android:name=".App"
@@ -49,6 +49,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.OrderSearchActivity"
+            android:exported="true">
+          <!--  <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity
             android:name=".activity.InventoryItemsActivity"
             android:exported="false" />
         <activity
@@ -59,6 +68,21 @@
             android:exported="false" />
         <activity
             android:name=".activity.DeviceListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.TagFinderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.InventoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.BoLActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.InspectionProcessActivity"
             android:exported="false" />
         <activity
             android:name=".activity.HomeScreenActivity"
@@ -77,11 +101,14 @@
             android:name=".activity.MainActivity"
             android:exported="true"
             android:screenOrientation="fullSensor">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
         </activity>
 
         <meta-data

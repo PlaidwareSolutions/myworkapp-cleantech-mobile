@@ -219,7 +219,7 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
         });
         this.binding.llSingleSearch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Dashboard.this.mContext.setFragment(new SingleSearch(), "Single Search");
+                    Dashboard.this.mContext.setFragment(new SingleSearch(), "Single Search");
                 Dashboard.this.mContext.frm = 3;
             }
         });

@@ -409,7 +409,7 @@ public class ReaderClass extends AppCompatActivity {
     public void initUI() {
         this.mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         this.fm = getSupportFragmentManager();
-//        this.mTabHost = (FragmentTabHost) findViewById(16908306);
+        /*this.mTabHost = (FragmentTabHost) findViewById(16908306);*/
     }
 
     public boolean checkLocationEnable() {

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.rfidapp.R;
 import com.example.rfidapp.ReaderClass;
 import com.example.rfidapp.activity.MainActivity;
+import com.example.rfidapp.activity.TagFinderActivity;
 import com.example.rfidapp.databinding.FragmentSingleSearchBinding;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.constants.Constants;
@@ -29,7 +30,7 @@ public class SingleSearch extends KeyDownFragment {
     String epc;
     Handler handler;
     public boolean isSound = false;
-    MainActivity mContext;
+    TagFinderActivity mContext;
     private String mParam1;
     private String mParam2;
     boolean result;
@@ -63,9 +64,9 @@ public class SingleSearch extends KeyDownFragment {
 
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
-        MainActivity mainActivity = (MainActivity) getActivity();
-        this.mContext = mainActivity;
-        mainActivity.currentFrag = this;
+        TagFinderActivity tagFinderActivity = (TagFinderActivity) getActivity();
+        this.mContext = tagFinderActivity;
+        tagFinderActivity.currentFrag = this;
         init();
     }
 
@@ -103,7 +104,7 @@ public class SingleSearch extends KeyDownFragment {
             this.binding.ivClose.setVisibility(View.VISIBLE);
             btStart("appcolor");
             btCancel("appcolor");
-            this.mContext.frm = 4;
+            /*this.mContext.frm = 4;*/
         }
         this.handler = new Handler();
         this.btGoClick = 1;
@@ -250,7 +251,7 @@ public class SingleSearch extends KeyDownFragment {
         }
     }
 
-    public void startLocationLogic(int r3, boolean r4) {
+    public void startLocationLogic1(int r3, boolean r4) {
         /*
             r2 = this;
             java.lang.StringBuilder r4 = new java.lang.StringBuilder
@@ -299,16 +300,50 @@ public class SingleSearch extends KeyDownFragment {
             java.lang.String r3 = r3.toString()
             r4.setText(r3)
             return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.ruddersoft.rfidscanner.views.fragments.SingleSearch.startLocationLogic(int, boolean):void");
+
+            throw new UnsupportedOperationException("Method not decompiled: com.ruddersoft.rfidscanner.views.fragments.SingleSearch.startLocationLogic(int, boolean):void");
+         */
+
+        addEPCToList(epc, java.lang.String.valueOf(r4));
+        java.lang.StringBuilder r0 = new java.lang.StringBuilder();
+        java.lang.String r1 = "RSSI = ";
+        binding.tvRssi.setText(r1 + r0.append(r3).toString());
+    }
+
+    public void startLocationLogic(int rssi, boolean isActive) {
+        String logMessage = String.valueOf(rssi);
+        Log.e("rssi", logMessage);
+
+        boolean isSound = false;
+        if (stLoc) {
+            if (rssi > 0) {
+                isSound = true;
+                int soundDelay = (100 - rssi) * 30;
+                soundInt = soundDelay;
+                /*mContext.playSound(true);*/
+                startSound();
+            } else {
+                isSound = false;
+            }
+        }
+
+        this.isSound = isSound;
+
+        int adjustedRssi = rssi / 3 + rssi;
+        if (adjustedRssi > 100) {
+            adjustedRssi = 100;
+        }
+
+        addEPCToList(epc, String.valueOf(adjustedRssi));
+
+        String rssiText = "RSSI = " + rssi;
+        binding.tvRssi.setText(rssiText);
     }
 
     public void startSound() {
-        this.handler.postDelayed(new Runnable() {
-            public void run() {
-                if (SingleSearch.this.isSound) {
-                    SingleSearch.this.startSound();
-                }
+        this.handler.postDelayed(() -> {
+            if (SingleSearch.this.isSound) {
+                SingleSearch.this.startSound();
             }
         }, (long) this.soundInt);
     }

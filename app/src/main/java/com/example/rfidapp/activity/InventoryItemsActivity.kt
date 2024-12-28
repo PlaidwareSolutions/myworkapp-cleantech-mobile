@@ -17,7 +17,9 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
     }
 
     override fun bindListeners() {
-
+        binding.imageButtonBack.setOnClickListener {
+            finish()
+        }
     }
 
     override fun bindMethods() {
@@ -88,5 +90,10 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
         ).fallbackToDestructiveMigration().allowMainThreadQueries().build().invListDao().update(
             PreferenceManager.getStringValue(Constants.INV_ID_BAR), str
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkBTConnect()
     }
 }
