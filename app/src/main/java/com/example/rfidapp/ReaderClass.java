@@ -367,7 +367,7 @@ public class ReaderClass extends AppCompatActivity {
             mBtReader.disconnect();
         } catch (Exception unused) {
         }
-        this.btItem.setIcon(R.drawable.bt_d);
+        this.btItem.setIcon(R.drawable.ic_signal_wifi_0_bar);
     }
 
     public void reConnect(String str) {
