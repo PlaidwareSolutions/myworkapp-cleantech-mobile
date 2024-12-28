@@ -35,6 +35,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.example.rfidapp.R;
@@ -66,6 +67,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -279,7 +281,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
             public void afterTextChanged(Editable editable) {
                 String trim = InventoryItems.this.binding.etSearch.getText().toString().trim();
-                if (trim.length() > 0) {
+                if (!trim.isEmpty()) {
                     InventoryItems.this.isSearch = true;
                     InventoryItems.this.loadEpc(trim);
                     InventoryItems.this.binding.LvTags.setVisibility(android.view.View.GONE);
@@ -454,6 +456,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.binding.btClear.setBackgroundResource(R.drawable.bt_design);
     }
 
+    @SuppressLint("CheckResult")
     public void loadEpc(String str) {
         String str2;
         this.tagSearchList.clear();
@@ -905,6 +908,80 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             InventoryItems.this.uhfInfo.setSelectIndex(InventoryItems.this.selectItem);
         }
     }
+
+    /*public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+        private final LayoutInflater mInflater;
+        private final Context mContext;
+        private List<Map<String, String>> tagList = new ArrayList<>();
+        private int selectItem = -1;
+
+        public MyAdapter(Context context) {
+            this.mInflater = LayoutInflater.from(context);
+            this.mContext = context;
+        }
+
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            TextView tvEPCTID, tvTagCount, tvTagRssi;
+            LinearLayout llList;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                tvEPCTID = itemView.findViewById(R.id.TvTagUii);
+                tvTagCount = itemView.findViewById(R.id.TvTagCount);
+                tvTagRssi = itemView.findViewById(R.id.TvTagRssi);
+                llList = itemView.findViewById(R.id.ll_list);
+            }
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = mInflater.inflate(R.layout.listtag_items, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.tvEPCTID.setText(tagList.get(position).get(InventoryItems.TAG_EPC));
+            holder.tvTagCount.setText(tagList.get(position).get(InventoryItems.TAG_COUNT));
+            holder.tvTagRssi.setText(tagList.get(position).get(InventoryItems.TAG_RSSI));
+
+            holder.llList.setOnClickListener(v -> showPopup(position, v));
+
+            if (position == selectItem) {
+                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.app_color));
+            } else {
+                holder.itemView.setBackgroundColor(0);
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return tagList.size();
+        }
+
+        public void updateList(List<Map<String, String>> newList) {
+            this.tagList = newList != null ? newList : new ArrayList<>();
+            notifyDataSetChanged();
+        }
+
+        private void showPopup(int position, View view) {
+            InventoryItems inventoryItems = InventoryItems.this; // Replace with appropriate access to InventoryItems instance
+            inventoryItems.showPopup(view, tagList.get(position).get(InventoryItems.TAG_EPC));
+        }
+
+        public void setSelectItem(int position) {
+            if (selectItem == position) {
+                selectItem = -1;
+                InventoryItems.this.uhfInfo.setSelectItem("");
+                InventoryItems.this.uhfInfo.setSelectIndex(selectItem);
+            } else {
+                selectItem = position;
+                InventoryItems.this.uhfInfo.setSelectItem(tagList.get(position).get(InventoryItems.TAG_EPC));
+                InventoryItems.this.uhfInfo.setSelectIndex(selectItem);
+            }
+            notifyDataSetChanged();
+        }
+    }*/
 
     public void showPopup(View view, String str) {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);

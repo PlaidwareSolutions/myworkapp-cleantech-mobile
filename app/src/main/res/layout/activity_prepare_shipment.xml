@@ -49,6 +49,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/txtSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Order Search"
@@ -68,7 +69,16 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/orderDetailsButton"
             tools:itemCount="4"
+            tools:visibility="visible"
             tools:listitem="@layout/item_search" />
+
+        <include
+            android:id="@+id/no_item"
+            android:visibility="gone"
+            android:layout_marginHorizontal="@dimen/_24sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/layout_no_item" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_alignParentBottom="true"
