@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Looper
 import com.example.rfidapp.databinding.ActivitySplashBinding
 import com.example.rfidapp.util.ActBase
+import com.example.rfidapp.util.SharedPrefs
 
 class SplashActivity : ActBase<ActivitySplashBinding>() {
 
@@ -16,9 +17,13 @@ class SplashActivity : ActBase<ActivitySplashBinding>() {
     override fun bindListeners() {
         binding.apply {
             android.os.Handler(Looper.getMainLooper()).postDelayed({
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                if (SharedPrefs.accessToken == null) {
+                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                } else {
+                    startActivity(Intent(this@SplashActivity, HomeScreenActivity::class.java))
+                }
                 finish()
-            }, 3000)
+            }, 2000)
         }
     }
 
