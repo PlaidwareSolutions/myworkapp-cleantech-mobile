@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rfidapp.R
 import com.example.rfidapp.databinding.ItemSearchBinding
+import com.example.rfidapp.model.network.Order
 
 class OrderAdapter(
     val activity: Activity,
-    private val orderList: List<Int>,
-    val onItemClick: (Int) -> Unit
+    private val orderList: ArrayList<Order>,
+    val onItemClick: (Order) -> Unit
 ) : RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
 
     private var selectedOrderPos: Int? = null
@@ -20,9 +21,9 @@ class OrderAdapter(
         fun bind(pos: Int) {
             binding.apply {
                 with(orderList[pos]){
-                    orderId.text = "I23246T5"
-                    carrierName.text = "Cleantec Logistics"
-                    reqBy.text = "Tony Blair-Texas Grains"
+                    orderId.text = id
+                    carrierName.text = carrier
+                    reqBy.text = createdBy
                     if (selectedOrderPos == pos) {
                         lnrItem.backgroundTintList = ColorStateList.valueOf(
                             activity.getColor(R.color.colorPrimary)
@@ -58,5 +59,11 @@ class OrderAdapter(
             selectedOrderPos = position
             notifyItemChanged(position)
         }
+    }
+
+    fun updateData(orderList: List<Order>) {
+        this.orderList.clear()
+        this.orderList.addAll(orderList)
+        notifyDataSetChanged()
     }
 }

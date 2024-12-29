@@ -1,14 +1,14 @@
 package com.example.rfidapp.model.network
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Address(
-    @SerialName("street") val street: String,
-    @SerialName("city") val city: String,
-    @SerialName("state") val state: String,
-    @SerialName("zipCode") val zipCode: String,
-    @SerialName("country") val country: String,
-    @SerialName("location") val location: Location
+    @SerializedName("street") val street: String,
+    @SerializedName("city") val city: String,
+    @SerializedName("state") val state: String,
+    @SerializedName("zipCode") val zipCode: String,
+    @SerializedName("country") val country: String,
+    @SerializedName("location") val location: Location
 )

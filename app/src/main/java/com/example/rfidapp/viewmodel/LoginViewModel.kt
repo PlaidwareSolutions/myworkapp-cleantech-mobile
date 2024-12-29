@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.UserRepository
 import com.example.rfidapp.model.network.LoginResponse
+import com.example.rfidapp.util.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,6 +23,7 @@ class LoginViewModel @Inject constructor(private val userRepository: UserReposit
             try {
                 val response = userRepository.login(username, password)
                 _loginState.value = LoginState.Success(response)
+                SharedPrefs.accessToken = response.token
             } catch (e: Exception) {
                 _loginState.value = LoginState.Error(e.message ?: "Unknown error")
             }

@@ -1,22 +1,22 @@
 package com.example.rfidapp.model.network
 
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Permissions(
-    @SerialName("admin") var admin: Boolean = false,
-    @SerialName("Analytics") var analytics: Boolean = false,
-    @SerialName("AssetCommissioning") var assetCommissioning: Boolean = false,
-    @SerialName("AssetManagement") var assetManagement: Boolean = false,
-    @SerialName("HierarchyManagement") var hierarchyManagement: Boolean = false,
-    @SerialName("OrderCreateAll") var orderCreateAll: Boolean = false,
-    @SerialName("OrderCreateSelf") var orderCreateSelf: Boolean = false,
-    @SerialName("OrderManagement") var orderManagement: Boolean = false,
-    @SerialName("OrderViewAll") var orderViewAll: Boolean = false,
-    @SerialName("OrderViewSelf") var orderViewSelf: Boolean = false,
-    @SerialName("ProductsManagement") var productsManagement: Boolean = false,
-    @SerialName("Shipping") var shipping: Boolean = false,
-    @SerialName("UserManagement") var userManagement: Boolean = false
+    @SerializedName("admin") var admin: Boolean = false,
+    @SerializedName("Analytics") var analytics: Boolean = false,
+    @SerializedName("AssetCommissioning") var assetCommissioning: Boolean = false,
+    @SerializedName("AssetManagement") var assetManagement: Boolean = false,
+    @SerializedName("HierarchyManagement") var hierarchyManagement: Boolean = false,
+    @SerializedName("OrderCreateAll") var orderCreateAll: Boolean = false,
+    @SerializedName("OrderCreateSelf") var orderCreateSelf: Boolean = false,
+    @SerializedName("OrderManagement") var orderManagement: Boolean = false,
+    @SerializedName("OrderViewAll") var orderViewAll: Boolean = false,
+    @SerializedName("OrderViewSelf") var orderViewSelf: Boolean = false,
+    @SerializedName("ProductsManagement") var productsManagement: Boolean = false,
+    @SerializedName("Shipping") var shipping: Boolean = false,
+    @SerializedName("UserManagement") var userManagement: Boolean = false
 )

@@ -5,10 +5,18 @@ import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
+import androidx.activity.viewModels
 import com.example.rfidapp.R
 import com.example.rfidapp.databinding.ActivityOrderSearchBinding
 import com.example.rfidapp.util.ActBase
+import com.example.rfidapp.viewmodel.OrderViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class OrderSearchActivity : ActBase<ActivityOrderSearchBinding>() {
 
     override fun setViewBinding() = ActivityOrderSearchBinding.inflate(layoutInflater)

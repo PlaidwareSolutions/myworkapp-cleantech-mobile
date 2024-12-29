@@ -1,11 +1,11 @@
 package com.example.rfidapp.model.network
 
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateAssetResponse(
-    @SerialName("data") var asset: Asset? = null,
-    @SerialName("success") var success: Boolean? = null
+    @SerializedName("data") var asset: Asset? = null,
+    @SerializedName("success") var success: Boolean? = null
 )

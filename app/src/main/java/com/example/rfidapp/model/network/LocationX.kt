@@ -1,11 +1,11 @@
 package com.example.rfidapp.model.network
 
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class LocationX(
-    @SerialName("coordinates") var coordinates: List<Double> = listOf(),
-    @SerialName("type") var type: String = ""
+    @SerializedName("coordinates") var coordinates: List<Double> = listOf(),
+    @SerializedName("type") var type: String = ""
 )

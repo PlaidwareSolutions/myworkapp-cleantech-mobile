@@ -1,11 +1,9 @@
 package com.example.rfidapp.model.network
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class LoginRequest(
-    @SerialName("password") var password: String,
-    @SerialName("username") var username: String
+     @SerializedName("password") var password: String,
+     @SerializedName("username") var username: String
 )

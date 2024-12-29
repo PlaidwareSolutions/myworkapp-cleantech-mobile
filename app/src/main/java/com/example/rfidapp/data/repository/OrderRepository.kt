@@ -3,9 +3,8 @@ package com.example.rfidapp.data.repository
 import com.example.rfidapp.data.network.OrderApi
 import com.example.rfidapp.model.network.CreateOrderRequest
 import com.example.rfidapp.model.network.CreateOrderResponse
-import com.example.rfidapp.model.network.Order
-import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.OrderDetailResponse
+import com.example.rfidapp.model.network.OrderListResponse
 import com.example.rfidapp.model.network.UpdateOrderRequest
 import java.io.File
 import java.io.FileOutputStream
@@ -28,7 +27,7 @@ class OrderRepository @Inject constructor(private val orderApi: OrderApi) {
         return orderApi.updateOrder(token, orderId, orderUpdateRequest)
     }
 
-    suspend fun getOrders(token: String): List<Order> {
+    suspend fun getOrders(token: String): OrderListResponse {
         return orderApi.getOrders(token)
     }
 
