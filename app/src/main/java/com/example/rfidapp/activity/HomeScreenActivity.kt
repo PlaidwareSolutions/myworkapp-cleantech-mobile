@@ -3,19 +3,59 @@ package com.example.rfidapp.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.rfidapp.databinding.ActivityHomeScreenBinding
+import com.example.rfidapp.util.SharedPrefs
+import com.example.rfidapp.viewmodel.LoginState
+import com.example.rfidapp.viewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeScreenActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityHomeScreenBinding
+
+    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupUI()
+        loginIfRequired()
+        observeLoginState()
+    }
+
+    private fun observeLoginState() {
+        CoroutineScope(Dispatchers.IO).launch {
+            loginViewModel.loginState.collectLatest { state ->
+                when (state) {
+                    is LoginState.Idle -> {}
+                    is LoginState.Loading -> {}
+                    is LoginState.Success -> {
+                        runOnUiThread {
+                            Toast.makeText(this@HomeScreenActivity, "Login Success", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+
+                    is LoginState.Error -> {}
+                }
+            }
+        }
+    }
+
+    private fun loginIfRequired() {
+        if (SharedPrefs.accessToken == null) {
+            loginViewModel.login("owner", "123456789")
+        }
     }
 
     @SuppressLint("SetTextI18n")

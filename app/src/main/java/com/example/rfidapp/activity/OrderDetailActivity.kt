@@ -5,14 +5,20 @@ import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.adapter.OrderDetailAdapter
 import com.example.rfidapp.databinding.ActivityOrderDetailBinding
+import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.util.ActBase
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.MutableStateFlow
 
+@AndroidEntryPoint
 class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
+
+    private var order: MutableStateFlow<Order?> = MutableStateFlow(null)
 
     override fun setViewBinding() = ActivityOrderDetailBinding.inflate(layoutInflater)
 
     override fun bindObjects() {
-
+        order.value = intent.getSerializableExtra("ORDER") as? Order
     }
 
     @SuppressLint("SetTextI18n")
@@ -50,6 +56,10 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
     override fun bindMethods() {
         initView()
+        binding.orderId.text = order.value?.id
+        binding.carrierName.text = order.value?.carrier
+        binding.customerName.text = order.value?.customer
+//        binding.driverName.text = order.value?.
     }
 
     private fun initView() {

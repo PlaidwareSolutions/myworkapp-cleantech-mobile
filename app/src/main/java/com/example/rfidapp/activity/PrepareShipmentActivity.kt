@@ -11,10 +11,11 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.R
 import com.example.rfidapp.adapter.OrderAdapter
-import com.example.rfidapp.adapter.OrderDetailAdapter
 import com.example.rfidapp.databinding.ActivityPrepareShipmentBinding
+import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ItemMarginDecoration
+import com.example.rfidapp.viewmodel.OrderViewModel
 import com.example.rfidapp.viewmodel.PrepareShipmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -25,8 +26,12 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
 
+    private val orderViewModel: OrderViewModel by viewModels()
+
     private val viewModel: PrepareShipmentViewModel by viewModels()
     private var shipmentType : String = ""
+
+    private var orderAdapter: OrderAdapter? = null
 
     override fun setViewBinding() = ActivityPrepareShipmentBinding.inflate(layoutInflater)
 
@@ -35,7 +40,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
     }
 
     override fun bindListeners() {
-        setSearchViewListner()
+        setSearchViewListener()
 
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.selectedOrder.collectLatest { order ->
@@ -46,30 +51,44 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
         }
 
         binding.orderDetailsButton.setOnClickListener {
-            startActivity(Intent(this, OrderDetailActivity::class.java))
+            val intent = Intent(this, OrderDetailActivity::class.java)
+            intent.putExtra("ORDER", viewModel.selectedOrder.value)
+            startActivity(intent)
         }
 
         binding.toolbar.btnBack.setOnClickListener {
             finish()
         }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            orderViewModel.orderList.collectLatest {
+                runOnUiThread {
+                    orderAdapter?.updateData(it)?:run {
+                        initAdapter(it as ArrayList<Order>)
+                    }
+                }
+            }
+        }
     }
 
     override fun bindMethods() {
         initTabs()
+        initAdapter()
+    }
 
+    private fun initAdapter(orderList:ArrayList<Order> = arrayListOf()) {
         val marginInPixels = resources.getDimensionPixelSize(R.dimen.item_margin)
         binding.rcvOrders.addItemDecoration(ItemMarginDecoration(marginInPixels))
-        val adapter = OrderAdapter(
+        orderAdapter = OrderAdapter(
             activity = this,
-            orderList = listOf(1, 2, 3, 4),
+            orderList = orderList,
             onItemClick = {
-                Log.e("TAG111", "bindMethods: $it")
                 viewModel.selectedOrder.value = it
             }
         )
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.rcvOrders.adapter = adapter
+        binding.rcvOrders.adapter = orderAdapter
     }
 
     private fun initTabs() {
@@ -107,7 +126,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
 
     }
 
-    private fun setSearchViewListner(){
+    private fun setSearchViewListener(){
         binding.apply {
             search.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

@@ -52,12 +52,13 @@
 
 
                     <TextView
+                        android:id="@+id/orderId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/inter_regular"
                         android:textColor="@color/secondary_dark_text_color"
-                        android:text="I23246T5" />
+                        tools:text="I23246T5" />
 
                 </LinearLayout>
 
@@ -117,7 +118,7 @@
 
 
                     <TextView
-                        android:id="@+id/carrierName"
+                        android:id="@+id/customerName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
@@ -159,6 +160,7 @@
 
 
                     <TextView
+                        android:id="@+id/carrierName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
@@ -199,11 +201,12 @@
 
 
                     <TextView
+                        android:id="@+id/driverName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/inter_regular"
-                        android:text="Anthony Blinken"
+                        tools:text="Anthony Blinken"
                         android:textColor="@color/secondary_dark_text_color" />
 
                 </LinearLayout>

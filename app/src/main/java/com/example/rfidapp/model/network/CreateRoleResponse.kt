@@ -1,11 +1,11 @@
 package com.example.rfidapp.model.network
 
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateRoleResponse(
-    @SerialName("data") var role: Role = Role(),
-    @SerialName("success") var success: Boolean = false
+    @SerializedName("data") var role: Role = Role(),
+    @SerializedName("success") var success: Boolean = false
 )

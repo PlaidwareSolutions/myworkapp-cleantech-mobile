@@ -1,15 +1,15 @@
 package com.example.rfidapp.model.network
 
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Asset(
-    @SerialName("createdAt") var createdAt: String? = null,
-    @SerialName("_id") var id: String? = null,
-    @SerialName("product") var product: String? = null,
-    @SerialName("tag") var tag: String? = null,
-    @SerialName("updatedAt") var updatedAt: String? = null,
-    @SerialName("__v") var v: Int? = null
+    @SerializedName("createdAt") var createdAt: String? = null,
+    @SerializedName("_id") var id: String? = null,
+    @SerializedName("product") var product: String? = null,
+    @SerializedName("tag") var tag: String? = null,
+    @SerializedName("updatedAt") var updatedAt: String? = null,
+    @SerializedName("__v") var v: Int? = null
 )

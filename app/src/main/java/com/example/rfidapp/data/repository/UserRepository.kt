@@ -8,6 +8,6 @@ import javax.inject.Inject
 class UserRepository @Inject constructor(private val authApi: AuthApi) {
 
     suspend fun login(username: String, password: String): LoginResponse {
-        return authApi.login(LoginRequest(username, password))
+        return authApi.login(LoginRequest(username = username, password =  password))
     }
 }
