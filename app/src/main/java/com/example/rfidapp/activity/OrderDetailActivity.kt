@@ -7,6 +7,7 @@ import com.example.rfidapp.adapter.OrderDetailAdapter
 import com.example.rfidapp.databinding.ActivityOrderDetailBinding
 import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.util.ActBase
+import com.example.rfidapp.util.toFormattedDate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -59,13 +60,13 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         binding.orderId.text = order.value?.id
         binding.carrierName.text = order.value?.carrier
         binding.customerName.text = order.value?.customer
-//        binding.driverName.text = order.value?.
+        binding.pickupDate.text = order.value?.requiredDate?.toFormattedDate() ?: ""
     }
 
     private fun initView() {
         val adapter = OrderDetailAdapter(
             activity = this,
-            orderList = listOf(1, 2, 3, 4),
+            orderList = order.value?.items ?: listOf(),
         )
         binding.rcvOrders.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvOrders.adapter = adapter

@@ -226,12 +226,13 @@
                         android:textColor="@color/secondary_text_color" />
 
                     <TextView
+                        android:id="@+id/pickupDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/inter_regular"
                         android:gravity="end"
-                        android:text="12/12/2024"
+                        tools:text="12/12/2024"
                         android:textColor="@color/secondary_dark_text_color" />
 
                 </LinearLayout>
