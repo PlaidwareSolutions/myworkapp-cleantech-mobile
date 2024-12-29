@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,7 +35,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
     override fun setViewBinding() = ActivityPrepareShipmentBinding.inflate(layoutInflater)
 
     override fun bindObjects() {
-        shipmentType = intent.getStringExtra("shipmentType")?:""
+        shipmentType = intent.getStringExtra("shipmentType") ?: ""
     }
 
     override fun bindListeners() {
