@@ -33,7 +33,7 @@ class OrderViewModel @Inject constructor(private val orderRepository: OrderRepos
             _loading.value = true
             SharedPrefs.accessToken?.let { token->
                 try {
-                    _orderList.value = orderRepository.getOrders(token).orderList
+                    _orderList.value = orderRepository.getOrders(token).data ?: emptyList()
                     _errorMessage.value = null
                 } catch (e: Exception) {
                     _errorMessage.value = e.message

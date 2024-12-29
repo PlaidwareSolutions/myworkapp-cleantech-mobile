@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 data class LoginResponse(
    @SerializedName("contact") var contact: Contact = Contact(),
    @SerializedName("message") var message: String = "",
-   @SerializedName("success") var success: Boolean = false,
    @SerializedName("token") var token: String = ""
 ) {
     data class Contact(

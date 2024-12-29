@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.UserRepository
 import com.example.rfidapp.model.network.LoginResponse
+import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,26 +15,25 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val userRepository: UserRepository) : ViewModel() {
 
-    private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
-    val loginState: StateFlow<LoginState> = _loginState
+    private val _loginState = MutableStateFlow<ScreenState<LoginResponse>>(ScreenState.Idle)
+    val loginState: StateFlow<ScreenState<LoginResponse>> = _loginState
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
-            _loginState.value = LoginState.Loading
+            _loginState.value = ScreenState.Loading
             try {
                 val response = userRepository.login(username, password)
-                _loginState.value = LoginState.Success(response)
-                SharedPrefs.accessToken = response.token
+                if (response.isSuccess()){
+                    response.data?.let {
+                        SharedPrefs.accessToken = it.token
+                        _loginState.value = ScreenState.Success(it)
+                    }
+                }else{
+
+                }
             } catch (e: Exception) {
-                _loginState.value = LoginState.Error(e.message ?: "Unknown error")
+                _loginState.value = ScreenState.Error(e.message ?: "Unknown error")
             }
         }
     }
-}
-
-sealed class LoginState {
-    data object Idle : LoginState()
-    data object Loading : LoginState()
-    data class Success(val response: LoginResponse) : LoginState()
-    data class Error(val message: String) : LoginState()
 }

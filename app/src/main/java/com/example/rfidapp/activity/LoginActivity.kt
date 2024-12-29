@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.rfidapp.databinding.ActivityLoginBinding
 import com.example.rfidapp.util.ActBase
-import com.example.rfidapp.viewmodel.LoginState
+import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -65,9 +65,9 @@ class LoginActivity : ActBase<ActivityLoginBinding>() {
         CoroutineScope(Dispatchers.IO).launch {
             loginViewModel.loginState.collectLatest { state ->
                 when (state) {
-                    is LoginState.Idle -> {}
-                    is LoginState.Loading -> {}
-                    is LoginState.Success -> {
+                    is ScreenState.Idle -> {}
+                    is ScreenState.Loading -> {}
+                    is ScreenState.Success -> {
                         runOnUiThread {
                             Toast.makeText(this@LoginActivity, "Login Successfully", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginActivity, HomeScreenActivity::class.java))
@@ -75,7 +75,7 @@ class LoginActivity : ActBase<ActivityLoginBinding>() {
                         }
                     }
 
-                    is LoginState.Error -> {
+                    is ScreenState.Error -> {
                         runOnUiThread {
                             Toast.makeText(this@LoginActivity, state.message , Toast.LENGTH_SHORT)
                                 .show()
