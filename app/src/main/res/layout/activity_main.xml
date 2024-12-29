@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@color/dApp_color"
+                android:background="@color/app_color"
                 app:menu="@menu/right_menu"
                 app:title=" " />
         </com.google.android.material.appbar.AppBarLayout>

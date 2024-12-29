@@ -22,40 +22,11 @@ class HomeScreenActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityHomeScreenBinding
 
-    private val loginViewModel: LoginViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupUI()
-        loginIfRequired()
-        observeLoginState()
-    }
-
-    private fun observeLoginState() {
-        CoroutineScope(Dispatchers.IO).launch {
-            loginViewModel.loginState.collectLatest { state ->
-                when (state) {
-                    is LoginState.Idle -> {}
-                    is LoginState.Loading -> {}
-                    is LoginState.Success -> {
-                        runOnUiThread {
-                            Toast.makeText(this@HomeScreenActivity, "Login Success", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-
-                    is LoginState.Error -> {}
-                }
-            }
-        }
-    }
-
-    private fun loginIfRequired() {
-        if (SharedPrefs.accessToken == null) {
-            loginViewModel.login("owner", "123456789")
-        }
     }
 
     @SuppressLint("SetTextI18n")
