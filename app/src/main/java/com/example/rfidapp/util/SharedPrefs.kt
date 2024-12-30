@@ -3,6 +3,9 @@ package com.example.rfidapp.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.rfidapp.model.network.Contact
+import com.example.rfidapp.model.network.LoginResponse
+import com.google.gson.Gson
 
 class SharedPrefs {
 
@@ -37,6 +40,7 @@ class SharedPrefs {
         private var instance: SharedPrefs? = null
 
         private const val ACCESS_TOKEN = "ACCESS_TOKEN"
+        private const val CONTACT = "CONTACT"
 
         private fun getInstance(): SharedPrefs {
             return instance ?: synchronized(this) { SharedPrefs().also { instance = it } }
@@ -52,6 +56,23 @@ class SharedPrefs {
         var accessToken: String?
             get() = getInstance().pref.getString(ACCESS_TOKEN, null)
             set(value) = getInstance().edit { putString(ACCESS_TOKEN, value) }
+
+        var contact: String?
+            get() = getInstance().pref.getString(CONTACT, null)
+            set(value) = getInstance().edit { putString(CONTACT, value) }
+
+        fun getContact(): LoginResponse.Contact? {
+            val jsonString = contact
+            return if (jsonString != null) {
+                Gson().fromJson(jsonString, LoginResponse.Contact::class.java)
+            } else {
+                null
+            }
+        }
+
+        fun clearSharedPreferences() {
+            getInstance().pref.edit().clear().apply()
+        }
 
     }
 }
