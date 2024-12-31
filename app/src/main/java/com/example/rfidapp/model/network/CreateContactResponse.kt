@@ -1,10 +1,10 @@
 package com.example.rfidapp.model.network
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateContactResponse(
-    @SerialName("data") var contact: Contact = Contact(),
-    @SerialName("success") var success: Boolean = false
+   @SerializedName("data") var contact: Contact = Contact(),
+   @SerializedName("success") var success: Boolean = false
 )

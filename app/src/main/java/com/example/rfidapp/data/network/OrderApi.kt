@@ -1,10 +1,11 @@
 package com.example.rfidapp.data.network
 
+import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateOrderRequest
 import com.example.rfidapp.model.network.CreateOrderResponse
 import com.example.rfidapp.model.network.Order
-import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.OrderDetailResponse
+import com.example.rfidapp.model.network.OrderListResponse
 import com.example.rfidapp.model.network.UpdateOrderRequest
 import okhttp3.ResponseBody
 import retrofit2.http.Body
@@ -31,7 +32,7 @@ interface OrderApi {
     @GET("v1/order/")
     suspend fun getOrders(
         @Header("authorization") token: String
-    ): List<Order>
+    ): ApiResponse<ArrayList<Order>>
 
     @GET("v1/order/{orderId}")
     suspend fun getOrderDetail(

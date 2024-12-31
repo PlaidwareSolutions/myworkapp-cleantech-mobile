@@ -6,7 +6,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.rfidapp.databinding.ActivityHomeScreenBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeScreenActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityHomeScreenBinding

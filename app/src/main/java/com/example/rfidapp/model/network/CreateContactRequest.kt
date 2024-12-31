@@ -1,16 +1,16 @@
 package com.example.rfidapp.model.network
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateContactRequest(
-    @SerialName("active") val active: Boolean,
-    @SerialName("type") val type: String,
-    @SerialName("name") val name: String,
-    @SerialName("businessDetails") val businessDetails: String,
-    @SerialName("address") val address: Address,
-    @SerialName("phone") val phone: List<String>,
-    @SerialName("email") val email: List<String>,
-    @SerialName("customAttributes") val customAttributes: Map<String, String>
+   @SerializedName("active") val active: Boolean,
+   @SerializedName("type") val type: String,
+   @SerializedName("name") val name: String,
+   @SerializedName("businessDetails") val businessDetails: String,
+   @SerializedName("address") val address: Address,
+   @SerializedName("phone") val phone: List<String>,
+   @SerializedName("email") val email: List<String>,
+   @SerializedName("customAttributes") val customAttributes: Map<String, String>
 )

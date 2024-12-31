@@ -1,13 +1,13 @@
 package com.example.rfidapp.model.network
 
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateOrderResponse(
-    @SerialName("data")
+    @SerializedName("data")
     var order: Order? = Order(),
-    @SerialName("success")
+    @SerializedName("success")
     var success: Boolean? = false
 )

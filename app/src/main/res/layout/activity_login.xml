@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:background="@color/app_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/_16sdp"
+        android:gravity="center">
+
+        <!-- App Logo -->
+        <ImageView
+            android:src="@drawable/ic_logo"
+            android:id="@+id/logoImageView"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_marginBottom="@dimen/_24sdp" />
+
+        <!-- Username Field -->
+        <EditText
+            android:id="@+id/usernameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_24sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:background="@drawable/bg_edit_text"
+            android:hint="Enter username"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:paddingVertical="@dimen/_14sdp"
+            android:singleLine="true"
+            android:textAppearance="@style/inter_400_12_16"
+            android:textColor="@color/black" />
+
+        <!-- Password Field -->
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_24sdp"
+            android:background="@drawable/bg_edit_text"
+            android:hint="Enter Password"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:paddingVertical="@dimen/_14sdp"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:textAppearance="@style/inter_400_12_16"
+            android:textColor="@color/black" />
+
+        <!-- Login Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@drawable/bg_filled_outlined"
+            android:backgroundTint="@color/white"
+            android:text="Login"
+            android:enabled="true"
+            android:textAllCaps="false"
+            android:layout_gravity="bottom"
+            android:textColor="@drawable/button_text_color"
+            android:padding="@dimen/_12sdp"
+            android:layout_marginHorizontal="@dimen/_24sdp"
+            android:layout_marginVertical="@dimen/_12sdp"
+            android:textStyle="bold" />
+
+        <!-- Forgot Password Link -->
+        <TextView
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:id="@+id/forgotPasswordTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:textColor="@color/white"
+            android:textAppearance="@style/inter_400_10_10"
+            android:fontFamily="@font/inter_regular"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+
+</ScrollView>

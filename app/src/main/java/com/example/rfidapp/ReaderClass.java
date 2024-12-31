@@ -166,10 +166,10 @@ public class ReaderClass extends AppCompatActivity {
         if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")) {
             this.isBTDevice = true;
             if (!this.isBtConnect) {
-                this.dialog = new AlertDialog.Builder(this).setTitle((CharSequence) "Alert").setMessage((CharSequence) "It is not a UHF enabled device. Please connect UHF device via bluetooth to use UHF functionality").setCancelable(false).setPositiveButton((CharSequence) "Ok", (DialogInterface.OnClickListener) new DialogInterface.OnClickListener() {
+                /*this.dialog = new AlertDialog.Builder(this).setTitle((CharSequence) "Alert").setMessage((CharSequence) "It is not a UHF enabled device. Please connect UHF device via bluetooth to use UHF functionality").setCancelable(false).setPositiveButton((CharSequence) "Ok", (DialogInterface.OnClickListener) new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
-                }).show();
+                }).show();*/
             }
             initBtUHF();
         } else if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase(ExifInterface.GPS_MEASUREMENT_2D)) {
@@ -367,7 +367,7 @@ public class ReaderClass extends AppCompatActivity {
             mBtReader.disconnect();
         } catch (Exception unused) {
         }
-        this.btItem.setIcon(R.drawable.bt_d);
+        this.btItem.setIcon(R.drawable.ic_signal_wifi_0_bar);
     }
 
     public void reConnect(String str) {

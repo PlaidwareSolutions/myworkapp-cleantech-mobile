@@ -1,9 +1,11 @@
 package com.example.rfidapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.OrderRepository
 import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.util.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,17 +24,24 @@ class OrderViewModel @Inject constructor(private val orderRepository: OrderRepos
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
-    fun fetchOrders(token: String) {
+    init {
+        fetchOrders()
+    }
+
+    private fun fetchOrders() {
         viewModelScope.launch {
             _loading.value = true
-            try {
-                _orderList.value = orderRepository.getOrders(token)
-                _errorMessage.value = null
-            } catch (e: Exception) {
-                _errorMessage.value = e.message
-                _orderList.value = emptyList()
-            } finally {
-                _loading.value = false
+            SharedPrefs.accessToken?.let { token->
+                try {
+                    _orderList.value = orderRepository.getOrders(token).data ?: emptyList()
+                    _errorMessage.value = null
+                } catch (e: Exception) {
+                    _errorMessage.value = e.message
+                    _orderList.value = emptyList()
+                    Log.e("TAG222", "fetchOrders: "+e.message)
+                } finally {
+                    _loading.value = false
+                }
             }
         }
     }

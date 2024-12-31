@@ -186,7 +186,7 @@ public class InventoryList extends KeyDownFragment implements InvListAdapter.OnL
             }
 
             public void onError(Throwable th) {
-                Toast.makeText(InventoryList.this.mContext, "Someting went wrong, please try later.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InventoryList.this.mContext, "Something went wrong, please try later.", Toast.LENGTH_SHORT).show();
             }
         });
     }

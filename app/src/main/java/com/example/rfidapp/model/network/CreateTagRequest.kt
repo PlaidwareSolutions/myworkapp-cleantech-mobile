@@ -1,17 +1,17 @@
 package com.example.rfidapp.model.network
 
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateTagRequest(
-    @SerialName("brand") var brand: String? = "",
-    @SerialName("customAttributes") var customAttributes: Map<String, String> = mapOf(),
-    @SerialName("epc") var epc: String? = "",
-    @SerialName("model") var model: String? = "",
-    @SerialName("provider") var provider: String? = "",
-    @SerialName("serial") var serial: String? = "",
-    @SerialName("type") var type: String? = "",
-    @SerialName("upc") var upc: String? = ""
+   @SerializedName("brand") var brand: String? = "",
+   @SerializedName("customAttributes") var customAttributes: Map<String, String> = mapOf(),
+   @SerializedName("epc") var epc: String? = "",
+   @SerializedName("model") var model: String? = "",
+   @SerializedName("provider") var provider: String? = "",
+   @SerializedName("serial") var serial: String? = "",
+   @SerializedName("type") var type: String? = "",
+   @SerializedName("upc") var upc: String? = ""
 )
