@@ -19,9 +19,12 @@ import androidx.exifinterface.media.ExifInterface;
 
 import com.example.rfidapp.R;
 import com.example.rfidapp.ReaderClass;
+import com.example.rfidapp.activity.AboutActivity;
+import com.example.rfidapp.activity.LoginActivity;
 import com.example.rfidapp.activity.SettingsActivity;
 import com.example.rfidapp.databinding.FragmentSettingsBinding;
 import com.example.rfidapp.util.PreferenceManager;
+import com.example.rfidapp.util.SharedPrefs;
 import com.example.rfidapp.util.constants.Constants;
 
 import java.util.ArrayList;
@@ -102,160 +105,19 @@ public class AppSettings extends KeyDownFragment {
 
         setPower();
         setVolume();
-        binding.rgGroup.setOnCheckedChangeListener((radioGroup, i) -> {
-            if (radioGroup.getCheckedRadioButtonId() == R.id.rb_barcode) {
-                selectedDevice = 3;
-                PreferenceManager.setStringValue(Constants.GET_DEVICE, ExifInterface.GPS_MEASUREMENT_3D);
-            } else if (radioGroup.getCheckedRadioButtonId() == R.id.rb_bluetooth) {
-                selectedDevice = 1;
-            } else if (radioGroup.getCheckedRadioButtonId() == R.id.rb_screen) {
-                if (modelNo.equals("C5P")) {
-                    selectedDevice = 2;
-                } else {
-                    selectedDevice = 3;
-                    mContext.highlightToast("Kindly Use RFID Device..", 2);
-                    selectedDevice = 1;
-                    binding.rbBluetooth.setChecked(true);
-                    mContext.highlightToast("Kindly Use C5P Device..", 2);
-                }
-            }
+        binding.logout.setOnClickListener(view -> {
+            SharedPrefs.Companion.clearSharedPreferences();
+            Intent intent = new Intent(requireContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         });
-        binding.rgGroup.setOnClickListener(view -> {
-            int i = selectedDevice;
-            if (i == 1) {
-                if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase(ExifInterface.GPS_MEASUREMENT_2D)) {
-                    mContext.isC5Device = false;
-                    mContext.isBTDevice = true;
-                    if (ReaderClass.mReader != null) {
-                        ReaderClass.mReader.free();
-                    }
-                    btMenu.setVisible(true);
-                }
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        mContext.initBtUHF();
-                    }
-                }, 1000);
-                PreferenceManager.setStringValue(Constants.GET_DEVICE, "1");
-                mContext.highlightToast("R6 Bluetooth Device Selected..", 1);
-            } else if (i == 2) {
-                if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")) {
-                    mContext.isBTDevice = false;
-                    mContext.isC5Device = true;
-                    if (SettingsActivity.mBtReader != null) {
-                        SettingsActivity.mBtReader.free();
-                    }
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            mContext.initUHF();
-                        }
-                    }, 1000);
-                    btMenu.setVisible(false);
-                }
-                mContext.highlightToast("C5 Screen Device Selected..", 1);
-                PreferenceManager.setStringValue(Constants.GET_DEVICE, ExifInterface.GPS_MEASUREMENT_2D);
-            }
-        });
-        /*
-            r4 = this;
-            com.ruddersoft.rfidscanner.MainActivity r0 = r4.mContext
-            java.lang.String r1 = "Settings"
-            r0.setTitle(r1)
-            com.ruddersoft.rfidscanner.MainActivity r0 = r4.mContext
-            r0.initSound()
-            androidx.fragment.app.FragmentActivity r0 = r4.getActivity()
-            java.lang.String r1 = "audio"
-            java.lang.Object r0 = r0.getSystemService(r1)
-            android.media.AudioManager r0 = (android.media.AudioManager) r0
-            r4.audioManager = r0
-            r0 = 2
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext     // Catch:{ Exception -> 0x006d }
-            java.lang.Boolean r1 = r1.isC5Device     // Catch:{ Exception -> 0x006d }
-            boolean r1 = r1.booleanValue()     // Catch:{ Exception -> 0x006d }
-            if (r1 == 0) goto L_0x0029
-            r4.setPower()     // Catch:{ Exception -> 0x006d }
-            goto L_0x004c
-        L_0x0029:
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext     // Catch:{ Exception -> 0x006d }
-            java.lang.Boolean r1 = r1.isBTDevice     // Catch:{ Exception -> 0x006d }
-            boolean r1 = r1.booleanValue()     // Catch:{ Exception -> 0x006d }
-            if (r1 == 0) goto L_0x0045
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext     // Catch:{ Exception -> 0x006d }
-            boolean r1 = r1.isBtConnect     // Catch:{ Exception -> 0x006d }
-            if (r1 == 0) goto L_0x003d
-            r4.setPower()     // Catch:{ Exception -> 0x006d }
-            goto L_0x004c
-        L_0x003d:
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext     // Catch:{ Exception -> 0x006d }
-            java.lang.String r2 = "Please Connect Device First.."
-            r1.highlightToast(r2, r0)     // Catch:{ Exception -> 0x006d }
-            goto L_0x004c
-        L_0x0045:
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext     // Catch:{ Exception -> 0x006d }
-            java.lang.String r2 = "Please Use Any RFID Device"
-            r1.highlightToast(r2, r0)     // Catch:{ Exception -> 0x006d }
-        L_0x004c:
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext     // Catch:{ Exception -> 0x006d }
-            java.lang.Boolean r1 = r1.isC5Device     // Catch:{ Exception -> 0x006d }
-            boolean r1 = r1.booleanValue()     // Catch:{ Exception -> 0x006d }
-            if (r1 != 0) goto L_0x0069
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext     // Catch:{ Exception -> 0x006d }
-            java.lang.Boolean r1 = r1.isBTDevice     // Catch:{ Exception -> 0x006d }
-            boolean r1 = r1.booleanValue()     // Catch:{ Exception -> 0x006d }
-            if (r1 == 0) goto L_0x0061
-            goto L_0x0069
-        L_0x0061:
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext     // Catch:{ Exception -> 0x006d }
-            java.lang.String r2 = "Kindly Use RFID Device"
-            r1.highlightToast(r2, r0)     // Catch:{ Exception -> 0x006d }
-            goto L_0x0079
-        L_0x0069:
-            r4.setPower()     // Catch:{ Exception -> 0x006d }
-            goto L_0x0079
-        L_0x006d:
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext
-            java.lang.String r2 = "UHF Device Problem, Please Restart App."
-            r3 = 0
-            android.widget.Toast r1 = android.widget.Toast.makeText(r1, r2, r3)
-            r1.show()
-        L_0x0079:
-            r4.setVolume()
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext
-            java.lang.Boolean r1 = r1.isBTDevice
-            boolean r1 = r1.booleanValue()
-            r2 = 1
-            if (r1 == 0) goto L_0x0091
-            r4.selectedDevice = r2
-            com.ruddersoft.rfidscanner.databinding.FragmentSettingsBinding r0 = r4.binding
-            android.widget.RadioButton r0 = r0.rbBluetooth
-            r0.setChecked(r2)
-            goto L_0x00af
-        L_0x0091:
-            com.ruddersoft.rfidscanner.MainActivity r1 = r4.mContext
-            java.lang.Boolean r1 = r1.isC5Device
-            boolean r1 = r1.booleanValue()
-            if (r1 == 0) goto L_0x00a5
-            r4.selectedDevice = r0
-            com.ruddersoft.rfidscanner.databinding.FragmentSettingsBinding r0 = r4.binding
-            android.widget.RadioButton r0 = r0.rbScreen
-            r0.setChecked(r2)
-            goto L_0x00af
-        L_0x00a5:
-            r0 = 3
-            r4.selectedDevice = r0
-            com.ruddersoft.rfidscanner.databinding.FragmentSettingsBinding r0 = r4.binding
-            android.widget.RadioButton r0 = r0.rbBarcode
-            r0.setChecked(r2)
-        L_0x00af:
 
-            com.ruddersoft.rfidscanner.databinding.FragmentSettingsBinding r0 = r4.binding
-            androidx.cardview.widget.CardView r0 = r0.llExportExl
-            com.ruddersoft.rfidscanner.views.fragments.AppSettings$3 r1 = new com.ruddersoft.rfidscanner.views.fragments.AppSettings$3
-            r1.<init>()
-            r0.setOnClickListener(r1)
-            return
-        */
-//        throw new UnsupportedOperationException("Method not decompiled: com.ruddersoft.rfidscanner.views.fragments.AppSettings.init():void");
+        binding.about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(requireContext(), AboutActivity.class));
+            }
+        });
     }
 
 

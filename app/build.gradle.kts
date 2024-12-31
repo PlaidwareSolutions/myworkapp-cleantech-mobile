@@ -24,9 +24,12 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", getValue("prodBaseUrl", ""))
+            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
         }
         release {
             buildConfigField("String", "BASE_URL", getValue("prodBaseUrl", ""))
+            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -124,6 +127,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
     implementation("com.squareup.moshi:moshi:1.15.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 fun getValue(key: String, defaultValue: String): String {
