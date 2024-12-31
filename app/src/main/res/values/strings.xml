@@ -59,4 +59,7 @@
     <string name="cycle_count">Cycle Count</string>
     <string name="tag_finder">Tag Finder</string>
     <string name="inspect_items_at_any_stage_of_the_processes_mark_their_serviceability_condition_assign_next_actions_for_item">Inspect items at any stage of the processes, mark their serviceability condition, assign next actions for item.</string>
+    <string name="device_settings">Device Settings</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="about_application">About</string>
 </resources>

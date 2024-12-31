@@ -7,7 +7,6 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +19,8 @@ import androidx.exifinterface.media.ExifInterface;
 import com.example.rfidapp.R;
 import com.example.rfidapp.ReaderClass;
 import com.example.rfidapp.activity.AboutActivity;
+import com.example.rfidapp.activity.AccountSettingsActivity;
+import com.example.rfidapp.activity.DeviceSettingsActivity;
 import com.example.rfidapp.activity.LoginActivity;
 import com.example.rfidapp.activity.SettingsActivity;
 import com.example.rfidapp.databinding.FragmentSettingsBinding;
@@ -105,19 +106,12 @@ public class AppSettings extends KeyDownFragment {
 
         setPower();
         setVolume();
-        binding.logout.setOnClickListener(view -> {
-            SharedPrefs.Companion.clearSharedPreferences();
-            Intent intent = new Intent(requireContext(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        });
 
-        binding.about.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(requireContext(), AboutActivity.class));
-            }
-        });
+        binding.about.setOnClickListener(view -> startActivity(new Intent(requireContext(), AboutActivity.class)));
+
+        binding.accountSetting.setOnClickListener(view -> startActivity(new Intent(requireContext(), AccountSettingsActivity.class)));
+
+        binding.deviceSeetings.setOnClickListener(view -> startActivity(new Intent(requireContext(), DeviceSettingsActivity.class)));
     }
 
 
