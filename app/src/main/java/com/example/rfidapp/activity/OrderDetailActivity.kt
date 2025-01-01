@@ -9,6 +9,7 @@ import com.example.rfidapp.databinding.ActivityOrderDetailBinding
 import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
+import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.toFormattedDate
 import com.example.rfidapp.viewmodel.OrderDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +47,18 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.orderDetail.collectLatest {
                 runOnUiThread {
-                    updateOrderDetail(it)
+                    when(it){
+                        is ScreenState.Error -> {
+                            showToast(it.message)
+                        }
+                        ScreenState.Idle -> {}
+                        ScreenState.Loading -> {
+
+                        }
+                        is ScreenState.Success -> {
+                            it.response?.let { it1 -> updateOrderDetail(it1) }
+                        }
+                    }
                 }
             }
         }
