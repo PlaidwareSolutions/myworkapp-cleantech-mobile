@@ -8,7 +8,7 @@ data class Contact(
    @SerializedName("active") var active: Boolean = false,
    @SerializedName("address") var address: Address? = null,
    @SerializedName("businessDetails") var businessDetails: String = "",
-   @SerializedName("createdAt") var createdAt: String = "",
+   @SerializedName("createdAt") var createdAt: String? = null,
    @SerializedName("createdBy") var createdBy: String = "",
    @SerializedName("customAttributes") var customAttributes: Map<String, String> = mapOf(),
    @SerializedName("email") var email: List<String> = listOf(),

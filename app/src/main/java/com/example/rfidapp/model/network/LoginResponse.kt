@@ -13,7 +13,7 @@ data class LoginResponse(
     data class Contact(
        @SerializedName("active") var active: Boolean? = false,
        @SerializedName("address") var address: Address? = null,
-       @SerializedName("createdAt") var createdAt: String? = "",
+       @SerializedName("createdAt") var createdAt: String? = null,
        @SerializedName("email") var email: List<String>? = listOf(),
        @SerializedName("_id") var id: String? = "",
        @SerializedName("name") var name: String? = "",

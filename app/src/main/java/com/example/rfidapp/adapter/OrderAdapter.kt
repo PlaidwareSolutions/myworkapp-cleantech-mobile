@@ -22,7 +22,7 @@ class OrderAdapter(
             binding.apply {
                 with(orderList[pos]){
                     orderId.text = id
-                    carrierName.text = carrier
+                    carrierName.text = carrier?.name ?: ""
                     reqBy.text = createdBy
                     if (selectedOrderPos == pos) {
                         lnrItem.backgroundTintList = ColorStateList.valueOf(

@@ -9,7 +9,7 @@ data class ProductListResponse(
 ) {
     data class Data(
         @SerializedName("active") var active: Boolean = false,
-        @SerializedName("createdAt") var createdAt: String = "",
+        @SerializedName("createdAt") var createdAt: String? = null,
         @SerializedName("createdBy") var createdBy: String = "",
         @SerializedName("customAttributes") var customAttributes: Map<String, String>,
         @SerializedName("description") var description: String = "",
