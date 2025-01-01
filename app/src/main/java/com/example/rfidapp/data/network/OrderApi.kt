@@ -7,6 +7,7 @@ import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.OrderDetailResponse
 import com.example.rfidapp.model.network.OrderListResponse
+import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.UpdateOrderRequest
 import okhttp3.ResponseBody
 import retrofit2.http.Body
@@ -42,8 +43,8 @@ interface OrderApi {
     ): ApiResponse<OrderDetail>
 
     @GET("v1/order/{orderId}/pdf")
-    suspend fun downloadOrderPdf(
+    suspend fun getOrderPdf(
         @Path("orderId") orderId: String,
         @Header("authorization") token: String
-    ): ResponseBody
+    ): ApiResponse<PdfData>
 }
