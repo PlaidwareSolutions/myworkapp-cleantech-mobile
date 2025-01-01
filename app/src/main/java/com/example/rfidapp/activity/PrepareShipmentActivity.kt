@@ -28,7 +28,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
     private val orderViewModel: OrderViewModel by viewModels()
 
     private val viewModel: PrepareShipmentViewModel by viewModels()
-    private var shipmentType : String = ""
+    private var shipmentType: String = ""
 
     private var orderAdapter: OrderAdapter? = null
 
@@ -50,9 +50,11 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
         }
 
         binding.orderDetailsButton.setOnClickListener {
-            val intent = Intent(this, OrderDetailActivity::class.java)
-            intent.putExtra("ORDER", viewModel.selectedOrder.value)
-            startActivity(intent)
+            viewModel.selectedOrder.value?.id?.let {
+                val intent = Intent(this, OrderDetailActivity::class.java)
+                intent.putExtra("ORDER_ID", it)
+                startActivity(intent)
+            }
         }
 
         binding.toolbar.btnBack.setOnClickListener {
@@ -62,7 +64,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
         CoroutineScope(Dispatchers.IO).launch {
             orderViewModel.orderList.collectLatest {
                 runOnUiThread {
-                    orderAdapter?.updateData(it)?:run {
+                    orderAdapter?.updateData(it) ?: run {
                         initAdapter(it as ArrayList<Order>)
                     }
                 }
@@ -75,7 +77,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
         initAdapter()
     }
 
-    private fun initAdapter(orderList:ArrayList<Order> = arrayListOf()) {
+    private fun initAdapter(orderList: ArrayList<Order> = arrayListOf()) {
         val marginInPixels = resources.getDimensionPixelSize(R.dimen.item_margin)
         binding.rcvOrders.addItemDecoration(ItemMarginDecoration(marginInPixels))
         orderAdapter = OrderAdapter(
@@ -95,48 +97,77 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
             when (shipmentType) {
                 "shipping" -> {
                     tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.order)))
-                    tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.customer)))
-                    tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.carrier)))
+                    tabLayout.addTab(
+                        binding.tabLayout.newTab().setText(getString(R.string.customer))
+                    )
+                    tabLayout.addTab(
+                        binding.tabLayout.newTab().setText(getString(R.string.carrier))
+                    )
                     toolbar.toolbarTitle.text = getString(R.string.prepare_shipment)
 
                 }
+
                 "receiving" -> {
-                    tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.bill_of_lading_)))
-                    tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.carrier)))
+                    tabLayout.addTab(
+                        binding.tabLayout.newTab().setText(getString(R.string.bill_of_lading_))
+                    )
+                    tabLayout.addTab(
+                        binding.tabLayout.newTab().setText(getString(R.string.carrier))
+                    )
                     toolbar.toolbarTitle.text = getString(R.string.receive_shipment)
 
                 }
+
                 "orders" -> {
                     tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.order)))
-                    tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.customer)))
+                    tabLayout.addTab(
+                        binding.tabLayout.newTab().setText(getString(R.string.customer))
+                    )
                     toolbar.toolbarTitle.text = getString(R.string.order_search)
                 }
+
                 "lookup" -> {
-                    tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.bill_of_lading_)))
-                    tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.carrier)))
+                    tabLayout.addTab(
+                        binding.tabLayout.newTab().setText(getString(R.string.bill_of_lading_))
+                    )
+                    tabLayout.addTab(
+                        binding.tabLayout.newTab().setText(getString(R.string.carrier))
+                    )
                     toolbar.toolbarTitle.text = getString(R.string.receive_shipment)
                 }
+
                 else -> {
                 }
             }
         }
 
 
-
     }
 
-    private fun setSearchViewListener(){
+    private fun setSearchViewListener() {
         binding.apply {
             search.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
                 @SuppressLint("UseCompatLoadingForDrawables")
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    val closeIcon: Drawable? = if (!s.isNullOrEmpty()) getDrawable(R.drawable.ic_close) else null
+                    val closeIcon: Drawable? =
+                        if (!s.isNullOrEmpty()) getDrawable(R.drawable.ic_close) else null
                     closeIcon?.setBounds(0, 0, closeIcon.intrinsicWidth, closeIcon.intrinsicHeight)
 
                     val searchIcon: Drawable? = getDrawable(R.drawable.ic_search)
-                    searchIcon?.setBounds(0, 0, searchIcon.intrinsicWidth, searchIcon.intrinsicHeight)
+                    searchIcon?.setBounds(
+                        0,
+                        0,
+                        searchIcon.intrinsicWidth,
+                        searchIcon.intrinsicHeight
+                    )
 
                     search.setCompoundDrawables(
                         searchIcon,

@@ -5,6 +5,7 @@ import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateOrderRequest
 import com.example.rfidapp.model.network.CreateOrderResponse
 import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.OrderDetailResponse
 import com.example.rfidapp.model.network.OrderListResponse
 import com.example.rfidapp.model.network.UpdateOrderRequest
@@ -33,7 +34,7 @@ class OrderRepository @Inject constructor(private val orderApi: OrderApi) {
         return orderApi.getOrders(token)
     }
 
-    suspend fun getOrderDetail(orderId: String, token: String): OrderDetailResponse {
+    suspend fun getOrderDetail(orderId: String, token: String): ApiResponse<OrderDetail> {
         return orderApi.getOrderDetail(orderId, token)
     }
 

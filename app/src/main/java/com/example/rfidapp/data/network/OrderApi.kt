@@ -4,6 +4,7 @@ import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateOrderRequest
 import com.example.rfidapp.model.network.CreateOrderResponse
 import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.OrderDetailResponse
 import com.example.rfidapp.model.network.OrderListResponse
 import com.example.rfidapp.model.network.UpdateOrderRequest
@@ -38,7 +39,7 @@ interface OrderApi {
     suspend fun getOrderDetail(
         @Path("orderId") orderId: String,
         @Header("authorization") token: String
-    ): OrderDetailResponse
+    ): ApiResponse<OrderDetail>
 
     @GET("v1/order/{orderId}/pdf")
     suspend fun downloadOrderPdf(

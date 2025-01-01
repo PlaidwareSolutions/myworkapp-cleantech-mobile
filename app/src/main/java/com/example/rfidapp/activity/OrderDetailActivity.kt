@@ -2,24 +2,45 @@ package com.example.rfidapp.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.adapter.OrderDetailAdapter
 import com.example.rfidapp.databinding.ActivityOrderDetailBinding
 import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.toFormattedDate
+import com.example.rfidapp.viewmodel.OrderDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
-    private var order: MutableStateFlow<Order?> = MutableStateFlow(null)
+    private val viewModel: OrderDetailViewModel by viewModels()
 
     override fun setViewBinding() = ActivityOrderDetailBinding.inflate(layoutInflater)
 
     override fun bindObjects() {
-        order.value = intent.getSerializableExtra("ORDER") as? Order
+        intent.getStringExtra("ORDER_ID")?.let {
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.orderDetail.collectLatest {
+                    updateOrderDetail(it)
+                }
+            }
+        }
+    }
+
+    private fun updateOrderDetail(orderDetail: OrderDetail) {
+        binding.orderId.text = orderDetail.id
+        binding.carrierName.text = orderDetail.carrier
+        binding.customerName.text = orderDetail.customer
+        binding.pickupDate.text = orderDetail.requiredDate.toFormattedDate()
+        initView()
     }
 
     @SuppressLint("SetTextI18n")
@@ -57,18 +78,19 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
     override fun bindMethods() {
         initView()
-        binding.orderId.text = order.value?.id
-        binding.carrierName.text = order.value?.carrier
-        binding.customerName.text = order.value?.customer
-        binding.pickupDate.text = order.value?.requiredDate?.toFormattedDate() ?: ""
+        binding.orderId.text = orderDetail.value?.id
+        binding.carrierName.text = orderDetail.value?.carrier
+        binding.customerName.text = orderDetail.value?.customer
+        binding.pickupDate.text = orderDetail.value?.requiredDate?.toFormattedDate() ?: ""
     }
 
     private fun initView() {
         val adapter = OrderDetailAdapter(
             activity = this,
-            orderList = order.value?.items ?: listOf(),
+            orderList = orderDetail.value?.items ?: listOf(),
         )
-        binding.rcvOrders.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rcvOrders.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvOrders.adapter = adapter
     }
 }
