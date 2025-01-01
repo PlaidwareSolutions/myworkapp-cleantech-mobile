@@ -114,9 +114,18 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
     }
 
     private fun openPdf(pdfUrl: String) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.setDataAndType(Uri.parse(pdfUrl), "application/pdf")
-        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-        startActivity(intent)
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(Uri.parse(pdfUrl), "application/pdf")
+                flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            // Fallback: Open in Chrome or default browser
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl)).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(browserIntent)
+        }
     }
 }
