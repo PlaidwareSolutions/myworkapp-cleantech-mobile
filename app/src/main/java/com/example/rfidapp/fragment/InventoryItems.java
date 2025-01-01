@@ -449,11 +449,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     public void btCancel(String str) {
         if (str.contains("grey")) {
             this.binding.btClear.setEnabled(false);
-            this.binding.btClear.setBackgroundResource(R.drawable.bt_design_gray);
             return;
         }
         this.binding.btClear.setEnabled(true);
-        this.binding.btClear.setBackgroundResource(R.drawable.bt_design);
     }
 
     @SuppressLint("CheckResult")
@@ -467,8 +465,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
         this.invItemsViewModel.getEpcData(str2, str, 0, 100).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<InventoryItemsEntity>>() {
             public void onSuccess(List<InventoryItemsEntity> list) {
-                if (list.size() > 0) {
-                    new setEpc().execute(new List[]{list});
+                if (!list.isEmpty()) {
+                    new setEpc().execute(list);
                     InventoryItems.this.binding.llNoEpc.setVisibility(View.GONE);
                     return;
                 }
