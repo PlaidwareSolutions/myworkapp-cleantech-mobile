@@ -3,10 +3,10 @@ package com.example.rfidapp.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.adapter.OrderDetailAdapter
 import com.example.rfidapp.databinding.ActivityOrderDetailBinding
-import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
@@ -15,7 +15,6 @@ import com.example.rfidapp.viewmodel.OrderDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -48,15 +47,20 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
             viewModel.orderDetail.collectLatest {
                 runOnUiThread {
                     when(it){
-                        is ScreenState.Error -> {
-                            showToast(it.message)
-                        }
                         ScreenState.Idle -> {}
                         ScreenState.Loading -> {
+                            binding.progressBar.isVisible = true
 
                         }
+
                         is ScreenState.Success -> {
+                            binding.progressBar.isVisible = false
                             it.response?.let { it1 -> updateOrderDetail(it1) }
+                        }
+
+                        is ScreenState.Error -> {
+                            binding.progressBar.isVisible = false
+                            showToast(it.message)
                         }
                     }
                 }
