@@ -6,7 +6,9 @@ import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.R
 import com.example.rfidapp.adapter.OrderAdapter
@@ -14,6 +16,7 @@ import com.example.rfidapp.databinding.ActivityPrepareShipmentBinding
 import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ItemMarginDecoration
+import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.viewmodel.OrderViewModel
 import com.example.rfidapp.viewmodel.PrepareShipmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,10 +63,28 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            orderViewModel.orderList.collectLatest {
-                runOnUiThread {
-                    orderAdapter?.updateData(it)?:run {
-                        initAdapter(it as ArrayList<Order>)
+            orderViewModel.orderList.collectLatest { state ->
+                when (state) {
+                    is ScreenState.Idle -> {}
+                    is ScreenState.Loading -> {
+                        runOnUiThread {
+                            binding.progressBar.isVisible = true
+                        }
+                    }
+                    is ScreenState.Success -> {
+                        runOnUiThread {
+                            binding.progressBar.isVisible = false
+                            orderAdapter?.updateData(state.response)?:run {
+                                initAdapter(state.response as ArrayList<Order>)
+                            }
+                        }
+                    }
+                    is ScreenState.Error -> {
+                        runOnUiThread {
+                            binding.progressBar.isVisible = false
+                            Toast.makeText(this@PrepareShipmentActivity, state.message , Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
                 }
             }
@@ -125,6 +146,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setSearchViewListener(){
         binding.apply {
             search.addTextChangedListener(object : TextWatcher {

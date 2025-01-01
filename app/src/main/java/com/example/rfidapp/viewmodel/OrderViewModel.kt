@@ -5,24 +5,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.OrderRepository
 import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(private val orderRepository: OrderRepository) : ViewModel() {
 
-    private val _orderList = MutableStateFlow<List<Order>>(emptyList())
-    val orderList: StateFlow<List<Order>> = _orderList
+    private val _orderList = MutableStateFlow<ScreenState<List<Order>>>(ScreenState.Idle)
+    val orderList: StateFlow<ScreenState<List<Order>>> = _orderList.asStateFlow()
 
-    private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> = _loading
-
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage
 
     init {
         fetchOrders()
@@ -30,17 +27,19 @@ class OrderViewModel @Inject constructor(private val orderRepository: OrderRepos
 
     private fun fetchOrders() {
         viewModelScope.launch {
-            _loading.value = true
+            _orderList.value = ScreenState.Loading
             SharedPrefs.accessToken?.let { token->
                 try {
-                    _orderList.value = orderRepository.getOrders(token).data ?: emptyList()
-                    _errorMessage.value = null
+                    val response =  orderRepository.getOrders(token)
+                    if(response.isSuccess()){
+                        _orderList.value =  ScreenState.Success(response.data?: emptyList())
+                    }else{
+                        _orderList.value =  ScreenState.Error(message = response.message ?: "Unknown error")
+                    }
+
                 } catch (e: Exception) {
-                    _errorMessage.value = e.message
-                    _orderList.value = emptyList()
+                    _orderList.value =  ScreenState.Error(message = e.message ?: "Unknown error")
                     Log.e("TAG222", "fetchOrders: "+e.message)
-                } finally {
-                    _loading.value = false
                 }
             }
         }

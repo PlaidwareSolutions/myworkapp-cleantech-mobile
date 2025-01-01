@@ -30,71 +30,93 @@
         app:tabSelectedTextColor="@color/tab_selected_text_color"
         app:tabTextColor="@color/tab_unselected_text_color" />
 
-    <EditText
-        android:singleLine="true"
-        android:id="@+id/search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_24sdp"
-        android:background="@drawable/bg_edit_text"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="12dp"
-        android:hint="@string/search_ellipse"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="14dp"
-        android:textAppearance="@style/inter_400_12_16"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txtSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Order Search"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginHorizontal="@dimen/_24sdp"
-        android:layout_marginVertical="@dimen/_12sdp"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvOrders"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/orderDetailsButton"
-            tools:itemCount="4"
-            tools:visibility="visible"
-            tools:listitem="@layout/item_search" />
-
-        <include
-            android:id="@+id/no_item"
-            android:visibility="gone"
-            android:layout_marginHorizontal="@dimen/_24sdp"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/layout_no_item" />
+            android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_alignParentBottom="true"
-            android:id="@+id/orderDetailsButton"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_42sdp"
-            android:background="@drawable/button_background"
-            android:text="@string/view_order_details"
-            android:enabled="false"
-            android:textAllCaps="false"
-            android:layout_gravity="bottom"
-            android:textColor="@drawable/button_text_color"
-            android:padding="@dimen/_12sdp"
-            android:layout_marginHorizontal="@dimen/_24sdp"
-            android:layout_marginVertical="@dimen/_12sdp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:background="@drawable/bg_edit_text"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="12dp"
+                android:hint="@string/search_ellipse"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="14dp"
+                android:singleLine="true"
+                android:textAppearance="@style/inter_400_12_16"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:layout_marginVertical="@dimen/_12sdp"
+                android:text="Order Search"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16ssp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvOrders"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/orderDetailsButton"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/item_search"
+                    tools:visibility="visible" />
+
+                <include
+                    android:id="@+id/no_item"
+                    layout="@layout/layout_no_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_24sdp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/orderDetailsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_42sdp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="@dimen/_24sdp"
+                    android:layout_marginVertical="@dimen/_12sdp"
+                    android:background="@drawable/button_background"
+                    android:enabled="false"
+                    android:padding="@dimen/_12sdp"
+                    android:text="@string/view_order_details"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/button_text_color"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/app_color"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     </RelativeLayout>
 

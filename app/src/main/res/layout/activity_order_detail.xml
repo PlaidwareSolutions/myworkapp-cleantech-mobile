@@ -313,6 +313,15 @@
 
     </RelativeLayout>
 
+    <ProgressBar
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/app_color" />
+
     <RelativeLayout
         android:id="@+id/footerLayout"
         android:layout_width="match_parent"

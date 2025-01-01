@@ -3,6 +3,7 @@ package com.example.rfidapp.activity
 import android.content.Intent
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.example.rfidapp.databinding.ActivityLoginBinding
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
@@ -66,9 +67,14 @@ class LoginActivity : ActBase<ActivityLoginBinding>() {
             loginViewModel.loginState.collectLatest { state ->
                 when (state) {
                     is ScreenState.Idle -> {}
-                    is ScreenState.Loading -> {}
+                    is ScreenState.Loading -> {
+                        runOnUiThread {
+                            binding.progressBar.isVisible = true
+                        }
+                    }
                     is ScreenState.Success -> {
                         runOnUiThread {
+                            binding.progressBar.isVisible = false
                             Toast.makeText(this@LoginActivity, "Login Successfully", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginActivity, HomeScreenActivity::class.java))
                             finish()
@@ -77,6 +83,7 @@ class LoginActivity : ActBase<ActivityLoginBinding>() {
 
                     is ScreenState.Error -> {
                         runOnUiThread {
+                            binding.progressBar.isVisible = false
                             Toast.makeText(this@LoginActivity, state.message , Toast.LENGTH_SHORT)
                                 .show()
                         }
