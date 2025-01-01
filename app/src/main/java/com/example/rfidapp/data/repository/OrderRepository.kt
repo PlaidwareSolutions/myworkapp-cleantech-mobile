@@ -8,6 +8,7 @@ import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.OrderDetailResponse
 import com.example.rfidapp.model.network.OrderListResponse
+import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.UpdateOrderRequest
 import java.io.File
 import java.io.FileOutputStream
@@ -38,20 +39,7 @@ class OrderRepository @Inject constructor(private val orderApi: OrderApi) {
         return orderApi.getOrderDetail(orderId, token)
     }
 
-    suspend fun downloadOrderPdf(orderId: String, token: String, file: File): Boolean {
-        return try {
-            val response = orderApi.downloadOrderPdf(orderId, token)
-            val inputStream = response.byteStream()
-            val outputStream = FileOutputStream(file)
-
-            outputStream.use { out ->
-                inputStream.copyTo(out)
-            }
-
-            true // Download successful
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false // Download failed
-        }
+    suspend fun getOrderPdf(orderId: String, token: String): ApiResponse<PdfData> {
+        return orderApi.getOrderPdf(orderId, token)
     }
 }

@@ -13,7 +13,7 @@ data class OrderDetail(
     @SerializedName("requiredDate") var requiredDate: String? = null,
     @SerializedName("status") var status: String = "",
     @SerializedName("updatedAt") var updatedAt: String = "",
-    @SerializedName("updatedBy") var updatedBy: String = "",
+    @SerializedName("updatedBy") var updatedBy: UpdatedBy? = null,
     @SerializedName("__v") var v: Int = 0,
     @SerializedName("pdfKey") var pdfKey: String? = null,
 ){
@@ -24,6 +24,12 @@ data class OrderDetail(
     ) : Serializable
 
     data class CreatedBy(
+        @SerializedName("email") var email: List<String> = listOf(),
+        @SerializedName("_id") var id: String = "",
+        @SerializedName("name") var name: String = ""
+    )
+
+    data class UpdatedBy(
         @SerializedName("email") var email: List<String> = listOf(),
         @SerializedName("_id") var id: String = "",
         @SerializedName("name") var name: String = ""

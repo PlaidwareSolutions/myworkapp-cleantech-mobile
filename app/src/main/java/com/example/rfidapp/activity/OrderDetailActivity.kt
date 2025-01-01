@@ -2,6 +2,7 @@ package com.example.rfidapp.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -94,12 +95,13 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                     )
                 }
                 outlinedOutlined.setOnClickListener {
-                    startActivity(
-                        Intent(
-                            this@OrderDetailActivity,
-                            InventoryItemsActivity::class.java
-                        )
-                    )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.fetchOrderPdf().collectLatest {
+                            runOnUiThread {
+                                it.data?.url?.let { it1 -> openPdf(it1) }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -116,5 +118,12 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvOrders.adapter = adapter
+    }
+
+    private fun openPdf(pdfUrl: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(Uri.parse(pdfUrl), "application/pdf")
+        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+        startActivity(intent)
     }
 }
