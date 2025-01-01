@@ -27,24 +27,30 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
     override fun bindObjects() {
         intent.getStringExtra("ORDER_ID")?.let {
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.orderDetail.collectLatest {
-                    updateOrderDetail(it)
-                }
-            }
+            viewModel.fetchOrderDetail(it)
         }
     }
 
     private fun updateOrderDetail(orderDetail: OrderDetail) {
         binding.orderId.text = orderDetail.id
-        binding.carrierName.text = orderDetail.carrier
-        binding.customerName.text = orderDetail.customer
-        binding.pickupDate.text = orderDetail.requiredDate.toFormattedDate()
-        initView()
+        binding.carrierName.text = orderDetail.carrier?.name
+        binding.customerName.text = orderDetail.customer?.name
+        binding.pickupDate.text = orderDetail.requiredDate?.toFormattedDate()
+        binding.orderDate.text = orderDetail.createdAt?.toFormattedDate()
+        initView(orderDetail)
     }
 
     @SuppressLint("SetTextI18n")
     override fun bindListeners() {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.orderDetail.collectLatest {
+                runOnUiThread {
+                    updateOrderDetail(it)
+                }
+            }
+        }
+
         binding.apply {
             toolbar.apply {
                 btnBack.setOnClickListener {
@@ -77,17 +83,12 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
     }
 
     override fun bindMethods() {
-        initView()
-        binding.orderId.text = orderDetail.value?.id
-        binding.carrierName.text = orderDetail.value?.carrier
-        binding.customerName.text = orderDetail.value?.customer
-        binding.pickupDate.text = orderDetail.value?.requiredDate?.toFormattedDate() ?: ""
     }
 
-    private fun initView() {
+    private fun initView(orderDetail: OrderDetail) {
         val adapter = OrderDetailAdapter(
             activity = this,
-            orderList = orderDetail.value?.items ?: listOf(),
+            orderList = orderDetail.items,
         )
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

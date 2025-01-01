@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Type(
-    @SerializedName("createdAt") var createdAt: String = "",
+    @SerializedName("createdAt") var createdAt: String? = null,
     @SerializedName("_id") var _id: String = "",
     @SerializedName("id") var id: String = "",
     @SerializedName("name") var name: String = "",

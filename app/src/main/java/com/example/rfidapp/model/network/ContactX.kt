@@ -9,7 +9,7 @@ data class ContactX(
     @SerializedName("active") var active: Boolean = false,
     @SerializedName("address") var address: Address? = null,
     @SerializedName("businessDetails") var businessDetails: String = "",
-    @SerializedName("createdAt") var createdAt: String = "",
+    @SerializedName("createdAt") var createdAt: String? = null,
     @SerializedName("email") var email: List<String> = listOf(),
     @SerializedName("_id") var id: String = "",
     @SerializedName("name") var name: String = "",

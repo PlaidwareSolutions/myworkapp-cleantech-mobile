@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Role(
-    @SerializedName("createdAt") var createdAt: String = "",
+    @SerializedName("createdAt") var createdAt: String? = null,
     @SerializedName("createdBy") var createdBy: String = "",
     @SerializedName("_id") var _id: String = "",
     @SerializedName("id") var id: String = "",
