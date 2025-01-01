@@ -96,8 +96,12 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                 }
                 outlinedOutlined.setOnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {
+                        runOnUiThread{
+                            progressBar.isVisible = true
+                        }
                         viewModel.fetchOrderPdf().collectLatest {
                             runOnUiThread {
+                                progressBar.isVisible = false
                                 it.data?.url?.let { it1 -> openPdf(it1) }
                             }
                         }
