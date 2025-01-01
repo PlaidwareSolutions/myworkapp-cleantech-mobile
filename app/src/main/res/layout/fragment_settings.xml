@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +13,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_24sdp"
             android:layout_marginBottom="50dp"
             android:orientation="vertical">
 
@@ -40,12 +41,14 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_marginLeft="10dp"
-                            android:drawableStart="@drawable/flash_on_24"
+                            android:drawableStart="@drawable/settings_24"
                             android:drawablePadding="10dp"
                             android:drawableTint="@color/app_color"
                             android:text="Device Settings"
                             android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:textAppearance="@style/inter_400_12_14"
+                            android:fontFamily="@font/inter_bold"
+                            />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -73,12 +76,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_marginLeft="10dp"
-                            android:drawableStart="@drawable/flash_on_24"
+                            android:drawableStart="@drawable/settings_24"
                             android:drawablePadding="10dp"
                             android:drawableTint="@color/app_color"
                             android:text="Account Settings"
                             android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:textAppearance="@style/inter_400_12_14"
+                            android:fontFamily="@font/inter_bold"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -106,12 +110,13 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_marginLeft="10dp"
-                            android:drawableStart="@drawable/flash_on_24"
+                            android:drawableStart="@drawable/settings_24"
                             android:drawablePadding="10dp"
                             android:drawableTint="@color/app_color"
                             android:text="About"
                             android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:textAppearance="@style/inter_400_12_14"
+                            android:fontFamily="@font/inter_bold"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -120,6 +125,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:cardCornerRadius="10dp"
                 app:cardUseCompatPadding="true">
 
@@ -208,6 +214,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:cardCornerRadius="10dp"
                 app:cardUseCompatPadding="true">
 
@@ -293,8 +300,10 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/ll_export_exl"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:cardCornerRadius="10dp"
                 app:cardUseCompatPadding="true">
 
@@ -340,30 +349,8 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="10dp"
-                app:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_8sdp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Logout"
-                        android:gravity="center"
-                        android:textColor="@color/red"
-                        android:textAppearance="@style/inter_400_12_14"/>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
         </LinearLayout>
+
     </ScrollView>
+
 </FrameLayout>
