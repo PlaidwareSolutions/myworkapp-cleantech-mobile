@@ -38,7 +38,14 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         binding.customerName.text = orderDetail.customer?.name
         binding.pickupDate.text = orderDetail.requiredDate?.toFormattedDate()
         binding.orderDate.text = orderDetail.createdAt?.toFormattedDate()
-        initView(orderDetail)
+        if (orderDetail.items.isEmpty().not()) {
+            binding.rcvOrders.isVisible = true
+            binding.lnrContent.isVisible = true
+            initView(orderDetail.items)
+        } else {
+            binding.rcvOrders.isVisible = false
+            binding.lnrContent.isVisible = false
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -89,8 +96,12 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                 }
                 outlinedOutlined.setOnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {
+                        runOnUiThread{
+                            progressBar.isVisible = true
+                        }
                         viewModel.fetchOrderPdf().collectLatest {
                             runOnUiThread {
+                                progressBar.isVisible = false
                                 it.data?.url?.let { it1 -> openPdf(it1) }
                             }
                         }
@@ -103,10 +114,10 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
     override fun bindMethods() {
     }
 
-    private fun initView(orderDetail: OrderDetail) {
+    private fun initView(items: List<OrderDetail.Item>) {
         val adapter = OrderDetailAdapter(
             activity = this,
-            orderList = orderDetail.items,
+            orderList = items,
         )
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
