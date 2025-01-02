@@ -7,6 +7,7 @@ import com.example.rfidapp.data.repository.OrderRepository
 import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.SharedPrefs
+import com.example.rfidapp.util.getErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,8 +39,7 @@ class OrderViewModel @Inject constructor(private val orderRepository: OrderRepos
                     }
 
                 } catch (e: Exception) {
-                    _orderList.value =  ScreenState.Error(message = e.message ?: "Unknown error")
-                    Log.e("TAG222", "fetchOrders: "+e.message)
+                    _orderList.value =  ScreenState.Error(message = e.getErrorMessage())
                 }
             }
         }
