@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.ProductRepository
 import com.example.rfidapp.model.network.ProductResponse
 import com.example.rfidapp.model.network.UpdateProductResponse
+import com.example.rfidapp.util.getErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +34,7 @@ class ProductViewModel @Inject constructor(private val productRepository: Produc
                 val response = productRepository.createProduct(token, name, description, customAttributes, active)
                 _productState.value = ProductState.Success(response)
             } catch (e: Exception) {
-                _productState.value = ProductState.Error(e.message ?: "Unknown error")
+                _productState.value = ProductState.Error(e.getErrorMessage())
             }
         }
     }
@@ -51,7 +52,7 @@ class ProductViewModel @Inject constructor(private val productRepository: Produc
                 val response = productRepository.updateProduct(token, productId, name, description, customAttributes)
                 _updateProductState.value = ProductUpdateState.Success(response)
             } catch (e: Exception) {
-                _updateProductState.value = ProductUpdateState.Error(e.message ?: "Unknown error")
+                _updateProductState.value = ProductUpdateState.Error(e.getErrorMessage())
             }
         }
     }

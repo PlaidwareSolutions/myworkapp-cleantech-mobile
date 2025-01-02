@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.ContactRepository
 import com.example.rfidapp.model.network.CreateContactRequest
 import com.example.rfidapp.model.network.CreateContactResponse
+import com.example.rfidapp.util.getErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +25,7 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
                 val response = contactRepository.createContact(token, contactRequest)
                 _contactState.value = ContactState.Success(response)
             } catch (e: Exception) {
-                _contactState.value = ContactState.Error(e.message ?: "Unknown error")
+                _contactState.value = ContactState.Error(e.getErrorMessage())
             }
         }
     }
