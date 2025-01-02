@@ -1,5 +1,10 @@
 package com.example.rfidapp.util
 
+import android.app.Activity
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
 import com.google.gson.JsonParseException
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
@@ -17,12 +22,24 @@ fun String.toFormattedDate(): String {
     return outputFormat.format(date ?: Date())
 }
 
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}
+
+fun Activity.hideKeyboard() {
+    hideKeyboard(currentFocus ?: View(this))
+}
+
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
 fun Exception.getErrorMessage(): String {
     return when (this) {
         is HttpException -> {
             // Handle HTTP-related errors (e.g., 404, 500, etc.)
-            val errorCode = code()
-            val errorMessage = when (errorCode) {
+            val errorMessage = when (val errorCode = code()) {
                 400 -> "Bad request. Please check your credentials."
                 401 -> "Invalid Username or Password"
                 403 -> "Forbidden. You do not have permission."

@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import com.example.rfidapp.databinding.ActivityLoginBinding
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
+import com.example.rfidapp.util.hideKeyboard
 import com.example.rfidapp.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -51,6 +52,7 @@ class LoginActivity : ActBase<ActivityLoginBinding>() {
 
                     else -> {
                         /*"owner", "123456789"*/
+                        hideKeyboard()
                         loginViewModel.login(username, password)
                     }
                 }
