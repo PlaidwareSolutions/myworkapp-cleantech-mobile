@@ -230,6 +230,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.mContext.setTitle("Scan Tag");
             if (PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).equals("null") || PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).equals("")) {
                 this.binding.llInvCycle.setVisibility(View.GONE);
+                mContext.showToast("233");
             } else {
                 this.binding.tvCycle.setText(PreferenceManager.getStringValue(Constants.INV_ITEM_RFID));
             }
