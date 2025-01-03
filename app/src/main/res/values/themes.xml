@@ -25,4 +25,13 @@
         <item name="behavior_peekHeight">600dp</item>
     </style>
 
+    <style name="spinner_style">
+        <item name="android:layout_height">44dp</item>
+        <item name="android:dropDownVerticalOffset">48dp</item>
+        <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:popupBackground">@drawable/spinner_popup_background</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:dropDownWidth">match_parent</item>
+    </style>
+
 </resources>

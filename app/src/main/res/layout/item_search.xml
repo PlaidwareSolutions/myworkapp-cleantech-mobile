@@ -6,13 +6,13 @@
 
     <LinearLayout
         android:id="@+id/lnrItem"
-        android:padding="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_24sdp"
         android:layout_marginBottom="@dimen/_12sdp"
         android:background="@drawable/bg_filled_outlined"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,25 +22,25 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_weight="1"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/secondary_text_color"
-                    android:text="Order:" />
+                    android:text="Order:"
+                    android:textColor="@color/secondary_text_color" />
 
 
                 <TextView
                     android:id="@+id/orderId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/secondary_dark_text_color"
                     tools:text="I23246T5" />
@@ -48,12 +48,12 @@
             </LinearLayout>
 
             <TextView
-                android:gravity="end"
                 android:id="@+id/txtLastUpdatedTime"
-                android:layout_gravity="center"
-                android:fontFamily="@font/inter_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/inter_regular"
+                android:gravity="end"
                 android:textColor="@color/secondary_dark_text_color"
                 tools:text="12/12/2024" />
 
@@ -68,39 +68,30 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_weight="1"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/secondary_text_color"
-                    android:text="Carrier:" />
+                    android:text="Carrier:"
+                    android:textColor="@color/secondary_text_color" />
 
 
                 <TextView
                     android:id="@+id/carrierName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/secondary_dark_text_color"
-                    android:text="Cleantec Logistics" />
+                    android:text="Cleantec Logistics"
+                    android:textColor="@color/secondary_dark_text_color" />
 
             </LinearLayout>
-
-            <TextView
-                android:gravity="end"
-                android:layout_gravity="center"
-                android:fontFamily="@font/inter_regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondary_dark_text_color"
-                tools:text="12/12/2024" />
 
         </LinearLayout>
 
@@ -113,39 +104,30 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_weight="1"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/secondary_text_color"
-                    android:text="Request By:" />
+                    android:text="Request By:"
+                    android:textColor="@color/secondary_text_color" />
 
 
                 <TextView
                     android:id="@+id/reqBy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/secondary_dark_text_color"
                     tools:text="Tony Blair-Texas Grains" />
 
             </LinearLayout>
-
-            <TextView
-                android:gravity="end"
-                android:layout_gravity="center"
-                android:fontFamily="@font/inter_regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondary_dark_text_color"
-                tools:text="12/12/2024" />
 
         </LinearLayout>
 

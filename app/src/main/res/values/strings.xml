@@ -62,4 +62,7 @@
     <string name="device_settings">Device Settings</string>
     <string name="account_settings">Account Settings</string>
     <string name="about_application">About</string>
+    <string name="no_customer_found">Oops! Customer not found</string>
+    <string name="no_order_found">Oops! Order not found</string>
+    <string name="no_carrier_found">Oops! Carrier not found</string>
 </resources>

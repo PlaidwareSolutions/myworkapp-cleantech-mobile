@@ -5,17 +5,15 @@ import com.example.rfidapp.model.network.CreateOrderRequest
 import com.example.rfidapp.model.network.CreateOrderResponse
 import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.model.network.OrderDetail
-import com.example.rfidapp.model.network.OrderDetailResponse
-import com.example.rfidapp.model.network.OrderListResponse
 import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.UpdateOrderRequest
-import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface OrderApi {
     @POST("v1/order/create")
@@ -33,7 +31,10 @@ interface OrderApi {
 
     @GET("v1/order/")
     suspend fun getOrders(
-        @Header("authorization") token: String
+        @Header("authorization") token: String,
+        @Query("carrier") carrierId: String? = null,
+        @Query("referenceId") referenceId: String? = null,
+        @Query("customer") customerId: String? = null,
     ): ApiResponse<ArrayList<Order>>
 
     @GET("v1/order/{orderId}")

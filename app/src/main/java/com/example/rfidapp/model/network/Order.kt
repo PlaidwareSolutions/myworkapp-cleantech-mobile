@@ -10,6 +10,7 @@ data class Order(
     @SerializedName("createdBy") var createdBy: String? = "",
     @SerializedName("customer") var customer: Customer? = null,
     @SerializedName("_id") var id: String? = "",
+    @SerializedName("referenceId") var referenceId: String? = "",
     @SerializedName("items") var items: List<Item> = listOf(),
     @SerializedName("requiredDate") var requiredDate: String? = "",
     @SerializedName("status") var status: String? = "",

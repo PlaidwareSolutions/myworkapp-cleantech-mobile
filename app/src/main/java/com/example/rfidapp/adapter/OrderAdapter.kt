@@ -17,13 +17,14 @@ class OrderAdapter(
 
     private var selectedOrderPos: Int? = null
 
-    inner class MyViewHolder(val binding: ItemSearchBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyViewHolder(val binding: ItemSearchBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(pos: Int) {
             binding.apply {
-                with(orderList[pos]){
-                    orderId.text = id
+                with(orderList[pos]) {
+                    orderId.text = referenceId
                     carrierName.text = carrier?.name ?: ""
-                    reqBy.text = createdBy
+                    reqBy.text = customer?.name ?: ""
                     if (selectedOrderPos == pos) {
                         lnrItem.backgroundTintList = ColorStateList.valueOf(
                             activity.getColor(R.color.colorPrimary)
@@ -49,7 +50,10 @@ class OrderAdapter(
 
     override fun getItemCount() = orderList.size
 
-    override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
+    override fun onBindViewHolder(
+        holder: MyViewHolder,
+        @SuppressLint("RecyclerView") position: Int
+    ) {
         holder.bind(position)
         holder.itemView.setOnClickListener {
             onItemClick(orderList[position])

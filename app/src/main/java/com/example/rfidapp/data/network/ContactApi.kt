@@ -1,7 +1,8 @@
 package com.example.rfidapp.data.network
 
+import com.example.rfidapp.model.network.ApiResponse
+import com.example.rfidapp.model.network.Contact
 import com.example.rfidapp.model.network.ContactUpdateRequest
-import com.example.rfidapp.model.network.Contacts
 import com.example.rfidapp.model.network.CreateContactRequest
 import com.example.rfidapp.model.network.CreateContactResponse
 import retrofit2.http.Body
@@ -27,7 +28,7 @@ interface ContactApi {
     ): CreateContactResponse
 
     @GET("v1/contact")
-    suspend fun getContact(
+    suspend fun fetchContacts(
         @Header("authorization") token: String
-    ): Contacts
+    ): ApiResponse<ArrayList<Contact>>
 }

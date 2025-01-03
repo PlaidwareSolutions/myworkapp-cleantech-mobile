@@ -33,7 +33,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
     }
 
     private fun updateOrderDetail(orderDetail: OrderDetail) {
-        binding.orderId.text = orderDetail.id
+        binding.orderId.text = orderDetail.referenceId
         binding.carrierName.text = orderDetail.carrier?.name
         binding.customerName.text = orderDetail.customer?.name
         binding.pickupDate.text = orderDetail.requiredDate?.toFormattedDate()

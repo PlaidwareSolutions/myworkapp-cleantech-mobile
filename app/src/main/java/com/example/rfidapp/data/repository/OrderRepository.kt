@@ -6,12 +6,8 @@ import com.example.rfidapp.model.network.CreateOrderRequest
 import com.example.rfidapp.model.network.CreateOrderResponse
 import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.model.network.OrderDetail
-import com.example.rfidapp.model.network.OrderDetailResponse
-import com.example.rfidapp.model.network.OrderListResponse
 import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.UpdateOrderRequest
-import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 class OrderRepository @Inject constructor(private val orderApi: OrderApi) {
@@ -31,8 +27,18 @@ class OrderRepository @Inject constructor(private val orderApi: OrderApi) {
         return orderApi.updateOrder(token, orderId, orderUpdateRequest)
     }
 
-    suspend fun getOrders(token: String): ApiResponse<ArrayList<Order>> {
-        return orderApi.getOrders(token)
+    suspend fun getOrders(
+        token: String,
+        carrierId: String? = null,
+        referenceId: String? = null,
+        customerId: String? = null
+    ): ApiResponse<ArrayList<Order>> {
+        return orderApi.getOrders(
+            token = token,
+            carrierId = carrierId,
+            referenceId = referenceId,
+            customerId = customerId
+        )
     }
 
     suspend fun getOrderDetail(orderId: String, token: String): ApiResponse<OrderDetail> {
