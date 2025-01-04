@@ -23,6 +23,7 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
     }
 
     override fun bindMethods() {
+        PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
         supportFragmentManager.beginTransaction()
             .replace(binding.fragmentContainerView.id, InventoryItems.newInstance("",""))
             .commit()

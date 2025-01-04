@@ -545,7 +545,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     public void onPrepareOptionsMenu(Menu menu) {
-        this.add = menu.findItem(R.id.menu_add).setVisible(false);
+        /*this.add = menu.findItem(R.id.menu_add).setVisible(false);
         this.csv = menu.findItem(R.id.menu_csv);
         this.power = menu.findItem(R.id.menu_power);
         this.inv = menu.findItem(R.id.menu_inv);
@@ -554,7 +554,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.inv.setVisible(true);
         this.csv.setOnMenuItemClickListener(menuItem -> this.onPrepareOptionsMenu(menuItem));
         this.inv.setOnMenuItemClickListener(menuItem -> this.onPrepareOptionsMenuInv(menuItem));
-        super.onPrepareOptionsMenu(menu);
+        super.onPrepareOptionsMenu(menu);*/
     }
 
     public boolean onPrepareOptionsMenu(MenuItem menuItem) {
@@ -1140,9 +1140,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 InventoryItems.this.progressDialog.setIndeterminate(true);
                 InventoryItems.this.progressDialog.setCancelable(false);
                 InventoryItems.this.progressDialog.show();
-                ClearDataAsyncTask unused2 = InventoryItems.this.clearDataAsyncTask = new ClearDataAsyncTask();
-                InventoryItems.this.clearDataAsyncTask.execute(new Void[0]);
-                InventoryItems inventoryItems = new InventoryItems();
+                InventoryItems.this.clearDataAsyncTask = new ClearDataAsyncTask();
+                InventoryItems.this.clearDataAsyncTask.execute();
+                /*InventoryItems inventoryItems = new InventoryItems();
                 Bundle bundle = new Bundle();
                 if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
                     bundle.putString("inv_type", "Rfid");
@@ -1150,7 +1150,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     bundle.putString("inv_type", "Barcode");
                 }
                 inventoryItems.setArguments(bundle);
-                /*InventoryItems.this.mContext.setFragment(inventoryItems, "");*/
+                InventoryItems.this.mContext.setFragment(inventoryItems, "");*/
+                mContext.showToast("SHOW REMOVE DIALOG");
                 dialogInterface.dismiss();
             }
         }).setNegativeButton((CharSequence) "No", (DialogInterface.OnClickListener) null).show();
