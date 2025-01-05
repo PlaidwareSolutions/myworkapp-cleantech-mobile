@@ -6,6 +6,7 @@ import com.example.rfidapp.data.repository.ShipmentRepository
 import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.SharedPrefs
+import com.example.rfidapp.util.getErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +35,7 @@ class ShipmentDetailViewModel @Inject constructor(private val shipmentRepository
                             ).data
                         )
                 } catch (e: Exception) {
-                    _shipment.value = ScreenState.Error(e.message ?: "Unknown Error")
+                    _shipment.value = ScreenState.Error(message = e.getErrorMessage())
                 }
             }
         }

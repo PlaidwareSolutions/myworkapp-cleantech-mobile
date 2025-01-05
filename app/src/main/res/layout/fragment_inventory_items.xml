@@ -381,6 +381,8 @@
                     android:divider="@android:color/transparent"
                     android:dividerHeight="@dimen/_8sdp"
                     android:scrollbars="none"
+                    tools:visibility="gone"
+                    android:visibility="visible"
                     tools:listitem="@layout/list_tag_item" />
 
                 <ListView
@@ -422,7 +424,26 @@
                         android:textSize="20dp"
                         android:textStyle="bold" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/imgScan"
+                    android:layout_marginVertical="@dimen/_20sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:src="@drawable/ic_scan"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    </ImageView>
+
+                </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

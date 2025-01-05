@@ -11,6 +11,7 @@ import com.example.rfidapp.data.network.ProductApi
 import com.example.rfidapp.data.network.RoleApi
 import com.example.rfidapp.data.network.ContactApi
 import com.example.rfidapp.data.network.AssetApi
+import com.example.rfidapp.data.network.ShipmentApi
 import com.example.rfidapp.data.network.TagApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.squareup.moshi.Moshi
@@ -122,5 +123,9 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideTagService(retrofit: Retrofit): TagApi = retrofit.create(TagApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideShipmentService(retrofit: Retrofit): ShipmentApi = retrofit.create(ShipmentApi::class.java)
 
 }

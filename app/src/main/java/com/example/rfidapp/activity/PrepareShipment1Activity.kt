@@ -1,5 +1,6 @@
 package com.example.rfidapp.activity
 
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.adapter.ShipmentAdapter
@@ -7,13 +8,13 @@ import com.example.rfidapp.databinding.ActivityPrepareShipment1Binding
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.toFormattedDate
+import com.example.rfidapp.viewmodel.ShipmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
+
+    private val viewModel: ShipmentViewModel by viewModels()
 
     override fun setViewBinding() = ActivityPrepareShipment1Binding.inflate(layoutInflater)
 
@@ -50,7 +51,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
                 }
                 outlinedOutlined.setOnClickListener {
-                    CoroutineScope(Dispatchers.IO).launch {
+//                    CoroutineScope(Dispatchers.IO).launch {
 //                        runOnUiThread{
 //                            progressBar.isVisible = true
 //                        }
@@ -60,7 +61,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 //                                it.data?.url?.let { it1 -> openPdf(it1) }
 //                            }
 //                        }
-                    }
+//                    }
                 }
             }
         }
