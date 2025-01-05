@@ -215,11 +215,13 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/txtFrom"
+                        android:id="@+id/customerName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:letterSpacing="-0.02"
+                        android:ellipsize="end"
+                        android:singleLine="true"
                         android:text="T: Cleantech"
                         android:textAppearance="@style/inter_400_10_10"
                         android:textColor="@color/color_0F0F0F" />
@@ -227,12 +229,14 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtLast"
+                    android:id="@+id/orderId"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:ellipsize="end"
                     android:gravity="end"
                     android:letterSpacing="-0.02"
+                    android:singleLine="true"
                     android:text="LIC# RKA 5876"
                     android:textAppearance="@style/inter_400_10_10"
                     android:textColor="@color/color_0F0F0F" />
@@ -253,11 +257,13 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/txtTo"
+                        android:id="@+id/carrierName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:letterSpacing="-0.02"
+                        android:ellipsize="end"
+                        android:singleLine="true"
                         android:text="F: Professor -Industries"
                         android:textAppearance="@style/inter_400_10_10"
                         android:textColor="@color/color_0F0F0F" />
@@ -265,11 +271,13 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/date"
+                    android:id="@+id/orderDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="end"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:letterSpacing="-0.02"
                     android:text="DT:12/21/2024 12:45 PM"
                     android:textAppearance="@style/inter_400_10_10"
@@ -301,11 +309,11 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginHorizontal="@dimen/_6sdp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_60sdp"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_order_details"
                     android:backgroundTint="@color/color_EFF0F4"
@@ -339,16 +347,16 @@
                 android:id="@+id/save"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_filled_outlined"
-                android:backgroundTint="@color/color_388E3C"
+                android:background="@drawable/button_background"
+                android:backgroundTint="@color/black"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
                 android:gravity="center_vertical|center"
                 android:letterSpacing="-0.02"
-                android:text="Save Scanned Item"
+                android:text="Save Items"
                 android:textAppearance="@style/inter_400_12_16"
-                android:textColor="@color/color_388E3C" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -443,7 +451,7 @@
                     android:backgroundTint="@color/color_388E3C"
                     android:letterSpacing="-0.02"
                     android:text="Scan"
-                    android:textAllCaps="false"
+                    android:textAllCaps="true"
                     android:textAppearance="@style/inter_700_14_12"
                     android:textColor="@color/white" />
 

@@ -7,11 +7,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -119,6 +123,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
                 binding.searchAutoComplete.isVisible =
                     (tab?.tag == TAG_CUSTOMER || tab?.tag == TAG_CARRIER)
                 binding.search.isVisible = (tab?.tag != TAG_CUSTOMER && tab?.tag != TAG_CARRIER)
+                resetValues()
                 setupSpinner()
             }
 
@@ -136,14 +141,6 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
 //            binding.searchAutoComplete.clearFocus()
 //            orderViewModel.performSearchByCustomer(selectedContact.id)
 //        }
-//        binding.searchAutoComplete.setOnItemClickListener { _, _, _, _ ->
-//            contactList.firstOrNull { it.name == binding.searchAutoComplete.text.toString() }
-//                ?.let { selectedContact ->
-//                    binding.searchAutoComplete.setText(selectedContact.name)
-//                    binding.searchAutoComplete.clearFocus()
-//                    orderViewModel.performSearchByCustomer(selectedContact.id)
-//                }
-//        }
     }
 
     override fun bindMethods() {
@@ -156,26 +153,12 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
         lifecycleScope.launch {
             orderViewModel.contacts.collectLatest { contacts ->
                 runOnUiThread {
-                    val spinnerData: ArrayList<Contact> = arrayListOf()
-                    when (binding.tabLayout.getTabAt(binding.tabLayout.selectedTabPosition)?.tag) {
-                        TAG_CUSTOMER -> {
-                            spinnerData.add(0, Contact(id = "-1", name = "All Customers"))
-                            spinnerData.addAll(contacts)
-                        }
-                        TAG_CARRIER -> {
-                            spinnerData.add(0, Contact(id = "-1", name = "All Carriers"))
-                            spinnerData.addAll(contacts.filter { it.type == CUSTOMER_TYPE_CARRIER } as ArrayList<Contact>)
-                        }
-
-                        else -> {
-                            spinnerData.add(0, Contact(id = "-1", name = "All"))
-                            spinnerData.addAll(contacts)
-                        }
-                    }
+                    initAutoCompleteAdapter(contacts)
+                    /*val sortedNames = spinnerData.sortedBy { it.name.lowercase() }.map { it.name }
                     val memberAdapter = ACArrayAdapter(
                         this@PrepareShipmentActivity,
                         R.layout.row_spinner,
-                        spinnerData.map { it.name }
+                        sortedNames
                     )
 
                     memberAdapter.setDropDownViewResource(R.layout.row_drop_down_spinner)
@@ -198,19 +181,32 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
 
                             override fun onNothingSelected(parent: AdapterView<*>?) {
                             }
-                        }
+                        }*/
                 }
             }
         }
     }
 
-    private fun initAutoCompleteAdapter(contactList: ArrayList<Contact>) {
-        contactList.add(0, Contact(id = "", name = "All Customers"))
-        binding.searchAutoComplete.adapter = null
-        val suggestions = contactList.map { it.name }
+    private fun initAutoCompleteAdapter(contacts: ArrayList<Contact>) {
+
+        val spinnerData: ArrayList<Contact> = arrayListOf()
+        when (binding.tabLayout.getTabAt(binding.tabLayout.selectedTabPosition)?.tag) {
+            TAG_CUSTOMER -> {
+                spinnerData.addAll(contacts)
+            }
+            TAG_CARRIER -> {
+                spinnerData.addAll(contacts.filter { it.type == CUSTOMER_TYPE_CARRIER } as ArrayList<Contact>)
+            }
+
+            else -> {
+                spinnerData.addAll(contacts)
+            }
+        }
+
+        val suggestions = spinnerData.sortedBy { it.name.lowercase() }.map { it.name }
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, suggestions)
-        binding.searchAutoComplete.adapter = adapter
-        binding.searchAutoComplete.onItemSelectedListener =
+        binding.searchAutoComplete.setAdapter(adapter)
+        /*binding.searchAutoComplete.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -222,14 +218,29 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
                     if (selectedItem == "All") {
                         orderViewModel.fetchOrders()
                     } else {
-                        orderViewModel.performSearchByCustomer(contactList[position].id)
+                        orderViewModel.performSearchByCustomer(contacts[position].id)
                     }
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
 
                 }
+            }*/
+
+        binding.searchAutoComplete.setOnItemClickListener { _, _, _, _ ->
+            spinnerData.firstOrNull { it.name == binding.searchAutoComplete.text.toString() }
+                ?.let { selectedContact ->
+                    binding.searchAutoComplete.setText(selectedContact.name)
+                    binding.searchAutoComplete.clearFocus()
+                    orderViewModel.performSearchByCustomer(selectedContact.id)
+                }
+        }
+
+        binding.searchAutoComplete.doOnTextChanged { text, start, before, count ->
+            if(text.isNullOrEmpty()){
+                orderViewModel.fetchOrders()
             }
+        }
     }
 
     private fun initAdapter(orderList: ArrayList<Order> = arrayListOf()) {
@@ -320,6 +331,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setSearchViewListener() {
         binding.apply {
             search.addTextChangedListener(object : TextWatcher {
@@ -361,6 +373,40 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
                 override fun afterTextChanged(s: Editable?) {}
             })
 
+            searchAutoComplete.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                @SuppressLint("UseCompatLoadingForDrawables")
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val closeIcon: Drawable? =
+                        if (!s.isNullOrEmpty()) getDrawable(R.drawable.ic_close) else null
+                    closeIcon?.setBounds(0, 0, closeIcon.intrinsicWidth, closeIcon.intrinsicHeight)
+
+                    val searchIcon: Drawable? = getDrawable(R.drawable.ic_search)
+                    searchIcon?.setBounds(
+                        0,
+                        0,
+                        searchIcon.intrinsicWidth,
+                        searchIcon.intrinsicHeight
+                    )
+
+                    searchAutoComplete.setCompoundDrawables(
+                        searchIcon,
+                        null,
+                        closeIcon,
+                        null
+                    )
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
+
             search.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_UP) {
                     val drawableEnd = search.compoundDrawables[2]
@@ -375,6 +421,39 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
                 }
                 false
             }
+
+            searchAutoComplete.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_UP) {
+                    val drawableEnd = searchAutoComplete.compoundDrawables[2]
+                    if (drawableEnd != null) {
+                        val drawableWidth = drawableEnd.bounds.width()
+                        val touchAreaStart = searchAutoComplete.width - searchAutoComplete.paddingEnd - drawableWidth
+                        if (event.rawX >= touchAreaStart) {
+                            searchAutoComplete.text.clear()
+                            return@setOnTouchListener true
+                        }
+                    }
+                }
+                false
+            }
+
+            search.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    // Perform your search logic here
+                    //performSearch(editText.text.toString())
+                    hideKeyboard()
+                    return@OnEditorActionListener true
+                }
+                false
+            })
         }
+    }
+
+    fun resetValues(){
+        binding.search.text.clear()
+        binding.searchAutoComplete.text.clear()
+        binding.search.clearFocus()
+        binding.searchAutoComplete.clearFocus()
+        hideKeyboard()
     }
 }

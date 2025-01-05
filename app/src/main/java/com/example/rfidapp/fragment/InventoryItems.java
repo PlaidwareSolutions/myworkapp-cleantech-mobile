@@ -41,6 +41,7 @@ import androidx.room.Room;
 import com.example.rfidapp.R;
 import com.example.rfidapp.activity.InventoryItemsActivity;
 import com.example.rfidapp.activity.MainActivity;
+import com.example.rfidapp.activity.PrepareShipment1Activity;
 import com.example.rfidapp.adapter.InvItemAdapter;
 import com.example.rfidapp.dao.InvItemsDao;
 import com.example.rfidapp.database.InvDB;
@@ -100,8 +101,17 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public void handleMessage(Message message) {
             UHFTAGInfo uHFTAGInfo = (UHFTAGInfo) message.obj;
             String dateTime = Util.getDateTime();
+            Log.e("as_con", new Gson().toJson(uHFTAGInfo));
             Log.e("as_con", uHFTAGInfo.getEPC());
-            InventoryItems.this.addDataToList(uHFTAGInfo.getEPC(), InventoryItems.this.mergeTidEpc(uHFTAGInfo.getTid(), uHFTAGInfo.getEPC(), uHFTAGInfo.getUser()), dateTime, true);
+            InventoryItems.this.addDataToList(
+                    uHFTAGInfo.getEPC(),
+                    InventoryItems.this.mergeTidEpc(
+                            uHFTAGInfo.getTid(),
+                            uHFTAGInfo.getEPC(),
+                            uHFTAGInfo.getUser()
+                    ), dateTime,
+                    true
+            );
             InventoryItems.this.setTotalTime();
         }
     };
@@ -216,7 +226,17 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     private void setupUI() {
-        Log.e("TAG", "setupUI: "+ orderDetail);
+        binding.orderDate.setText(orderDetail.getCreatedAt());
+        binding.orderId.setText(orderDetail.getReferenceId());
+        binding.customerName.setText(orderDetail.getCustomer().getName());
+        binding.carrierName.setText(orderDetail.getCarrier().getName());
+
+        binding.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(requireActivity(), PrepareShipment1Activity.class));
+            }
+        });
     }
 
     public void resultListner(ActivityResult activityResult) {
@@ -878,7 +898,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             ViewHolder viewHolder;
             if (view == null) {
                 viewHolder = new ViewHolder();
-                view2 = this.mInflater.inflate(R.layout.listtag_items, (ViewGroup) null);
+                view2 = this.mInflater.inflate(R.layout.list_tag_item, (ViewGroup) null);
                 viewHolder.tvEPCTID = (TextView) view2.findViewById(R.id.TvTagUii);
                 viewHolder.tvTagCount = (TextView) view2.findViewById(R.id.TvTagCount);
                 viewHolder.tvTagRssi = (TextView) view2.findViewById(R.id.TvTagRssi);
@@ -888,9 +908,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 view2 = view;
                 viewHolder = (ViewHolder) view.getTag();
             }
-            viewHolder.tvEPCTID.setText((CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
-            viewHolder.tvTagCount.setText((CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
-            viewHolder.tvTagRssi.setText((CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
+            viewHolder.tvEPCTID.setText("EPC [Hex]: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
+            viewHolder.tvTagCount.setText("Read Count: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
+            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
             viewHolder.llList.setOnClickListener(v -> this.showPopup(i, v));
             if (i == InventoryItems.this.selectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));
@@ -1157,7 +1177,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 }
                 inventoryItems.setArguments(bundle);
                 InventoryItems.this.mContext.setFragment(inventoryItems, "");*/
-                dialogInterface.dismiss();
+                    dialogInterface.dismiss();
             }
         }).setNegativeButton((CharSequence) "No", (DialogInterface.OnClickListener) null).show();
     }

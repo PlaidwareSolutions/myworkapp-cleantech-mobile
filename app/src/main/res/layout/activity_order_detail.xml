@@ -247,62 +247,137 @@
             android:background="@drawable/bg_top_curve_right_outlined_4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_below="@+id/lnrItem"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="0dp">
 
+            <!-- Column # -->
             <TextView
-                android:layout_width="@dimen/_14sdp"
+                android:layout_width="@dimen/_20sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/padding_inside_table_field"
                 android:layout_marginVertical="@dimen/padding_inside_table_field"
-                android:fontFamily="@font/inter_semi_bold"
+                android:fontFamily="@font/inter_regular"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:maxEms="2"
                 android:gravity="center"
-                android:letterSpacing="-0.01"
-                android:text="#"
+                android:text="  # "
                 android:textAllCaps="true"
-                android:textAppearance="@style/inter_400_10_16"
                 android:textColor="@color/color_181818" />
 
+            <!-- Divider -->
             <View
-                android:id="@+id/verticalDivider1"
                 android:layout_width="@dimen/table_divider_width"
                 android:layout_height="match_parent"
                 android:background="@color/bg_stroke_color" />
 
+            <!-- Column ITEM NAME - TYPE -->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_80sdp"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/padding_inside_table_field"
-                android:layout_marginStart="@dimen/padding_inside_table_field"
                 android:layout_weight="1"
-                android:fontFamily="@font/inter_semi_bold"
+                android:layout_marginVertical="@dimen/padding_inside_table_field"
+                android:fontFamily="@font/inter_regular"
+                android:gravity="center"
+                android:textStyle="bold"
                 android:letterSpacing="-0.01"
                 android:text="@string/item_name_type"
                 android:textAppearance="@style/inter_400_10_16"
                 android:textColor="@color/color_181818" />
 
+            <!-- Divider -->
             <View
-                android:id="@+id/verticalDivider2"
+                android:visibility="invisible"
                 android:layout_width="@dimen/table_divider_width"
                 android:layout_height="match_parent"
                 android:background="@color/bg_stroke_color" />
 
-            <TextView
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/padding_inside_table_field"
-                android:layout_marginStart="@dimen/padding_inside_table_field"
-                android:fontFamily="@font/inter_semi_bold"
-                android:letterSpacing="-0.01"
-                android:text="@string/qty"
-                android:textAllCaps="true"
-                android:textAppearance="@style/inter_400_10_16"
-                android:textColor="@color/color_181818" />
+            <!-- Dynamic Columns (TOT, SHPD, ADD, BAL) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="horizontal">
 
+                <!-- Loop through these TextViews dynamically if required -->
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="@dimen/padding_inside_table_field"
+                    android:fontFamily="@font/inter_regular"
+                    android:gravity="center"
+                    android:letterSpacing="-0.01"
+                    android:text="TOT"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/inter_400_10_16"
+                    android:textColor="@color/color_181818" />
+
+                <View
+                    android:visibility="invisible"
+                    android:layout_width="@dimen/table_divider_width"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_stroke_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="@dimen/padding_inside_table_field"
+                    android:fontFamily="@font/inter_regular"
+                    android:gravity="center"
+                    android:letterSpacing="-0.01"
+                    android:text="SHPD"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/inter_400_10_16"
+                    android:textColor="@color/color_181818" />
+
+                <View
+                    android:visibility="invisible"
+                    android:layout_width="@dimen/table_divider_width"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_stroke_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="@dimen/padding_inside_table_field"
+                    android:fontFamily="@font/inter_regular"
+                    android:gravity="center"
+                    android:letterSpacing="-0.01"
+                    android:text="ADD"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/inter_400_10_16"
+                    android:textColor="@color/color_181818" />
+
+                <View
+                    android:visibility="invisible"
+                    android:layout_width="@dimen/table_divider_width"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_stroke_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="@dimen/padding_inside_table_field"
+                    android:fontFamily="@font/inter_regular"
+                    android:gravity="center"
+                    android:letterSpacing="-0.01"
+                    android:text="BAL"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/inter_400_10_16"
+                    android:textColor="@color/color_181818" />
+            </LinearLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
-
         <androidx.recyclerview.widget.RecyclerView
             android:background="@drawable/bg_bottom_curve_right_outlined_4dp"
             android:id="@+id/rcvOrders"

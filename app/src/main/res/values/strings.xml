@@ -65,4 +65,5 @@
     <string name="no_customer_found">Oops! Customer not found</string>
     <string name="no_order_found">Oops! Order not found</string>
     <string name="no_carrier_found">Oops! Carrier not found</string>
+    <string name="myworkapp_io">MyWorkApp.io</string>
 </resources>
