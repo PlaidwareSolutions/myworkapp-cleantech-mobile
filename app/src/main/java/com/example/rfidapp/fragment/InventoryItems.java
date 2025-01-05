@@ -1157,7 +1157,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 }
                 inventoryItems.setArguments(bundle);
                 InventoryItems.this.mContext.setFragment(inventoryItems, "");*/
-                mContext.showToast("SHOW REMOVE DIALOG");
                 dialogInterface.dismiss();
             }
         }).setNegativeButton((CharSequence) "No", (DialogInterface.OnClickListener) null).show();
