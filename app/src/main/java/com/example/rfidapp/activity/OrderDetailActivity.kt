@@ -13,6 +13,7 @@ import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.toFormattedDate
 import com.example.rfidapp.viewmodel.OrderDetailViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
     override fun setViewBinding() = ActivityOrderDetailBinding.inflate(layoutInflater)
 
+    var orderDetail: OrderDetail?= null
     override fun bindObjects() {
         intent.getStringExtra("ORDER_ID")?.let {
             viewModel.fetchOrderDetail(it)
@@ -33,6 +35,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
     }
 
     private fun updateOrderDetail(orderDetail: OrderDetail) {
+        this.orderDetail = orderDetail
         binding.orderId.text = orderDetail.referenceId
         binding.carrierName.text = orderDetail.carrier?.name
         binding.customerName.text = orderDetail.customer?.name
@@ -80,6 +83,8 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                 btnBack.setOnClickListener {
                     finish()
                 }
+
+                toolbarTitle.text = "Order Details"
             }
 
             footer.apply {
@@ -87,11 +92,12 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                 filledButton.text = "Scan for Shipment"
 
                 filledButton.setOnClickListener {
+
                     startActivity(
                         Intent(
                             this@OrderDetailActivity,
                             InventoryItemsActivity::class.java
-                        )
+                        ).putExtra("orderDetail", Gson().toJson(orderDetail))
                     )
                 }
                 outlinedOutlined.setOnClickListener {

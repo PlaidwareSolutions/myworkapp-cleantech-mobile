@@ -51,6 +51,7 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="14dp"
                 android:singleLine="true"
+                android:imeOptions="actionSearch"
                 android:textAppearance="@style/inter_400_12_16"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"

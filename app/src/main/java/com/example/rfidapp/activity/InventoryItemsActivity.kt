@@ -4,16 +4,21 @@ import androidx.room.Room.databaseBuilder
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
 import com.example.rfidapp.fragment.InventoryItems
+import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.PreferenceManager
 import com.example.rfidapp.util.constants.Constants
+import com.example.rfidapp.util.fromJson
+import com.google.gson.Gson
 
 class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
 
     override fun setViewBinding() = ActivityInventoryItemsBinding.inflate(layoutInflater)
 
-    override fun bindObjects() {
+    var orderDetail: OrderDetail?= null
 
+    override fun bindObjects() {
+        orderDetail = Gson().fromJson(intent.getStringExtra("orderDetail") ?: "")
     }
 
     override fun bindListeners() {
@@ -25,7 +30,7 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
     override fun bindMethods() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
         supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainerView.id, InventoryItems.newInstance("",""))
+            .replace(binding.fragmentContainerView.id, InventoryItems.newInstance(intent.getStringExtra("orderDetail") ,""))
             .commit()
     }
 

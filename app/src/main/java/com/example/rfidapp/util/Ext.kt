@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
@@ -20,6 +22,10 @@ fun String.toFormattedDate(): String {
     val date = inputFormat.parse(this)
     val outputFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     return outputFormat.format(date ?: Date())
+}
+
+inline fun <reified T> Gson.fromJson(json: String): T {
+    return this.fromJson(json, object : TypeToken<T>() {}.type)
 }
 
 fun Fragment.hideKeyboard() {

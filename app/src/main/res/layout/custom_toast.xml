@@ -14,7 +14,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginLeft="16dp"
-        android:src="@drawable/rstags_logo" />
+        android:src="@drawable/ic_logo" />
 
     <TextView
         android:id="@+id/toast_text"

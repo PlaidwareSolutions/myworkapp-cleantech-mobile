@@ -30,6 +30,7 @@ import com.example.rfidapp.util.KeyConstants.TAG_CARRIER
 import com.example.rfidapp.util.KeyConstants.TAG_CUSTOMER
 import com.example.rfidapp.util.KeyConstants.TAG_ORDER
 import com.example.rfidapp.util.ScreenState
+import com.example.rfidapp.util.hideKeyboard
 import com.example.rfidapp.viewmodel.OrderViewModel
 import com.example.rfidapp.viewmodel.PrepareShipmentViewModel
 import com.google.android.material.tabs.TabLayout
@@ -232,13 +233,12 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
     }
 
     private fun initAdapter(orderList: ArrayList<Order> = arrayListOf()) {
-        val marginInPixels = resources.getDimensionPixelSize(R.dimen.item_margin)
-        binding.rcvOrders.addItemDecoration(ItemMarginDecoration(marginInPixels))
         orderAdapter = OrderAdapter(
             activity = this,
             orderList = orderList,
             onItemClick = {
                 viewModel.selectedOrder.value = it
+                hideKeyboard()
             }
         )
         binding.rcvOrders.layoutManager =
