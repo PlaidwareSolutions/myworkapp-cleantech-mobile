@@ -57,6 +57,7 @@ import com.example.rfidapp.viewmodel.InvItemsViewModel;
 import com.example.rfidapp.viewmodel.InvListViewModel;
 import com.example.rfidapp.views.UhfInfo;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.google.mlkit.common.sdkinternal.OptionalModuleUtils;
 import com.rscja.deviceapi.entity.BarcodeEntity;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
@@ -98,6 +99,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public void handleMessage(Message message) {
             UHFTAGInfo uHFTAGInfo = (UHFTAGInfo) message.obj;
             String dateTime = Util.getDateTime();
+            Log.e("as_con", new Gson().toJson(uHFTAGInfo));
             Log.e("as_con", uHFTAGInfo.getEPC());
             InventoryItems.this.addDataToList(uHFTAGInfo.getEPC(), InventoryItems.this.mergeTidEpc(uHFTAGInfo.getTid(), uHFTAGInfo.getEPC(), uHFTAGInfo.getUser()), dateTime, true);
             InventoryItems.this.setTotalTime();

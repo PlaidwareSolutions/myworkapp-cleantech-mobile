@@ -23,16 +23,4 @@ data class OrderDetail(
         @SerializedName("product") var product: Product? = null,
         @SerializedName("requiredQuantity") var requiredQuantity: Int? = null
     ) : Serializable
-
-    data class CreatedBy(
-        @SerializedName("email") var email: List<String> = listOf(),
-        @SerializedName("_id") var id: String = "",
-        @SerializedName("name") var name: String = ""
-    )
-
-    data class UpdatedBy(
-        @SerializedName("email") var email: List<String> = listOf(),
-        @SerializedName("_id") var id: String = "",
-        @SerializedName("name") var name: String = ""
-    )
 }
