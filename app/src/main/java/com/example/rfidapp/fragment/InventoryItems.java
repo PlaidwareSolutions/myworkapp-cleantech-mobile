@@ -48,6 +48,7 @@ import com.example.rfidapp.databinding.FragmentInventoryItemsBinding;
 import com.example.rfidapp.entity.InventoryItemsEntity;
 import com.example.rfidapp.entity.InventoryListEntity;
 import com.example.rfidapp.model.EpcModel;
+import com.example.rfidapp.model.network.OrderDetail;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.Util;
 import com.example.rfidapp.util.constants.Constants;
@@ -57,6 +58,7 @@ import com.example.rfidapp.viewmodel.InvItemsViewModel;
 import com.example.rfidapp.viewmodel.InvListViewModel;
 import com.example.rfidapp.views.UhfInfo;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.google.mlkit.common.sdkinternal.OptionalModuleUtils;
 import com.rscja.deviceapi.entity.BarcodeEntity;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
@@ -143,6 +145,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     String update = "";
     Util utils;
 
+    OrderDetail orderDetail;
+
     public  static void alertDialog(DialogInterface dialogInterface, int i) {
     }
 
@@ -189,6 +193,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         if (getArguments() != null) {
             this.mParam1 = getArguments().getString(ARG_PARAM1);
             this.mParam2 = getArguments().getString(ARG_PARAM2);
+            orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
+
         }
     }
 
@@ -205,7 +211,12 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> this.resultListner(result)
         );
+        setupUI();
         return this.binding.getRoot();
+    }
+
+    private void setupUI() {
+        Log.e("TAG", "setupUI: "+ orderDetail);
     }
 
     public void resultListner(ActivityResult activityResult) {

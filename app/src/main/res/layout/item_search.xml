@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_24sdp"
-        android:layout_marginBottom="@dimen/_12sdp"
         android:background="@drawable/bg_filled_outlined"
         android:orientation="vertical"
+        android:layout_marginBottom="@dimen/_6sdp"
         android:padding="12dp">
 
         <LinearLayout

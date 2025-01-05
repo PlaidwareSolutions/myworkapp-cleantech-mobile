@@ -58,7 +58,7 @@
                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
                 android:gravity="center_vertical|center"
                 android:paddingHorizontal="@dimen/_17sdp"
-                android:text="50"
+                tools:text="50"
                 android:textAppearance="@style/inter_400_12_16"
                 android:textColor="@color/black" />
 
