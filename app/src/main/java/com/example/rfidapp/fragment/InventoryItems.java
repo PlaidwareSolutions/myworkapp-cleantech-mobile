@@ -125,7 +125,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     MySearchAdapter mySearchAdapter;
     int page = 0;
     MenuItem power;
-    public ProgressDialog progressDialog;
+
     int scannedItems = 0;
     private ArrayList<InventoryItemsEntity> searchDataArrayList;
     private HashMap<String, String> searchMap;
@@ -1134,12 +1134,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     private void clearDialog() {
         new AlertDialog.Builder(getContext()).setIcon((int) R.drawable.delete_24).setTitle((CharSequence) "Clear Data").setMessage((CharSequence) "Do you want to clear all data?").setPositiveButton((CharSequence) "Yes", (DialogInterface.OnClickListener) new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
-                ProgressDialog unused = InventoryItems.this.progressDialog = new ProgressDialog(InventoryItems.this.getContext());
-                InventoryItems.this.progressDialog.setMessage("Clearing data...");
-                InventoryItems.this.progressDialog.setProgressStyle(1);
-                InventoryItems.this.progressDialog.setIndeterminate(true);
-                InventoryItems.this.progressDialog.setCancelable(false);
-                InventoryItems.this.progressDialog.show();
+
                 InventoryItems.this.clearDataAsyncTask = new ClearDataAsyncTask();
                 InventoryItems.this.clearDataAsyncTask.execute();
                 /*InventoryItems inventoryItems = new InventoryItems();
@@ -1158,7 +1153,20 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     public class ClearDataAsyncTask extends AsyncTask<Void, Integer, Boolean> {
+        public ProgressDialog progressDialog;
+
         private ClearDataAsyncTask() {
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(InventoryItems.this.mContext);
+            progressDialog.setMessage("Clearing data...");
+            progressDialog.setProgressStyle(1);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
         }
 
         @Override
@@ -1166,22 +1174,39 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             InvDB build = Room.databaseBuilder(InventoryItems.this.getContext().getApplicationContext(), InvDB.class, "Inventory_db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
             InvItemsDao invItemsDao = build.invItemsDao();
             if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
-                if (invItemsDao.delData(PreferenceManager.getStringValue(Constants.INV_ID_RFID)) > 0) {
+                List<String> epcList = new ArrayList<>();
+                for (HashMap<String, String> tag : InventoryItems.this.tagList) {
+                    if (tag.containsKey(InventoryItems.TAG_EPC)) {
+                        epcList.add(tag.get(InventoryItems.TAG_EPC));
+                    }
+                }
+                if (invItemsDao.delData(epcList) > 0) {
                     build.close();
-                    InventoryItems.this.binding.etSearch.setText("");
-                    InventoryItems.this.tagList.clear();
-                    InventoryItems.this.tagSearchList.clear();
-                    InventoryItems.this.scannedItems = 0;
-                    InventoryItems.this.binding.tvCount.setText("0");
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            InventoryItems.this.binding.etSearch.setText("");
+                            InventoryItems.this.tagList.clear();
+                            InventoryItems.this.tagSearchList.clear();
+                            InventoryItems.this.scannedItems = 0;
+                            InventoryItems.this.binding.tvCount.setText("0");
+                        }
+                    });
                     new Handler(Looper.getMainLooper()).post(() -> this.doInBackgroundClearDataAsyncTask());
+
                 }
             } else if (invItemsDao.delData(PreferenceManager.getStringValue(Constants.INV_ID_BAR)) > 0) {
                 build.close();
-                InventoryItems.this.binding.etSearch.setText("");
-                InventoryItems.this.tagList.clear();
-                InventoryItems.this.tagSearchList.clear();
-                InventoryItems.this.scannedItems = 0;
-                InventoryItems.this.binding.tvCount.setText("0");
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        InventoryItems.this.binding.etSearch.setText("");
+                        InventoryItems.this.tagList.clear();
+                        InventoryItems.this.tagSearchList.clear();
+                        InventoryItems.this.scannedItems = 0;
+                        InventoryItems.this.binding.tvCount.setText("0");
+                    }
+                });
                 new Handler(Looper.getMainLooper()).post(() -> this.doInBackgroundClearDataAsyncTask());
             }
             return true;
@@ -1192,29 +1217,26 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             InventoryItems.this.adapter.notifyDataSetChanged();
         }
 
-
-        public void m552lambda$doInBackground$1$comruddersoftrfidscannerviewsfragmentsInventoryItems$ClearDataAsyncTask() {
-            InventoryItems.this.btCancel("grey");
-            InventoryItems.this.adapter.notifyDataSetChanged();
-        }
-
         @Override
         public void onProgressUpdate(Integer... numArr) {
             super.onProgressUpdate(numArr);
-            InventoryItems.this.progressDialog.setIndeterminate(false);
-            InventoryItems.this.progressDialog.setProgress(numArr[0].intValue());
+            progressDialog.setIndeterminate(false);
+            progressDialog.setProgress(numArr[0].intValue());
         }
+
         @Override
         public void onPostExecute(Boolean bool) {
             super.onPostExecute(bool);
-            InventoryItems.this.progressDialog.dismiss();
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
                 InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
             } else {
                 InventoryItems.this.mContext.setInventoryItemBarCount(InventoryItems.this.mContext.getItemBarCount());
             }
             InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
-            ClearDataAsyncTask unused = InventoryItems.this.clearDataAsyncTask = null;
+            InventoryItems.this.clearDataAsyncTask = null;
         }
     }
 
