@@ -22,7 +22,7 @@ class ShipmentDetailViewModel @Inject constructor(private val shipmentRepository
         MutableStateFlow(ScreenState.Idle)
     val shipment: StateFlow<ScreenState<Shipment?>> = _shipment.asStateFlow()
 
-    fun fetchOrderDetail(shipmentId: String) {
+    fun fetchShipmentDetail(shipmentId: String) {
         viewModelScope.launch {
             _shipment.value = ScreenState.Loading
             SharedPrefs.accessToken?.let { token ->

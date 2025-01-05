@@ -10,7 +10,9 @@ import com.example.rfidapp.util.PreferenceManager
 import com.example.rfidapp.util.constants.Constants
 import com.example.rfidapp.util.fromJson
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
 
     override fun setViewBinding() = ActivityInventoryItemsBinding.inflate(layoutInflater)

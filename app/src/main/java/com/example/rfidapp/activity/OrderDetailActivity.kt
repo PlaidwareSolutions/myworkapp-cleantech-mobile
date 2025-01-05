@@ -3,6 +3,7 @@ package com.example.rfidapp.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,6 +67,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
                         is ScreenState.Success -> {
                             binding.progressBar.isVisible = false
+                            Log.e("TAG243", "bindListeners: "+  it.response)
                             it.response?.let { it1 -> updateOrderDetail(it1) }
                         }
 
@@ -92,7 +94,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                 filledButton.text = "Scan for Shipment"
 
                 filledButton.setOnClickListener {
-
+                    Log.e("TAG243", "bindListeners: orderDetail"+ Gson().toJson(orderDetail))
                     startActivity(
                         Intent(
                             this@OrderDetailActivity,

@@ -3,6 +3,7 @@ package com.example.rfidapp.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.rfidapp.databinding.ActivityHomeScreenBinding
@@ -26,6 +27,7 @@ class HomeScreenActivity : AppCompatActivity() {
             toolbar.apply {
                 btnBack.isVisible = false
                 toolbarTitle.text = "MyWorkApp"
+                toolbar.txtMyWorkApp.visibility = View.INVISIBLE
             }
 
             orders.setOnClickListener {

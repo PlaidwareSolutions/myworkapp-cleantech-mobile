@@ -1,5 +1,6 @@
 package com.example.rfidapp.data.network
 
+import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateTagRequest
 import com.example.rfidapp.model.network.CreateTagResponse
 import com.example.rfidapp.model.network.FetchTagsResponse
@@ -16,18 +17,18 @@ interface TagApi {
     suspend fun createTag(
         @Header("authorization") token: String,
         @Body tagRequest: CreateTagRequest
-    ): CreateTagResponse
+    ): ApiResponse<CreateTagResponse>
 
     @PUT("v1/tag/{id}")
     suspend fun updateTag(
         @Header("authorization") token: String,
         @Path("id") tagId: String,
         @Body tagUpdateRequest: UpdateTagRequest
-    ): CreateTagResponse
+    ):  ApiResponse<CreateTagResponse>
 
 
     @GET("v1/tag")
     suspend fun getTags(
         @Header("authorization") token: String
-    ): FetchTagsResponse
+    ):  ApiResponse<FetchTagsResponse>
 }

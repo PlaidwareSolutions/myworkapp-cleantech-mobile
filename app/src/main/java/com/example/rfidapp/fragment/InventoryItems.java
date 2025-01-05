@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,12 +33,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.example.rfidapp.R;
 import com.example.rfidapp.activity.InventoryItemsActivity;
-import com.example.rfidapp.activity.MainActivity;
 import com.example.rfidapp.activity.PrepareShipment1Activity;
 import com.example.rfidapp.adapter.InvItemAdapter;
 import com.example.rfidapp.dao.InvItemsDao;
@@ -49,14 +45,20 @@ import com.example.rfidapp.databinding.FragmentInventoryItemsBinding;
 import com.example.rfidapp.entity.InventoryItemsEntity;
 import com.example.rfidapp.entity.InventoryListEntity;
 import com.example.rfidapp.model.EpcModel;
+import com.example.rfidapp.model.network.CreateShipmentRequest;
+import com.example.rfidapp.model.network.CreateShipmentResponse;
+import com.example.rfidapp.model.network.Driver;
+import com.example.rfidapp.model.network.InputBol;
 import com.example.rfidapp.model.network.OrderDetail;
 import com.example.rfidapp.util.PreferenceManager;
+import com.example.rfidapp.util.ScreenState;
 import com.example.rfidapp.util.Util;
 import com.example.rfidapp.util.constants.Constants;
 import com.example.rfidapp.util.tool.StringUtils;
 import com.example.rfidapp.util.tool.UIHelper;
 import com.example.rfidapp.viewmodel.InvItemsViewModel;
 import com.example.rfidapp.viewmodel.InvListViewModel;
+import com.example.rfidapp.viewmodel.ShipmentViewModel;
 import com.example.rfidapp.views.UhfInfo;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
@@ -65,20 +67,26 @@ import com.rscja.deviceapi.entity.BarcodeEntity;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
 import com.rscja.deviceapi.interfaces.KeyEventCallback;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import kotlinx.coroutines.CoroutineScope;
 
+@AndroidEntryPoint
 public class InventoryItems extends KeyDownFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -96,7 +104,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     String create = "";
     MenuItem csv;
     private String cycle_Name_str;
-    Handler handler = new Handler() {
+    Handler handler = new Handler(Looper.getMainLooper()) {
         @SuppressLint("HandlerLeak")
         public void handleMessage(Message message) {
             UHFTAGInfo uHFTAGInfo = (UHFTAGInfo) message.obj;
@@ -121,6 +129,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     InvItemAdapter invItemAdapter;
     InvItemsViewModel invItemsViewModel;
     InvListViewModel invListViewModel;
+
+    ShipmentViewModel shipmentViewModel;
     List<EpcModel> inv_epc;
     boolean isAleart = false;
     boolean isBar = false;
@@ -204,7 +214,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.mParam1 = getArguments().getString(ARG_PARAM1);
             this.mParam2 = getArguments().getString(ARG_PARAM2);
             orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
-
+            Log.e("TAG243", "onCreate: "+orderDetail );
         }
     }
 
@@ -213,6 +223,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.binding = FragmentInventoryItemsBinding.inflate(layoutInflater, viewGroup, false);
         this.invItemsViewModel = new ViewModelProvider(this).get(InvItemsViewModel.class);
         this.invListViewModel = new ViewModelProvider(this).get(InvListViewModel.class);
+        this.shipmentViewModel = new ViewModelProvider(this).get(ShipmentViewModel.class);
         this.binding.rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         this.invItemAdapter = new InvItemAdapter(this.inv_epc, getContext());
         this.binding.rvItems.setAdapter(this.invItemAdapter);
@@ -222,6 +233,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 result -> this.resultListner(result)
         );
         setupUI();
+        bindListeners();
         return this.binding.getRoot();
     }
 
@@ -234,7 +246,42 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Create Shipment Flow
+                CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
+                ArrayList<InputBol> bills = new ArrayList<>();
+                List<String> tagsList = tagList.stream()
+                        .map(map -> map.get(InventoryItems.TAG_EPC))
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                bills.add(new InputBol(orderDetail.getId(),tagsList));
+                createShipmentRequest.setBols(bills);
+                createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+                Date date = new Date();
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+                String formattedDate = formatter.format(date);
+                Log.e("TAG243", "onClick: "+formattedDate);
+                createShipmentRequest.setShipmentDate(formattedDate);
+                createShipmentRequest.setDriver(new Driver("", ""));
+
+                Log.e("TAG243", "onClick: " + createShipmentRequest);
+                shipmentViewModel.createShipments(createShipmentRequest);
+            }
+        });
+    }
+
+    private void bindListeners(){
+        shipmentViewModel.getCreateShipmentListLiveData().observe(getViewLifecycleOwner(), state -> {
+            if (state instanceof ScreenState.Loading) {
+
+            } else if (state instanceof ScreenState.Success) {
+                CreateShipmentResponse response = ((ScreenState.Success<CreateShipmentResponse>) state).getResponse();
                 startActivity(new Intent(requireActivity(), PrepareShipment1Activity.class));
+            } else if (state instanceof ScreenState.Error) {
+                String errorMessage = ((ScreenState.Error) state).getMessage();
+
+            } else if (state instanceof ScreenState.Idle) {
+
             }
         });
     }
@@ -374,6 +421,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
         } else if (view.getId() == R.id.bt_start) {
             if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
+                binding.imgScan.setVisibility(View.GONE);
                 if (PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).equals("")) {
                     insertValues();
                 } else if (this.mContext.isC5Device.booleanValue()) {

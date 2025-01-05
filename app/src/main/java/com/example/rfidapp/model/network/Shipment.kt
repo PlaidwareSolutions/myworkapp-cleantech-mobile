@@ -1,20 +1,21 @@
 package com.example.rfidapp.model.network
 
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Shipment(
-    @SerialName("bols") var bols: List<String>? = listOf(),
-    @SerialName("carrier") var carrier: Carrier? = null,
-    @SerialName("createdAt") var createdAt: String? = "",
-    @SerialName("createdBy") var createdBy: CreatedBy? = CreatedBy(),
-    @SerialName("driver") var driver: Driver? = null,
-    @SerialName("_id") var id: String? = "",
-    @SerialName("referenceId") var referenceId: String? = "",
-    @SerialName("shipmentDate") var shipmentDate: String? = "",
-    @SerialName("updatedAt") var updatedAt: String? = "",
-    @SerialName("updatedBy") var updatedBy: UpdatedBy? = UpdatedBy(),
-    @SerialName("__v") var v: Int? = 0
+    @SerializedName("bols") var bols: List<String>? = listOf(),
+    @SerializedName("carrier") var carrier: Carrier? = null,
+    @SerializedName("createdAt") var createdAt: String? = "",
+    @SerializedName("createdBy") var createdBy: CreatedBy? = CreatedBy(),
+    @SerializedName("driver") var driver: Driver? = null,
+    @SerializedName("_id") var id: String? = "",
+    @SerializedName("referenceId") var referenceId: String? = "",
+    @SerializedName("shipmentDate") var shipmentDate: String? = "",
+    @SerializedName("updatedAt") var updatedAt: String? = "",
+    @SerializedName("updatedBy") var updatedBy: UpdatedBy? = UpdatedBy(),
+    @SerializedName("__v") var v: Int? = 0
 )

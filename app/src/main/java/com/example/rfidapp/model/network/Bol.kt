@@ -1,19 +1,20 @@
 package com.example.rfidapp.model.network
 
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Bol(
-    @SerialName("carrier") var carrier: Carrier? = null,
-    @SerialName("createdAt") var createdAt: String? = "",
-    @SerialName("createdBy") var createdBy: String? = "",
-    @SerialName("_id") var id: String? = "",
-    @SerialName("items") var items: List<Item> = listOf(),
-    @SerialName("order") var order: Order? = null,
-    @SerialName("referenceId") var referenceId: String? = "",
-    @SerialName("tags") var tags: List<String>? = listOf(),
-    @SerialName("updatedAt") var updatedAt: String? = "",
-    @SerialName("__v") var v: Int? = 0
+    @SerializedName("carrier") var carrier: Carrier? = null,
+    @SerializedName("createdAt") var createdAt: String? = "",
+    @SerializedName("createdBy") var createdBy: String? = "",
+    @SerializedName("_id") var id: String? = "",
+    @SerializedName("items") var items: List<Item> = listOf(),
+    @SerializedName("order") var order: Order? = null,
+    @SerializedName("referenceId") var referenceId: String? = "",
+    @SerializedName("tags") var tags: List<String>? = listOf(),
+    @SerializedName("updatedAt") var updatedAt: String? = "",
+    @SerializedName("__v") var v: Int? = 0
 )
