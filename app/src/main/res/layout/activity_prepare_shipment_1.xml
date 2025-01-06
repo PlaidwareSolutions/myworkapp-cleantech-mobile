@@ -56,7 +56,7 @@
 
 
                         <TextView
-                            android:id="@+id/orderId"
+                            android:id="@+id/shipmentId"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"
@@ -81,7 +81,7 @@
                             android:textColor="@color/secondary_text_color" />
 
                         <TextView
-                            android:id="@+id/orderDate"
+                            android:id="@+id/shipmentDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"

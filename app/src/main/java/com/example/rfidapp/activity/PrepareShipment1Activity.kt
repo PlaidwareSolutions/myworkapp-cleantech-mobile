@@ -1,56 +1,50 @@
 package com.example.rfidapp.activity
 
+import android.content.Intent
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.adapter.ShipmentAdapter
 import com.example.rfidapp.databinding.ActivityPrepareShipment1Binding
+import com.example.rfidapp.model.network.CreateShipmentResponse
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
+import com.example.rfidapp.util.fromJson
 import com.example.rfidapp.util.toFormattedDate
 import com.example.rfidapp.viewmodel.ShipmentViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
     private val viewModel: ShipmentViewModel by viewModels()
 
+    var createShipmentResponse: CreateShipmentResponse? = null
+
     override fun setViewBinding() = ActivityPrepareShipment1Binding.inflate(layoutInflater)
 
     override fun bindObjects() {
-
+        createShipmentResponse = Gson().fromJson(intent.getStringExtra("shipmentData") ?: "")
     }
 
     override fun bindListeners() {
-
-    }
-
-    override fun bindMethods() {
-        initView()
-    }
-
-    private fun initToolbar() {
-        binding.apply {
-            toolbar.btnBack.setOnClickListener {
-                finish()
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                handleBackNavigation()
             }
+        })
 
-            toolbar.toolbarTitle.text = "Prepare Shipment"
-        }
-    }
-
-    fun initView(){
-        initToolbar()
         binding.apply {
             footer.apply {
-                outlinedOutlined.text = "Save Shipment"
-                filledButton.text = "Finalize & Print"
-
-                filledButton.setOnClickListener {
+                outlinedOutlined.setOnClickListener {
 
                 }
-                outlinedOutlined.setOnClickListener {
+                filledButton.setOnClickListener {
 //                    CoroutineScope(Dispatchers.IO).launch {
 //                        runOnUiThread{
 //                            progressBar.isVisible = true
@@ -67,6 +61,41 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         }
     }
 
+    override fun bindMethods() {
+        initView()
+    }
+
+    private fun initToolbar() {
+        binding.apply {
+            toolbar.btnBack.setOnClickListener {
+                handleBackNavigation()
+            }
+
+            toolbar.toolbarTitle.text = "Prepare Shipment"
+        }
+    }
+
+    fun initView(){
+        initToolbar()
+        binding.apply {
+            footer.apply {
+                filledButton.text = "Save Shipment"
+                outlinedOutlined.text = "Finalize & Print"
+            }
+
+            createShipmentResponse?.let {
+                shipmentId.text = it.referenceId ?: ""
+                val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                val date: Date = originalFormat.parse(it.shipmentDate ?: "") ?: return
+                val desiredFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+                val formattedDate = desiredFormat.format(date)
+                shipmentDate.text = formattedDate
+                carrierName.text = it.carrier ?: ""
+                driverName.setText(it.driver?.name ?: "")
+            }
+        }
+    }
+
     private fun initViewData(items: List<OrderDetail.Item>) {
         val adapter = ShipmentAdapter(
             activity = this,
@@ -77,7 +106,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         binding.rcvOrders.adapter = adapter
     }
 
-    private fun updateOrderDetail(orderDetail: OrderDetail) {
+    /*private fun updateOrderDetail(orderDetail: OrderDetail) {
         binding.orderId.text = orderDetail.referenceId
         binding.carrierName.text = orderDetail.carrier?.name
         binding.orderDate.text = orderDetail.createdAt?.toFormattedDate()
@@ -89,6 +118,14 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
             binding.rcvOrders.isVisible = false
             binding.lnrContent.isVisible = false
         }
+    }*/
+
+    private fun handleBackNavigation() {
+        val resultIntent = Intent().apply {
+            putExtra("shipmentId", createShipmentResponse?.id) // Pass the string data
+        }
+        setResult(RESULT_OK, resultIntent)
+        finish()
     }
 
 }
