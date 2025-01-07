@@ -384,8 +384,7 @@
                         android:divider="@android:color/transparent"
                         android:dividerHeight="@dimen/_8sdp"
                         android:scrollbars="none"
-                        tools:visibility="gone"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         tools:listitem="@layout/list_tag_item" />
 
                     <ListView
@@ -435,7 +434,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <ImageView
                             android:src="@drawable/ic_scan"

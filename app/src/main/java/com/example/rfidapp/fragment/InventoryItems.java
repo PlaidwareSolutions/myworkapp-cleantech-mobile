@@ -95,6 +95,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     public static final String TAG_EPC = "tagEPC";
     public static final String TAG_EPC_TID = "tagEpcTID";
     public static final String TAG_RSSI = "tagRssi";
+
+    public static final String TAG_RSSI_NUMBER = "tagRssiNumber";
     public static String[] storage_permissions = {"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE"};
     public static String[] storage_permissions_33 = {"android.permission.READ_MEDIA_IMAGES", "android.permission.MANAGE_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
     public int SearchSelectItem = -1;
@@ -119,6 +121,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                             uHFTAGInfo.getEPC(),
                             uHFTAGInfo.getUser()
                     ), dateTime,
+                    uHFTAGInfo.getRssi(),
                     true
             );
             InventoryItems.this.setTotalTime();
@@ -305,7 +308,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         if (activityResult.getResultCode() == InventoryItemsActivity.barcodeResultCode) {
             Intent data = activityResult.getData();
             mContext.playSound(1);
-            addDataToList(data.getStringExtra(OptionalModuleUtils.BARCODE).trim(), "", Util.getDateTime(), true);
+            addDataToList(data.getStringExtra(OptionalModuleUtils.BARCODE).trim(), "", Util.getDateTime(), "",true);
         }
     }
 
@@ -698,7 +701,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else if (!this.mContext.isBtConnect) {
                 this.mContext.highlightToast("Kindly Connect Device First..", 2);
             } else if (InventoryItemsActivity.mBtReader.startInventoryTag()) {
-                binding.imgScan.setVisibility(View.GONE);
+//                binding.imgScan.setVisibility(View.GONE);
+//                binding.LvTags.setVisibility(View.VISIBLE);
                 this.binding.btStart.setText(this.mContext.getString(R.string.title_stop_Inventory));
                 this.loopFlag = true;
                 this.time = System.currentTimeMillis();
@@ -716,7 +720,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 }
                 this.mContext.stop();
             } else if (InventoryItemsActivity.mReader.startInventoryTag()) {
-                binding.imgScan.setVisibility(View.GONE);
+//                binding.imgScan.setVisibility(View.GONE);
                 this.binding.btStart.setText(this.mContext.getString(R.string.title_stop_Inventory));
                 this.loopFlag = true;
                 this.time = System.currentTimeMillis();
@@ -865,7 +869,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         System.currentTimeMillis();
     }
 
-    public void addDataToList(String str, String str2, String str3, boolean z) {
+    public void addDataToList(String str, String str2, String str3,String str4, boolean z) {
         if (StringUtils.isNotEmpty(str)) {
             int checkIsExist = checkIsExist(str);
             HashMap<String, String> hashMap = new HashMap<>();
@@ -878,6 +882,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 try {
                     this.map.put(TAG_COUNT, String.valueOf(Integer.parseInt((String) this.tagList.get(checkIsExist).get(TAG_COUNT), 10) + 1));
                     this.map.put(TAG_EPC_TID, str2);
+                    this.map.put(TAG_RSSI_NUMBER, str4);
                     this.tagList.set(checkIsExist, this.map);
                     updateValues(setItemsDetail(str));
                 } catch (Exception unused) {
@@ -965,7 +970,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
             viewHolder.tvEPCTID.setText("EPC [Hex]: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
             viewHolder.tvTagCount.setText("Read Count: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
-            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
+//            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
+            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI_NUMBER));
             viewHolder.llList.setOnClickListener(v -> this.showPopup(i, v));
             if (i == InventoryItems.this.selectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));
@@ -1109,7 +1115,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 if (InventoryItems.this.isSearch) {
                     InventoryItems.this.addDataToSearchList(listArr[0].get(i).getEpc(), listArr[0].get(i).getTimeStamp());
                 } else {
-                    InventoryItems.this.addDataToList(listArr[0].get(i).getEpc(), "", listArr[0].get(i).getTimeStamp(), false);
+                    InventoryItems.this.addDataToList(listArr[0].get(i).getEpc(), "", listArr[0].get(i).getTimeStamp(), "",false);
                 }
             }
             return null;
@@ -1300,6 +1306,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public void doInBackgroundClearDataAsyncTask() {
             InventoryItems.this.btCancel("grey");
             InventoryItems.this.adapter.notifyDataSetChanged();
+//            binding.imgScan.setVisibility(View.VISIBLE);
+//            binding.LvTags.setVisibility(View.GONE);
         }
 
         @Override
@@ -1370,7 +1378,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     public void open(BarcodeEntity barcodeEntity) {
         if (barcodeEntity.getResultCode() == 1) {
             this.mContext.playSound(1);
-            addDataToList(barcodeEntity.getBarcodeData(), "", Util.getDateTime(), true);
+            addDataToList(barcodeEntity.getBarcodeData(), "", Util.getDateTime(),"", true);
         } else {
             this.mContext.playSound(2);
             this.mContext.highlightToast("Failed", 2);
