@@ -14,6 +14,7 @@ data class Order(
     @SerializedName("items") var items: List<Item> = listOf(),
     @SerializedName("requiredDate") var requiredDate: String? = "",
     @SerializedName("status") var status: String? = "",
+    @SerializedName("type") var type: String? = "",
     @SerializedName("updatedAt") var updatedAt: String? = null,
     @SerializedName("updatedBy") var updatedBy: String? = "",
     @SerializedName("__v") var v: Int? = 0
