@@ -296,8 +296,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 }
                 ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
                 Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
-                startActivityForResult.launch(intent);
-                mContext.finish();
+//                startActivityForResult.launch(intent);
+                startActivity(intent);
+//                mContext.finish();
                 /*if (shipmentId == null) {
                     //Create
                     shipmentViewModel.createShipments(createShipmentRequest);

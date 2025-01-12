@@ -78,7 +78,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                 intent.putExtra("SHOULD_CLEAR", false)
                 intent.putExtra("shipmentType", "orders")
                 startActivity(intent)
-                finish()
+//                finish()
             }
         }
     }
