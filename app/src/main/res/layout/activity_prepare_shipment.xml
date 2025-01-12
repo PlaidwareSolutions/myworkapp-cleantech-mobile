@@ -42,7 +42,7 @@
                 android:id="@+id/search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:background="@drawable/bg_edit_text"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="12dp"
@@ -61,7 +61,7 @@
                             android:id="@+id/searchAutoComplete"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_24sdp"
+                            android:layout_marginHorizontal="@dimen/_16sdp"
                             android:background="@drawable/bg_edit_text"
                             android:drawableStart="@drawable/ic_search"
                             android:drawablePadding="12dp"
@@ -79,7 +79,7 @@
             <!--                android:id="@+id/searchAutoComplete"-->
             <!--                android:layout_width="match_parent"-->
             <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginHorizontal="@dimen/_24sdp"-->
+            <!--                android:layout_marginHorizontal="@dimen/_16sdp"-->
             <!--                android:background="@drawable/bg_edit_text"-->
             <!--                android:hint="@string/search_ellipse"-->
             <!--                android:textAppearance="@style/inter_400_12_16"-->
@@ -92,14 +92,14 @@
                 android:id="@+id/searchAutoComplete"
                 style="@style/spinner_style"
                 android:layout_width="match_parent"
-                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:background="@drawable/bg_spinner_white" />-->
 
             <TextView
                 android:id="@+id/txtSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginVertical="@dimen/_12sdp"
                 android:text="Order Search"
                 android:textColor="@color/black"
@@ -129,7 +129,7 @@
                         layout="@layout/layout_no_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_24sdp"
+                        android:layout_marginHorizontal="@dimen/_16sdp"
                         android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatButton
@@ -138,7 +138,7 @@
                         android:layout_height="@dimen/_42sdp"
                         android:layout_alignParentBottom="true"
                         android:layout_gravity="bottom"
-                        android:layout_marginHorizontal="@dimen/_24sdp"
+                        android:layout_marginHorizontal="@dimen/_16sdp"
                         android:layout_marginVertical="@dimen/_12sdp"
                         android:background="@drawable/button_background"
                         android:enabled="false"
@@ -153,7 +153,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/white"
-                        android:paddingHorizontal="@dimen/_24sdp"
+                        android:paddingHorizontal="@dimen/_16sdp"
                         android:visibility="gone">
 
                         <include

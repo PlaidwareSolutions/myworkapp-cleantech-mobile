@@ -64,5 +64,9 @@
     <color name="placeholderTextColor">#868686</color>
     <color name="color_121212">#121212</color>
     <color name="color_787679">#787679</color>
+    <color name="color_text_status_initiated">#0958d9</color>
+    <color name="color_bg_status_initiated">#e6f4ff</color>
+    <color name="color_text_status_other">#ffffff</color>
+    <color name="color_bg_status_other">#fafafa</color>
 
 </resources>
