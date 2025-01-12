@@ -7,14 +7,21 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.adapter.ShipmentAdapter
 import com.example.rfidapp.databinding.ActivityPrepareShipment1Binding
+import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentResponse
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
+import com.example.rfidapp.util.core.ShipmentUtil
 import com.example.rfidapp.util.fromJson
 import com.example.rfidapp.util.toFormattedDate
 import com.example.rfidapp.viewmodel.ShipmentViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -23,16 +30,22 @@ import java.util.Locale
 class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
     private val viewModel: ShipmentViewModel by viewModels()
-
-    var createShipmentResponse: CreateShipmentResponse? = null
+    var createShipmentRequest: CreateShipmentRequest? = null
 
     override fun setViewBinding() = ActivityPrepareShipment1Binding.inflate(layoutInflater)
 
     override fun bindObjects() {
-        createShipmentResponse = Gson().fromJson(intent.getStringExtra("shipmentData") ?: "")
     }
 
     override fun bindListeners() {
+        CoroutineScope(Dispatchers.IO).launch {
+            ShipmentUtil.createShipment.collectLatest {
+                createShipmentRequest = it
+                initData()
+            }
+        }
+
+
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 handleBackNavigation()
@@ -42,7 +55,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         binding.apply {
             footer.apply {
                 outlinedOutlined.setOnClickListener {
-
+                    createShipmentRequest?.let { it1 -> viewModel.createShipments(it1) }
                 }
                 filledButton.setOnClickListener {
 //                    CoroutineScope(Dispatchers.IO).launch {
@@ -82,17 +95,6 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                 filledButton.text = "Save Shipment"
                 outlinedOutlined.text = "Finalize & Print"
             }
-
-            createShipmentResponse?.let {
-                shipmentId.text = it.referenceId ?: ""
-                val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-                val date: Date = originalFormat.parse(it.shipmentDate ?: "") ?: return
-                val desiredFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
-                val formattedDate = desiredFormat.format(date)
-                shipmentDate.text = formattedDate
-                carrierName.text = it.carrier ?: ""
-                driverName.setText(it.driver?.name ?: "")
-            }
         }
     }
 
@@ -122,10 +124,26 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
     private fun handleBackNavigation() {
         val resultIntent = Intent().apply {
-            putExtra("shipmentId", createShipmentResponse?.id) // Pass the string data
         }
         setResult(RESULT_OK, resultIntent)
         finish()
+    }
+
+
+    fun initData(){
+        binding.apply {
+            createShipmentRequest?.let {
+                shipmentId.text = ""
+                val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault())
+                val date: Date = originalFormat.parse(it.shipmentDate ?: "") ?: return
+
+                val desiredFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+                val formattedDate = desiredFormat.format(date)
+                shipmentDate.text = formattedDate
+                carrierName.text = it.carrier ?: ""
+                driverName.setText(it.driver?.name ?: "")
+            }
+        }
     }
 
 }

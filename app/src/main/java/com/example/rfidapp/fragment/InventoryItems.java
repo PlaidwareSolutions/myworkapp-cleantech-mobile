@@ -55,6 +55,7 @@ import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.ScreenState;
 import com.example.rfidapp.util.Util;
 import com.example.rfidapp.util.constants.Constants;
+import com.example.rfidapp.util.core.ShipmentUtil;
 import com.example.rfidapp.util.tool.StringUtils;
 import com.example.rfidapp.util.tool.UIHelper;
 import com.example.rfidapp.viewmodel.InvItemsViewModel;
@@ -274,13 +275,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 String formattedDate = formatter.format(date);
                 createShipmentRequest.setShipmentDate(formattedDate);
                 createShipmentRequest.setDriver(new Driver("", ""));
-                if (shipmentId == null) {
+                ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
+                Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                startActivityForResult.launch(intent);
+                /*if (shipmentId == null) {
                     //Create
                     shipmentViewModel.createShipments(createShipmentRequest);
                 } else {
                     //Update
                     shipmentViewModel.updateShipments(shipmentId, createShipmentRequest);
-                }
+                }*/
             }
         });
     }
