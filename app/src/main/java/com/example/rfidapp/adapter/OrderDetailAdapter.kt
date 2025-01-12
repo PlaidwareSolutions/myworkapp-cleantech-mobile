@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rfidapp.databinding.ItemOrderBinding
-import com.example.rfidapp.model.network.Item
 import com.example.rfidapp.model.network.OrderDetail
+import com.example.rfidapp.util.core.ShipmentUtil
 
 class OrderDetailAdapter(
+    val orderId: String,
     val activity: Activity,
     private val orderList: List<OrderDetail.Item>
 ) : RecyclerView.Adapter<OrderDetailAdapter.MyViewHolder>() {
@@ -22,6 +23,10 @@ class OrderDetailAdapter(
                     itemName.text = product?.name ?: ""
                     srNo.text = pos.toString()
                     txtQty.text = (requiredQuantity ?: 0).toString()
+                    ShipmentUtil.orderShipments.value.firstOrNull { it.orderId == orderId }?.let { orderShipmentData ->
+                        txtShipped.text = orderShipmentData.shippedQuantity.toString()
+                        txtBalance.text = orderShipmentData.getRemainingQuantity().toString()
+                    }
 
                     views.isVisible = position != orderList.size - 1
                 }

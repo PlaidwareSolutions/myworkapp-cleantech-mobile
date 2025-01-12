@@ -125,6 +125,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
     private fun initView(items: List<OrderDetail.Item>) {
         val adapter = OrderDetailAdapter(
+            orderId = orderDetail?.id ?: "",
             activity = this,
             orderList = items,
         )
