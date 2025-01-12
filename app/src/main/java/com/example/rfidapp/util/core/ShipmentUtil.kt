@@ -32,8 +32,12 @@ object ShipmentUtil {
         }
     }
 
-    fun getOrderToShipmentByRefId(orderRefId: String): OrderShipmentData? {
-        return _orderShipments.value.firstOrNull { it.orderRefId == orderRefId }
+    fun getOrderToShipmentById(orderId: String): OrderShipmentData? {
+        return _orderShipments.value.firstOrNull { it.orderId == orderId }
     }
 
+    fun clearAll() {
+        _createShipment.value = null
+        _orderShipments.value.clear()
+    }
 }

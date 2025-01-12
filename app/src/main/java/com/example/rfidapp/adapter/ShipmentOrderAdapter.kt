@@ -5,17 +5,13 @@ import android.app.Activity
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rfidapp.databinding.ItemOrderBinding
 import com.example.rfidapp.databinding.ItemOrderShipmentBinding
 import com.example.rfidapp.model.OrderShipmentData
-import com.example.rfidapp.model.network.InputBol
-import com.example.rfidapp.model.network.Item
-import com.example.rfidapp.model.network.Order
-import com.example.rfidapp.model.network.OrderDetail
 
 class ShipmentOrderAdapter(
     val activity: Activity,
-    private val orderList: List<OrderShipmentData>
+    private val orderList: List<OrderShipmentData>,
+    private val onItemClick: (OrderShipmentData) -> Unit
 ) : RecyclerView.Adapter<ShipmentOrderAdapter.MyViewHolder>() {
 
 
@@ -30,6 +26,9 @@ class ShipmentOrderAdapter(
                     txtAdd.text = getRemainingQuantity().toString()
 
                     views.isVisible = position != orderList.size - 1
+                }
+                itemOrder.setOnClickListener {
+                    onItemClick(orderList[pos])
                 }
             }
 
@@ -48,8 +47,5 @@ class ShipmentOrderAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.bind(position)
-        holder.itemView.setOnClickListener {
-
-        }
     }
 }

@@ -278,9 +278,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 createShipmentRequest.setShipmentDate(formattedDate);
                 createShipmentRequest.setDriver(new Driver("", ""));
                 ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
-                OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentByRefId(orderDetail.getReferenceId());
+                OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
                 if (orderShipmentData == null) {
                     orderShipmentData = new OrderShipmentData(
+                            orderDetail.getId(),
                             orderDetail.getReferenceId(),
                             orderDetail.getTotalCount(),
                             tagsList.size(),
@@ -292,6 +293,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
                 Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
                 startActivityForResult.launch(intent);
+                mContext.finish();
                 /*if (shipmentId == null) {
                     //Create
                     shipmentViewModel.createShipments(createShipmentRequest);

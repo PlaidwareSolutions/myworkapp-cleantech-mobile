@@ -3,26 +3,17 @@ package com.example.rfidapp.activity
 import android.content.Intent
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.rfidapp.adapter.ShipmentAdapter
 import com.example.rfidapp.adapter.ShipmentOrderAdapter
 import com.example.rfidapp.databinding.ActivityPrepareShipment1Binding
 import com.example.rfidapp.model.OrderShipmentData
 import com.example.rfidapp.model.network.CreateShipmentRequest
-import com.example.rfidapp.model.network.CreateShipmentResponse
-import com.example.rfidapp.model.network.InputBol
-import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.core.ShipmentUtil
-import com.example.rfidapp.util.fromJson
-import com.example.rfidapp.util.toFormattedDate
 import com.example.rfidapp.viewmodel.ShipmentViewModel
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -80,6 +71,15 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 //                    }
                 }
             }
+
+            addOrder.setOnClickListener {
+                val intent =
+                    Intent(this@PrepareShipment1Activity, PrepareShipmentActivity::class.java)
+                intent.putExtra("SHOULD_CLEAR", false)
+                intent.putExtra("shipmentType", "orders")
+                startActivity(intent)
+                finish()
+            }
         }
     }
 
@@ -111,6 +111,11 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         val adapter = ShipmentOrderAdapter(
             activity = this,
             orderList = items,
+            onItemClick = { orderShipmentData ->
+                val intent = Intent(this, OrderDetailActivity::class.java)
+                intent.putExtra("ORDER_ID", orderShipmentData.orderId)
+                startActivity(intent)
+            }
         )
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

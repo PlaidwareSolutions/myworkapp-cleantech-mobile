@@ -101,6 +101,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                             InventoryItemsActivity::class.java
                         ).putExtra("orderDetail", Gson().toJson(orderDetail))
                     )
+                    finish()
                 }
                 outlinedOutlined.setOnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {
