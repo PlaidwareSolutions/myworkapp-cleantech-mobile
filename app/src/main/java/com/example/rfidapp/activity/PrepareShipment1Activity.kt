@@ -1,6 +1,9 @@
 package com.example.rfidapp.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +12,7 @@ import com.example.rfidapp.databinding.ActivityPrepareShipment1Binding
 import com.example.rfidapp.model.OrderShipmentData
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.util.ActBase
+import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.core.ShipmentUtil
 import com.example.rfidapp.viewmodel.ShipmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +46,33 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         CoroutineScope(Dispatchers.IO).launch {
             ShipmentUtil.orderShipments.collectLatest {
                 initViewData(it)
+            }
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.createShipmentList.collectLatest { state ->
+                runOnUiThread {
+                    when (state) {
+                        is ScreenState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is ScreenState.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            val response = state.response
+                            binding.txtShipmentId.text = response.referenceId
+                            Toast.makeText(this@PrepareShipment1Activity, "Shipment created successfully", Toast.LENGTH_SHORT).show()
+                        }
+                        is ScreenState.Error -> {
+                            val errorMessage = state.message
+                            Toast.makeText(this@PrepareShipment1Activity, errorMessage, Toast.LENGTH_SHORT).show()
+                            binding.progressBar.visibility = View.GONE
+                        }
+
+                        ScreenState.Idle -> {
+
+                        }
+                    }
+                }
             }
         }
 
@@ -122,20 +153,6 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         binding.rcvOrders.adapter = adapter
     }
 
-    /*private fun updateOrderDetail(orderDetail: OrderDetail) {
-        binding.orderId.text = orderDetail.referenceId
-        binding.carrierName.text = orderDetail.carrier?.name
-        binding.orderDate.text = orderDetail.createdAt?.toFormattedDate()
-        if (orderDetail.items.isEmpty().not()) {
-            binding.rcvOrders.isVisible = true
-            binding.lnrContent.isVisible = true
-            initViewData(orderDetail.items)
-        } else {
-            binding.rcvOrders.isVisible = false
-            binding.lnrContent.isVisible = false
-        }
-    }*/
-
     private fun handleBackNavigation() {
         val resultIntent = Intent().apply {
         }
@@ -144,13 +161,13 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun initData(){
         binding.apply {
             createShipmentRequest?.let {
-                shipmentId.text = ""
+                txtShipmentId.text = "To be generated"
                 val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault())
                 val date: Date = originalFormat.parse(it.shipmentDate ?: "") ?: return
-
                 val desiredFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
                 val formattedDate = desiredFormat.format(date)
                 shipmentDate.text = formattedDate
