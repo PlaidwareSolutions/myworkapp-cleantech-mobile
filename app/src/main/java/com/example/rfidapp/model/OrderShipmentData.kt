@@ -1,11 +1,11 @@
 package com.example.rfidapp.model
 
 data class OrderShipmentData(
-    val orderId: String,
-    val orderRefId: String,
-    val totalQuantity: Int,
-    val shippedQuantity: Int,
-    val tags: ArrayList<String>
+    var orderId: String,
+    var orderRefId: String,
+    var totalQuantity: Int,
+    var shippedQuantity: Int,
+    var tags: ArrayList<String>
 ) {
     fun getRemainingQuantity() = totalQuantity - shippedQuantity
 }
