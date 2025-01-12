@@ -6,9 +6,12 @@ import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.adapter.ShipmentAdapter
+import com.example.rfidapp.adapter.ShipmentOrderAdapter
 import com.example.rfidapp.databinding.ActivityPrepareShipment1Binding
+import com.example.rfidapp.model.OrderShipmentData
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentResponse
+import com.example.rfidapp.model.network.InputBol
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.core.ShipmentUtil
@@ -30,7 +33,7 @@ import java.util.Locale
 class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
     private val viewModel: ShipmentViewModel by viewModels()
-    var createShipmentRequest: CreateShipmentRequest? = null
+    private var createShipmentRequest: CreateShipmentRequest? = null
 
     override fun setViewBinding() = ActivityPrepareShipment1Binding.inflate(layoutInflater)
 
@@ -42,6 +45,12 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
             ShipmentUtil.createShipment.collectLatest {
                 createShipmentRequest = it
                 initData()
+            }
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            ShipmentUtil.orderShipments.collectLatest {
+                initViewData(it)
             }
         }
 
@@ -98,8 +107,8 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         }
     }
 
-    private fun initViewData(items: List<OrderDetail.Item>) {
-        val adapter = ShipmentAdapter(
+    private fun initViewData(items: List<OrderShipmentData>) {
+        val adapter = ShipmentOrderAdapter(
             activity = this,
             orderList = items,
         )
@@ -130,7 +139,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
     }
 
 
-    fun initData(){
+    private fun initData(){
         binding.apply {
             createShipmentRequest?.let {
                 shipmentId.text = ""

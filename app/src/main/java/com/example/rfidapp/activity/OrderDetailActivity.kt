@@ -28,7 +28,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
     override fun setViewBinding() = ActivityOrderDetailBinding.inflate(layoutInflater)
 
-    var orderDetail: OrderDetail?= null
+    private var orderDetail: OrderDetail?= null
     override fun bindObjects() {
         intent.getStringExtra("ORDER_ID")?.let {
             viewModel.fetchOrderDetail(it)

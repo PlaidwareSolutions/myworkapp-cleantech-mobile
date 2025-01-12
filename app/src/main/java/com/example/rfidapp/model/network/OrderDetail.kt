@@ -23,4 +23,12 @@ data class OrderDetail(
         @SerializedName("product") var product: Product? = null,
         @SerializedName("requiredQuantity") var requiredQuantity: Int? = null
     ) : Serializable
+
+    fun getTotalCount(): Int {
+        var totalCount = 0
+        for (item in items) {
+            totalCount += item.requiredQuantity ?: 0
+        }
+        return totalCount
+    }
 }

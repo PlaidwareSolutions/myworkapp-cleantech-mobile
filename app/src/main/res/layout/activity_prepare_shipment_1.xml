@@ -312,25 +312,6 @@
                         android:textAppearance="@style/inter_400_10_16"
                         android:textColor="@color/color_181818" />
 
-                    <View
-                        android:visibility="invisible"
-                        android:layout_width="@dimen/table_divider_width"
-                        android:layout_height="match_parent"
-                        android:background="@color/bg_stroke_color" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginVertical="@dimen/padding_inside_table_field"
-                        android:fontFamily="@font/inter_regular"
-                        android:gravity="center"
-                        android:letterSpacing="-0.01"
-                        android:text="BAL"
-                        android:textStyle="bold"
-                        android:textAllCaps="true"
-                        android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/color_181818" />
                 </LinearLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -46,6 +46,7 @@ import com.example.rfidapp.databinding.FragmentInventoryItemsBinding;
 import com.example.rfidapp.entity.InventoryItemsEntity;
 import com.example.rfidapp.entity.InventoryListEntity;
 import com.example.rfidapp.model.EpcModel;
+import com.example.rfidapp.model.OrderShipmentData;
 import com.example.rfidapp.model.network.CreateShipmentRequest;
 import com.example.rfidapp.model.network.CreateShipmentResponse;
 import com.example.rfidapp.model.network.Driver;
@@ -267,6 +268,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                 bills.add(new InputBol(orderDetail.getId(),tagsList));
+
                 createShipmentRequest.setBols(bills);
                 createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
                 Date date = new Date();
@@ -276,6 +278,18 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 createShipmentRequest.setShipmentDate(formattedDate);
                 createShipmentRequest.setDriver(new Driver("", ""));
                 ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
+                OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentByRefId(orderDetail.getReferenceId());
+                if (orderShipmentData == null) {
+                    orderShipmentData = new OrderShipmentData(
+                            orderDetail.getReferenceId(),
+                            orderDetail.getTotalCount(),
+                            tagsList.size(),
+                            (ArrayList<String>) tagsList
+                    );
+                } else {
+                    //todo:update logic here
+                }
+                ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
                 Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
                 startActivityForResult.launch(intent);
                 /*if (shipmentId == null) {
