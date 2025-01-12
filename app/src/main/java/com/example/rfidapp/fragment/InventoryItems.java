@@ -6,34 +6,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.room.Room;
 
 import com.example.rfidapp.R;
@@ -48,12 +38,10 @@ import com.example.rfidapp.entity.InventoryListEntity;
 import com.example.rfidapp.model.EpcModel;
 import com.example.rfidapp.model.OrderShipmentData;
 import com.example.rfidapp.model.network.CreateShipmentRequest;
-import com.example.rfidapp.model.network.CreateShipmentResponse;
 import com.example.rfidapp.model.network.Driver;
 import com.example.rfidapp.model.network.InputBol;
 import com.example.rfidapp.model.network.OrderDetail;
 import com.example.rfidapp.util.PreferenceManager;
-import com.example.rfidapp.util.ScreenState;
 import com.example.rfidapp.util.Util;
 import com.example.rfidapp.util.constants.Constants;
 import com.example.rfidapp.util.core.ShipmentUtil;
@@ -61,14 +49,9 @@ import com.example.rfidapp.util.tool.StringUtils;
 import com.example.rfidapp.util.tool.UIHelper;
 import com.example.rfidapp.viewmodel.InvItemsViewModel;
 import com.example.rfidapp.viewmodel.InvListViewModel;
-import com.example.rfidapp.viewmodel.ShipmentViewModel;
 import com.example.rfidapp.views.UhfInfo;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
-import com.google.mlkit.common.sdkinternal.OptionalModuleUtils;
-import com.rscja.deviceapi.entity.BarcodeEntity;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
-import com.rscja.deviceapi.interfaces.KeyEventCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,7 +70,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import kotlinx.coroutines.CoroutineScope;
 
 @AndroidEntryPoint
 public class InventoryItems extends KeyDownFragment implements View.OnClickListener {
@@ -136,7 +118,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     InvItemsViewModel invItemsViewModel;
     InvListViewModel invListViewModel;
 
-//    ShipmentViewModel shipmentViewModel;
+//  ShipmentViewModel shipmentViewModel;
     List<EpcModel> inv_epc;
     boolean isAleart = false;
     boolean isBar = false;
@@ -150,7 +132,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     private String mParam2;
     private HashMap<String, String> map;
     public String miliSec;
-    MySearchAdapter mySearchAdapter;
+    /*MySearchAdapter mySearchAdapter;*/
     int page = 0;
     MenuItem power;
 
@@ -174,15 +156,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     OrderDetail orderDetail;
     String shipmentId = null;
 
-    private final ActivityResultCallback<ActivityResult> resultCallback =
+    /*private final ActivityResultCallback<ActivityResult> resultCallback =
             result -> {
                 if (result.getResultCode() == getActivity().RESULT_OK) {
-                    shipmentId = result.getData().getStringExtra("shipmentId");
+                    */
+    /*shipmentId = result.getData().getStringExtra("shipmentId");*//*
                 }
-            };
+            };*/
 
-    private final androidx.activity.result.ActivityResultLauncher<Intent> startActivityForResult =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), resultCallback);
+    /*private final androidx.activity.result.ActivityResultLauncher<Intent> startActivityForResult =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), resultCallback);*/
 
     static int binarySearch(List<String> list, String str) {
         int i = 0;
@@ -238,14 +221,14 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.invItemsViewModel = new ViewModelProvider(this).get(InvItemsViewModel.class);
         this.invListViewModel = new ViewModelProvider(this).get(InvListViewModel.class);
 //        this.shipmentViewModel = new ViewModelProvider(this).get(ShipmentViewModel.class);
-        this.binding.rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
+        /*this.binding.rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         this.invItemAdapter = new InvItemAdapter(this.inv_epc, getContext());
-        this.binding.rvItems.setAdapter(this.invItemAdapter);
-        setHasOptionsMenu(true);
-        this.intentActivityResultLauncher = registerForActivityResult(
+        this.binding.rvItems.setAdapter(this.invItemAdapter);*/
+        /*setHasOptionsMenu(true);*/
+        /*this.intentActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> this.resultListner(result)
-        );
+        );*/
         setupUI();
 //        bindListeners();
         return this.binding.getRoot();
@@ -256,56 +239,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         binding.orderId.setText(orderDetail.getReferenceId());
         binding.customerName.setText(orderDetail.getCustomer().getName());
         binding.carrierName.setText(orderDetail.getCarrier().getName());
-
-        binding.save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Create Shipment Flow
-                CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
-                ArrayList<InputBol> bills = new ArrayList<>();
-                List<String> tagsList = tagList.stream()
-                        .map(map -> map.get(InventoryItems.TAG_EPC))
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-                bills.add(new InputBol(orderDetail.getId(),tagsList));
-
-                createShipmentRequest.setBols(bills);
-                createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
-                Date date = new Date();
-                @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-                String formattedDate = formatter.format(date);
-                createShipmentRequest.setShipmentDate(formattedDate);
-                createShipmentRequest.setDriver(new Driver("", ""));
-                ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
-                OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
-                if (orderShipmentData == null) {
-                    orderShipmentData = new OrderShipmentData(
-                            orderDetail.getId(),
-                            orderDetail.getReferenceId(),
-                            orderDetail.getTotalCount(),
-                            tagsList.size(),
-                            (ArrayList<String>) tagsList
-                    );
-                } else {
-                    ArrayList<String> tags = orderShipmentData.getTags();
-                    tags.addAll(tagsList);
-                    tags.stream().distinct();
-                    orderShipmentData.setTags(tags);
-                }
-                ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
-                Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
-                startActivityForResult.launch(intent);
-                mContext.finish();
-                /*if (shipmentId == null) {
-                    //Create
-                    shipmentViewModel.createShipments(createShipmentRequest);
-                } else {
-                    //Update
-                    shipmentViewModel.updateShipments(shipmentId, createShipmentRequest);
-                }*/
-            }
-        });
     }
 
     /*private void bindListeners(){
@@ -327,13 +260,13 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         });
     }*/
 
-    public void resultListner(ActivityResult activityResult) {
+    /*public void resultListner(ActivityResult activityResult) {
         if (activityResult.getResultCode() == InventoryItemsActivity.barcodeResultCode) {
             Intent data = activityResult.getData();
             mContext.playSound(1);
             addDataToList(data.getStringExtra(OptionalModuleUtils.BARCODE).trim(), "", Util.getDateTime(), "",true);
         }
-    }
+    }*/
 
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
@@ -345,7 +278,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     public void init() {
-        if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equalsIgnoreCase("Rfid")) {
+        /*if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equalsIgnoreCase("Rfid")) {
             this.mContext.setTitle("Scan Tag");
             if (PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).equals("null") || PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).equals("")) {
                 this.binding.llInvCycle.setVisibility(View.GONE);
@@ -353,7 +286,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else {
                 this.binding.tvCycle.setText(PreferenceManager.getStringValue(Constants.INV_ITEM_RFID));
             }
-        } else {
+        }*/
+        /*else {
             if (this.mContext.isC5Device.booleanValue()) {
                 new InitBarcodeTask().execute(new String[0]);
             }
@@ -363,8 +297,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else {
                 this.binding.tvCycle.setText(PreferenceManager.getStringValue(Constants.INV_ITEM_BAR));
             }
-        }
-        if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") && InventoryItemsActivity.mBtReader != null) {
+        }*/
+        /*if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") && InventoryItemsActivity.mBtReader != null) {
             InventoryItemsActivity.mBtReader.setKeyEventCallback(new KeyEventCallback() {
                 public void onKeyUp(int i) {
                 }
@@ -380,19 +314,19 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     }
                 }
             });
-        }
+        }*/
         this.tagSearchList = new ArrayList<>();
         this.adapter = new MyAdapter(this.mContext);
-        this.mySearchAdapter = new MySearchAdapter(this.mContext);
+        /*this.mySearchAdapter = new MySearchAdapter(this.mContext);*/
         this.binding.LvTags.setAdapter(this.adapter);
-        this.binding.LvSearchTags.setAdapter(this.mySearchAdapter);
+        /*this.binding.LvSearchTags.setAdapter(this.mySearchAdapter);*/
         this.utils = new Util(getContext());
         this.binding.btStart.setOnClickListener(this);
         this.binding.btCan.setOnClickListener(this);
-        this.binding.btSch.setOnClickListener(this);
+        /*this.binding.btSch.setOnClickListener(this);*/
         this.binding.btClear.setOnClickListener(this);
-        this.binding.tvEdit.setOnClickListener(this);
-        this.binding.etSearch.addTextChangedListener(new TextWatcher() {
+        /*this.binding.tvEdit.setOnClickListener(this);*/
+        /*this.binding.etSearch.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
             }
 
@@ -412,12 +346,63 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 InventoryItems.this.binding.LvSearchTags.setVisibility(android.view.View.GONE);
                 InventoryItems.this.binding.LvTags.setVisibility(android.view.View.VISIBLE);
             }
-        });
-        if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
+        });*/
+        /*if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
             loadData(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
         } else {
             loadData(PreferenceManager.getStringValue(Constants.INV_ID_BAR));
-        }
+        }*/
+        binding.save.setOnClickListener(view -> {
+            //Create Shipment Flow
+            CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
+            ArrayList<InputBol> bills = new ArrayList<>();
+            List<String> tagsList = tagList.stream()
+                    .map(map -> map.get(InventoryItems.TAG_EPC))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            bills.add(new InputBol(orderDetail.getId(),tagsList));
+
+            createShipmentRequest.setBols(bills);
+            createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+            Date date = new Date();
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+            String formattedDate = formatter.format(date);
+            createShipmentRequest.setShipmentDate(formattedDate);
+            createShipmentRequest.setDriver(new Driver("", ""));
+            ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
+            OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
+            if (orderShipmentData == null) {
+                orderShipmentData = new OrderShipmentData(
+                        orderDetail.getId(),
+                        orderDetail.getReferenceId(),
+                        orderDetail.getTotalCount(),
+                        tagsList.size(),
+                        (ArrayList<String>) tagsList
+                );
+            } else {
+                ArrayList<String> tags = orderShipmentData.getTags();
+                tags.addAll(tagsList);
+                tags.stream().distinct();
+                orderShipmentData.setTags(tags);
+            }
+            ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
+            Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+            startActivity(intent);
+            mContext.finish();
+            /*if (shipmentId == null) {
+                //Create
+                shipmentViewModel.createShipments(createShipmentRequest);
+            } else {
+                //Update
+                shipmentViewModel.updateShipments(shipmentId, createShipmentRequest);
+            }*/
+        });
+
+        InventoryItems.this.isSearch = false;
+        InventoryItems.this.binding.LvSearchTags.setVisibility(android.view.View.GONE);
+        InventoryItems.this.binding.LvTags.setVisibility(android.view.View.VISIBLE);
+        loadData(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
     }
 
     public void onClick(View view) {
@@ -443,7 +428,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else {
                 clearDialog();
             }
-        } else if (view.getId() == R.id.bt_sch) {
+        }
+        /*else if (view.getId() == R.id.bt_sch) {
             if (this.mContext.isBTDevice.booleanValue()) {
                 if (InventoryItemsActivity.mBtReader.isWorking()) {
                     this.mContext.highlightToast("Kindly Stop Reading First..", 2);
@@ -460,7 +446,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 this.binding.llTitle.setVisibility(View.GONE);
                 this.binding.llSch.setVisibility(View.VISIBLE);
             }
-        } else if (view.getId() == R.id.bt_start) {
+        }*/
+        else if (view.getId() == R.id.bt_start) {
             if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
                 if (PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).equals("")) {
                     insertValues();
@@ -473,7 +460,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 } else {
                     this.mContext.highlightToast("Please Connect Device First..", 2);
                 }
-            } else if (this.mContext.isC5Device.booleanValue()) {
+            }
+            /*else if (this.mContext.isC5Device.booleanValue()) {
                 if (!this.isBar) {
                     this.isBar = true;
                     start();
@@ -484,8 +472,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 insertValues();
             } else {
                 startBarcode();
-            }
-        } else if (view.getId() == R.id.tv_edit) {
+            }*/
+        }
+        /*else if (view.getId() == R.id.tv_edit) {
             if (!PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
                 editBottomSheet(PreferenceManager.getStringValue(Constants.INV_ID_BAR));
             } else if (this.mContext.isBTDevice.booleanValue()) {
@@ -503,14 +492,14 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     editBottomSheet(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
                 }
             }
-        }
+        }*/
     }
 
-    public void startBarcode() {
-        /*this.intentActivityResultLauncher.launch(new Intent(this.mContext, BarcodeActivity.class));*/
-    }
+    /*public void startBarcode() {
+        this.intentActivityResultLauncher.launch(new Intent(this.mContext, BarcodeActivity.class));
+    }*/
 
-    public void editBottomSheet(String str) {
+    /*public void editBottomSheet(String str) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this.mContext);
         bottomSheetDialog.setContentView(View.inflate(this.mContext, R.layout.inv_update, (ViewGroup) null));
         TextView textView = (TextView) bottomSheetDialog.findViewById(R.id.tv_inv_name);
@@ -530,9 +519,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         textView4.setOnClickListener(view -> bottomSheetDialog.dismiss());
         textView3.setOnClickListener(view -> bottomSheetDialog.dismiss());
         bottomSheetDialog.show();
-    }
+    }*/
 
-    public void editBottomSheet(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
+    /*public void editBottomSheet(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
         String trim = editText.getText().toString().trim();
         if (trim.length() <= 0) {
             this.mContext.highlightToast("Please Enter New Name...", 2);
@@ -547,9 +536,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         } else {
             this.mContext.highlightToast("Please Try Again.", 2);
         }
-    }
+    }*/
 
-    public void editBottomSheet2(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
+    /*public void editBottomSheet2(EditText editText, String str, BottomSheetDialog bottomSheetDialog, View view) {
         String trim = editText.getText().toString().trim();
         if (trim.length() <= 0) {
             this.mContext.highlightToast("Please Enter New Name...", 2);
@@ -564,7 +553,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         } else {
             this.mContext.highlightToast("Please Try Again.", 2);
         }
-    }
+    }*/
 
     public void btCancel(String str) {
         if (str.contains("grey")) {
@@ -575,7 +564,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     @SuppressLint("CheckResult")
-    public void loadEpc(String str) {
+    /*public void loadEpc(String str) {
         String str2;
         this.tagSearchList.clear();
         if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
@@ -603,10 +592,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 InventoryItems.this.mySearchAdapter.notifyDataSetChanged();
             }
         });
-    }
+    } */
 
     private String getMiliSec() {
-        String str = "RS_INV_" + String.valueOf(Calendar.getInstance().getTimeInMillis());
+        String str = "RS_INV_" + Calendar.getInstance().getTimeInMillis();
         this.miliSec = str;
         return str;
     }
@@ -634,17 +623,15 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     }
 
                     @Override
-                    public void onError(Throwable th) {}
+                    public void onError(Throwable th) {
+                        Toast.makeText(requireActivity(),th.getMessage(),Toast.LENGTH_SHORT);
+                    }
                 });
         return null;
     }
 
-    public void mInsertValues() throws Exception {
-        this.invListViewModel.insert(setInventoryValue());
-    }
-
-    private InventoryListEntity setInventoryValue() {
-        return new InventoryListEntity(getMiliSec(), Util.getDateTime(), Util.getDateTime(), "0", PreferenceManager.getStringValue(Constants.CUR_SC_TYPE));
+    public void mInsertValues() {
+        this.invListViewModel.insert(new InventoryListEntity(getMiliSec(), Util.getDateTime(), Util.getDateTime(), "0", PreferenceManager.getStringValue(Constants.CUR_SC_TYPE)));
     }
 
     public void onPause() {
@@ -657,14 +644,14 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
     public void onResume() {
         this.mContext.checkBTConnect();
-        if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Barcode") && this.mContext.isC5Device.booleanValue()) {
+        /*if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Barcode") && this.mContext.isC5Device.booleanValue()) {
             new InitBarcodeTask().execute(new String[0]);
-        }
+        }*/
         super.onResume();
     }
 
-    public void onPrepareOptionsMenu(Menu menu) {
-        /*this.add = menu.findItem(R.id.menu_add).setVisible(false);
+    /*public void onPrepareOptionsMenu(Menu menu) {
+        *//*this.add = menu.findItem(R.id.menu_add).setVisible(false);
         this.csv = menu.findItem(R.id.menu_csv);
         this.power = menu.findItem(R.id.menu_power);
         this.inv = menu.findItem(R.id.menu_inv);
@@ -673,25 +660,25 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.inv.setVisible(true);
         this.csv.setOnMenuItemClickListener(menuItem -> this.onPrepareOptionsMenu(menuItem));
         this.inv.setOnMenuItemClickListener(menuItem -> this.onPrepareOptionsMenuInv(menuItem));
-        super.onPrepareOptionsMenu(menu);*/
-    }
+        super.onPrepareOptionsMenu(menu);*//*
+    }*/
 
-    public boolean onPrepareOptionsMenu(MenuItem menuItem) {
+    /*public boolean onPrepareOptionsMenu(MenuItem menuItem) {
         if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
             loadExportData(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
             return false;
         }
         loadExportData(PreferenceManager.getStringValue(Constants.INV_ID_BAR));
         return false;
-    }
+    }*/
 
-    public boolean onPrepareOptionsMenuInv(MenuItem menuItem) {
-        /*this.mContext.frm = 4;
-        this.mContext.setFragment(new InventoryList(), "Inventory List");*/
+    /*public boolean onPrepareOptionsMenuInv(MenuItem menuItem) {
+        *//*this.mContext.frm = 4;
+        this.mContext.setFragment(new InventoryList(), "Inventory List");*//*
         return false;
-    }
+    }*/
 
-    public void onMyKeyDown() {
+    /*public void onMyKeyDown() {
         if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equalsIgnoreCase("Rfid")) {
             if (PreferenceManager.getStringValue(Constants.INV_ITEM_RFID) == null || PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).equals("")) {
                 insertValues();
@@ -715,13 +702,14 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.mContext.stop();
         }
         super.onMyKeyDown();
-    }
+    }*/
 
     public void readTag() {
         if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1")) {
-            if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Barcode")) {
+            /*if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Barcode")) {
                 startBarcode();
-            } else if (!this.mContext.isBtConnect) {
+            } else*/
+            if (!this.mContext.isBtConnect) {
                 this.mContext.highlightToast("Kindly Connect Device First..", 2);
             } else if (InventoryItemsActivity.mBtReader.startInventoryTag()) {
 //                binding.imgScan.setVisibility(View.GONE);
@@ -735,14 +723,15 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
         } else if (InventoryItemsActivity.mReader == null) {
         } else {
-            if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Barcode")) {
+            /*if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Barcode")) {
                 if (!this.isBar) {
                     this.isBar = true;
                     start();
                     return;
                 }
                 this.mContext.stop();
-            } else if (InventoryItemsActivity.mReader.startInventoryTag()) {
+            } else*/
+            if (InventoryItemsActivity.mReader.startInventoryTag()) {
 //                binding.imgScan.setVisibility(View.GONE);
                 this.binding.btStart.setText(this.mContext.getString(R.string.title_stop_Inventory));
                 this.loopFlag = true;
@@ -995,7 +984,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             viewHolder.tvTagCount.setText("Read Count: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
 //            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
             viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI_NUMBER));
-            viewHolder.llList.setOnClickListener(v -> this.showPopup(i, v));
+            /*viewHolder.llList.setOnClickListener(v -> this.showPopup(i, v));*/
             if (i == InventoryItems.this.selectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));
             } else {
@@ -1005,7 +994,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
 
 
-        public void showPopup(int i, View view) {
+       /* public void showPopup(int i, View view) {
             InventoryItems inventoryItems = InventoryItems.this;
             inventoryItems.showPopup(view, (String) inventoryItems.tagList.get(i).get(InventoryItems.TAG_EPC));
         }
@@ -1020,10 +1009,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             int unused2 = InventoryItems.this.selectItem = i;
             InventoryItems.this.uhfInfo.setSelectItem((String) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
             InventoryItems.this.uhfInfo.setSelectIndex(InventoryItems.this.selectItem);
-        }
+        }*/
     }
 
-    public void showPopup(View view, String str) {
+    /*public void showPopup(View view, String str) {
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.search_menu, popupMenu.getMenu());
         MenuItem findItem = popupMenu.getMenu().findItem(R.id.menu_search);
@@ -1033,26 +1022,26 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         findItem.setOnMenuItemClickListener(menuItem -> this.showPopup(str, menuItem));
         findItem2.setOnMenuItemClickListener(menuItem -> this.showPopup1(str, menuItem));
         popupMenu.show();
-    }
+    }*/
 
-    public boolean showPopup(String str, MenuItem menuItem) {
+    /*public boolean showPopup(String str, MenuItem menuItem) {
         SingleSearch singleSearch = new SingleSearch();
         Bundle bundle = new Bundle();
         bundle.putString("epc", str);
         singleSearch.setArguments(bundle);
-        /*this.mContext.setFragment(singleSearch, "Single Search");*/
+        *//*this.mContext.setFragment(singleSearch, "Single Search");*//*
         return false;
-    }
+    }*/
 
 
-    public boolean showPopup1(String str, MenuItem menuItem) {
+    /*public boolean showPopup1(String str, MenuItem menuItem) {
         WriteTag writeTag = new WriteTag();
         Bundle bundle = new Bundle();
         bundle.putString("epc", str);
         writeTag.setArguments(bundle);
-        /*this.mContext.setFragment(writeTag, "Write Tag");*/
+        *//*this.mContext.setFragment(writeTag, "Write Tag");*//*
         return false;
-    }
+    }*/
 
     public class setEpc extends AsyncTask<List<InventoryItemsEntity>, Boolean, Boolean> {
         public setEpc() {
@@ -1061,11 +1050,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         @Override
         public Boolean doInBackground(List<InventoryItemsEntity>... listArr) {
             for (int i = 0; i < listArr[0].size(); i++) {
-                if (InventoryItems.this.isSearch) {
-                    InventoryItems.this.addDataToSearchList(listArr[0].get(i).getEpc(), listArr[0].get(i).getTimeStamp());
-                } else {
-                    InventoryItems.this.addDataToList(listArr[0].get(i).getEpc(), "", listArr[0].get(i).getTimeStamp(), "",false);
-                }
+                InventoryItems.this.addDataToList(listArr[0].get(i).getEpc(), "", listArr[0].get(i).getTimeStamp(), "",false);
             }
             return null;
         }
@@ -1078,13 +1063,13 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         @Override
         public void onPostExecute(Boolean bool) {
             InventoryItems.this.adapter.notifyDataSetChanged();
-            InventoryItems.this.mySearchAdapter.notifyDataSetChanged();
+            /*InventoryItems.this.mySearchAdapter.notifyDataSetChanged();*/
             InventoryItems.this.utils.hideProgressBar();
             super.onPostExecute(bool);
         }
     }
 
-    public void addDataToSearchList(String str, String str2) {
+    /*public void addDataToSearchList(String str, String str2) {
         if (StringUtils.isNotEmpty(str)) {
             HashMap<String, String> hashMap = new HashMap<>();
             this.searchMap = hashMap;
@@ -1094,9 +1079,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.tagSearchList.add(this.searchMap);
             this.uhfInfo.setTagSearchList(this.tagSearchList);
         }
-    }
+    }*/
 
-    public final class SearchViewHolder {
+    /*public final class SearchViewHolder {
         public LinearLayout SllList;
         public TextView StvEPCTID;
         public TextView StvTagCount;
@@ -1105,9 +1090,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
         public SearchViewHolder() {
         }
-    }
+    }*/
 
-    public class MySearchAdapter extends BaseAdapter {
+    /*public class MySearchAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
 
         public long getItemId(int i) {
@@ -1170,7 +1155,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             InventoryItems.this.uhfInfo.setSelectItem((String) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
             InventoryItems.this.uhfInfo.setSelectIndex(InventoryItems.this.SearchSelectItem);
         }
-    }
+    }*/
 
     private void clearDialog() {
         new AlertDialog.Builder(getContext()).setIcon((int) R.drawable.delete_24).setTitle((CharSequence) "Clear Data").setMessage((CharSequence) "Do you want to clear all data?").setPositiveButton((CharSequence) "Yes", (DialogInterface.OnClickListener) new DialogInterface.OnClickListener() {
@@ -1282,7 +1267,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }
 
-    public class InitBarcodeTask extends AsyncTask<String, Integer, Boolean> {
+    /*public class InitBarcodeTask extends AsyncTask<String, Integer, Boolean> {
         ProgressDialog mypDialog;
 
         public InitBarcodeTask() {
@@ -1311,20 +1296,20 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.mypDialog.setCancelable(false);
             this.mypDialog.show();
         }
-    }
+    }*/
 
-    private void start() {
+    /*private void start() {
         this.binding.btStart.setText("STOP");
         this.mContext.barcodeDecoder.startScan();
-    }
+    }*/
 
-    public void open() {
+    /*public void open() {
         this.mContext.barcodeDecoder.open(this.mContext);
         this.mContext.barcodeDecoder.setDecodeCallback(barcodeEntity -> this.open(barcodeEntity));
-    }
+    }*/
 
 
-    public void open(BarcodeEntity barcodeEntity) {
+    /*public void open(BarcodeEntity barcodeEntity) {
         if (barcodeEntity.getResultCode() == 1) {
             this.mContext.playSound(1);
             addDataToList(barcodeEntity.getBarcodeData(), "", Util.getDateTime(),"", true);
@@ -1335,16 +1320,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.isBar = false;
         this.binding.btStart.setText("Start");
         this.mContext.stop();
-    }
+    }*/
 
-    public static String[] permissions() {
+    /*public static String[] permissions() {
         if (Build.VERSION.SDK_INT >= 30) {
             return storage_permissions_33;
         }
         return storage_permissions;
-    }
+    }*/
 
-    public void loadExportData(String str) {
+    /*public void loadExportData(String str) {
         this.utils.showProgressBar("Please wait...");
         this.invItemsViewModel.getInvData(str, this.page, this.limit).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<InventoryItemsEntity>>() {
             public void onSuccess(List<InventoryItemsEntity> list) {
@@ -1370,9 +1355,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 InventoryItems.this.mContext.highlightToast("Error occurred while fetching data", 2);
             }
         });
-    }
+    }*/
 
-    public class ExportAsyncTask extends AsyncTask<Void, Void, Void> {
+    /*public class ExportAsyncTask extends AsyncTask<Void, Void, Void> {
         private String invCycle;
         private Context mContext;
         private List<InventoryItemsEntity> productDetails;
@@ -1388,10 +1373,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             InventoryItems.this.exportDB(this.productDetails);
             return null;
         }
-    }
+    }*/
 
-    public void exportDB(List<InventoryItemsEntity> r8) {
-        /*
+    /*public void exportDB(List<InventoryItemsEntity> r8) {
+        */
+    /*
             r7 = this;
             java.lang.String r0 = "ItemDetails_"
             java.lang.String r1 = android.os.Environment.getExternalStorageState()
@@ -1486,6 +1472,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         L_0x00ca:
             throw r8
         */
+    /*
         throw new UnsupportedOperationException("Method not decompiled: com.ruddersoft.rfidscanner.views.fragments.InventoryItems.exportDB(java.util.List):void");
-    }
+    }*/
 }
