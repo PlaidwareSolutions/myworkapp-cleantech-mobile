@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.ColorStateList
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rfidapp.R
 import com.example.rfidapp.databinding.ItemSearchBinding
 import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.util.toFormattedDate
 
 class OrderAdapter(
     val activity: Activity,
@@ -19,12 +21,49 @@ class OrderAdapter(
 
     inner class MyViewHolder(val binding: ItemSearchBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(pos: Int) {
             binding.apply {
                 with(orderList[pos]) {
                     orderId.text = referenceId
                     carrierName.text = carrier?.name ?: ""
                     reqBy.text = customer?.name ?: ""
+                    reqDate.text = requiredDate?.toFormattedDate()
+                    txtStatus.text = status?:""
+                    val totalRequiredQuantity = items.sumOf { it.requiredQuantity ?: 0 }
+                    txtRequiredQuantity.text = "" + totalRequiredQuantity
+
+                    if(status?.equals("INITIATED",ignoreCase = true) == true){
+                        binding.txtStatus.backgroundTintList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    txtStatus.context,
+                                    R.color.color_bg_status_initiated
+                                )
+                            )
+                        binding.txtStatus.setTextColor(
+                            ContextCompat.getColor(
+                                txtStatus.context,
+                                R.color.color_text_status_initiated
+                            )
+                        )
+                    }else{
+                        binding.txtStatus.backgroundTintList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    txtStatus.context,
+                                    R.color.bg_stroke_color
+                                )
+                            )
+                        binding.txtStatus.setTextColor(
+                            ContextCompat.getColor(
+                                txtStatus.context,
+                                R.color.black
+                            )
+                        )
+                    }
+
+
                     if (selectedOrderPos == pos) {
                         lnrItem.backgroundTintList = ColorStateList.valueOf(
                             activity.getColor(R.color.colorPrimary)
