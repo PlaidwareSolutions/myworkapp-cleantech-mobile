@@ -289,6 +289,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     );
                 } else {
                     //todo:update logic here
+                    ArrayList<String> tags = orderShipmentData.getTags();
+                    tags.addAll(tagsList);
+                    tags.stream().distinct();
+                    orderShipmentData.setTags(tags);
                 }
                 ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
                 Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
