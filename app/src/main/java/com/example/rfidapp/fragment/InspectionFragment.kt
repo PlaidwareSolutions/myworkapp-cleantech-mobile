@@ -4,13 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.example.rfidapp.R
 import com.example.rfidapp.databinding.FragmentAddInspectionBinding
-import com.example.rfidapp.util.views.MaxHeightBottomSheet
+import com.example.rfidapp.viewmodel.AssetViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-class InspectionFragment() : MaxHeightBottomSheet(R.layout.fragment_add_inspection) {
+@AndroidEntryPoint
+class InspectionFragment() : BottomSheetDialogFragment(R.layout.fragment_add_inspection) {
 
     lateinit var binding: FragmentAddInspectionBinding
+    private val assetViewModel: AssetViewModel by viewModels()
 
 
     companion object {
@@ -26,6 +31,7 @@ class InspectionFragment() : MaxHeightBottomSheet(R.layout.fragment_add_inspecti
     ): View {
         binding = FragmentAddInspectionBinding.inflate(inflater, container, false)
         setupUI()
+        setupObservers()
         return binding.root
     }
 
@@ -33,5 +39,9 @@ class InspectionFragment() : MaxHeightBottomSheet(R.layout.fragment_add_inspecti
         binding.apply {
 
         }
+    }
+
+    private fun setupObservers() {
+
     }
 }

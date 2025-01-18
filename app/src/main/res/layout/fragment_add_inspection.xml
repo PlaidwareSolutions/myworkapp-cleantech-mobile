@@ -95,7 +95,7 @@
                         android:orientation="horizontal">
 
                         <RadioButton
-                            android:paddingHorizontal="@dimen/_14sdp"
+                            android:paddingHorizontal="@dimen/_8sdp"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:background="@drawable/radio_button_selector"
@@ -108,7 +108,7 @@
                             tools:checked="true" />
 
                         <RadioButton
-                            android:paddingHorizontal="@dimen/_14sdp"
+                            android:paddingHorizontal="@dimen/_8sdp"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             tools:visibility="visible"
@@ -120,7 +120,7 @@
                             android:textColor="@drawable/radio_button_text_selector" />
 
                         <RadioButton
-                            android:paddingHorizontal="@dimen/_14sdp"
+                            android:paddingHorizontal="@dimen/_8sdp"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             tools:visibility="visible"
@@ -132,7 +132,7 @@
                             android:textColor="@drawable/radio_button_text_selector" />
 
                         <RadioButton
-                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:paddingHorizontal="@dimen/_8sdp"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             tools:visibility="visible"
@@ -182,8 +182,8 @@
                             style="@style/inter_400_14_20"
                             android:letterSpacing="-0.01"
                             android:hint="Enter comment here..."
-                            android:textColorHint="@color/background_stroke_color"
-                            android:textColor="@color/background_stroke_color" />
+                            android:textColorHint="@color/gray"
+                            android:textColor="@color/black" />
 
                     </RelativeLayout>
 

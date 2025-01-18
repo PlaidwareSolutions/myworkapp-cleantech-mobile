@@ -1,9 +1,12 @@
 package com.example.rfidapp.activity
 
 import androidx.room.Room.databaseBuilder
+import com.example.rfidapp.R
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
+import com.example.rfidapp.fragment.InspectionFragment
 import com.example.rfidapp.fragment.InventoryItems
+import com.example.rfidapp.model.Data
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.ActBase
@@ -27,17 +30,32 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
     }
 
     override fun bindListeners() {
-        binding.imageButtonBack.setOnClickListener {
-            finish()
+        binding.apply {
+            toolbar.apply {
+                toolbarTitle.text = "Scan Item"
+                btnBack.setOnClickListener {
+                    finish()
+                }
+            }
         }
     }
 
     override fun bindMethods() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
+        val inventoryItems = InventoryItems.newInstance(intent.getStringExtra("orderDetail"), intent.getStringExtra("SHIPMENT"))
+        inventoryItems.setCallback { data ->
+            //Item click
+            val data: Data = Gson().fromJson(json = data)
+            val addAlbumFragment = InspectionFragment.newInstance()
+            addAlbumFragment.show(
+                supportFragmentManager,
+                addAlbumFragment.tag
+            )
+        }
         supportFragmentManager.beginTransaction()
             .replace(
                 binding.fragmentContainerView.id,
-                InventoryItems.newInstance(intent.getStringExtra("orderDetail"), intent.getStringExtra("SHIPMENT"))
+                inventoryItems
             )
             .commit()
     }
