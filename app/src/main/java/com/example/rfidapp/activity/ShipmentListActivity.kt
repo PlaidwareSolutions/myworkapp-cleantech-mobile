@@ -34,6 +34,7 @@ import com.example.rfidapp.util.hideKeyboard
 import com.example.rfidapp.viewmodel.OrderViewModel
 import com.example.rfidapp.viewmodel.ShipmentViewModel
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -69,9 +70,9 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
         }
 
         binding.orderDetailsButton.setOnClickListener {
-            viewModel.selectedShipment.value?.id?.let {
+            viewModel.selectedShipment.value?.let {
                 val intent = Intent(this, InventoryItemsActivity::class.java)
-                intent.putExtra("SHIPMENT", it)
+                intent.putExtra("SHIPMENT", Gson().toJson(it))
                 startActivity(intent)
 //                finish()
             }
