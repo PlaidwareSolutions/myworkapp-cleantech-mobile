@@ -2,36 +2,86 @@ package com.example.rfidapp.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.res.ColorStateList
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rfidapp.databinding.ItemOrderBinding
-import com.example.rfidapp.model.network.Item
-import com.example.rfidapp.model.network.OrderDetail
+import com.example.rfidapp.R
+import com.example.rfidapp.databinding.ItemSearchBinding
+import com.example.rfidapp.databinding.ItemShipmentBinding
+import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.util.toFormattedDate
 
 class ShipmentAdapter(
     val activity: Activity,
-    private val orderList: List<OrderDetail.Item>
+    private val orderList: ArrayList<Order>,
+    val onItemClick: (Order) -> Unit
 ) : RecyclerView.Adapter<ShipmentAdapter.MyViewHolder>() {
 
+    private var selectedOrderPos: Int? = null
 
-    inner class MyViewHolder(val binding: ItemOrderBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyViewHolder(val binding: ItemShipmentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(pos: Int) {
             binding.apply {
-                with(orderList[pos]){
-                    itemName.text = product?.name ?: ""
-                    srNo.text = pos.toString()
-                    txtQty.text = (requiredQuantity ?: 0).toString()
-
-                    views.isVisible = position != orderList.size - 1
-                }
+//                with(orderList[pos]) {
+//                    orderId.text = referenceId
+//                    carrierName.text = carrier?.name ?: ""
+//                    reqBy.text = customer?.name ?: ""
+//                    reqDate.text = requiredDate?.toFormattedDate()
+//                    txtStatus.text = status?:""
+//                    val totalRequiredQuantity = items.sumOf { it.requiredQuantity ?: 0 }
+//                    txtRequiredQuantity.text = "" + totalRequiredQuantity
+//
+//                    if(status?.equals("INITIATED",ignoreCase = true) == true){
+//                        binding.txtStatus.backgroundTintList =
+//                            ColorStateList.valueOf(
+//                                ContextCompat.getColor(
+//                                    txtStatus.context,
+//                                    R.color.color_bg_status_initiated
+//                                )
+//                            )
+//                        binding.txtStatus.setTextColor(
+//                            ContextCompat.getColor(
+//                                txtStatus.context,
+//                                R.color.color_text_status_initiated
+//                            )
+//                        )
+//                    }else{
+//                        binding.txtStatus.backgroundTintList =
+//                            ColorStateList.valueOf(
+//                                ContextCompat.getColor(
+//                                    txtStatus.context,
+//                                    R.color.bg_stroke_color
+//                                )
+//                            )
+//                        binding.txtStatus.setTextColor(
+//                            ContextCompat.getColor(
+//                                txtStatus.context,
+//                                R.color.black
+//                            )
+//                        )
+//                    }
+//
+//
+//                    if (selectedOrderPos == pos) {
+//                        lnrItem.backgroundTintList = ColorStateList.valueOf(
+//                            activity.getColor(R.color.colorPrimary)
+//                        )
+//                    } else {
+//                        lnrItem.backgroundTintList = ColorStateList.valueOf(
+//                            activity.getColor(R.color.bg_stroke_color)
+//                        )
+//                    }
+//                }
             }
 
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MyViewHolder(
-        ItemOrderBinding.inflate(
+        ItemShipmentBinding.inflate(
             activity.layoutInflater,
             parent,
             false
@@ -40,10 +90,24 @@ class ShipmentAdapter(
 
     override fun getItemCount() = orderList.size
 
-    override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
+    override fun onBindViewHolder(
+        holder: MyViewHolder,
+        @SuppressLint("RecyclerView") position: Int
+    ) {
         holder.bind(position)
         holder.itemView.setOnClickListener {
-
+            onItemClick(orderList[position])
+            val temp = selectedOrderPos
+            selectedOrderPos = null
+            temp?.let { it1 -> notifyItemChanged(it1) }
+            selectedOrderPos = position
+            notifyItemChanged(position)
         }
+    }
+
+    fun updateData(orderList: List<Order>) {
+        this.orderList.clear()
+        this.orderList.addAll(orderList)
+        notifyDataSetChanged()
     }
 }
