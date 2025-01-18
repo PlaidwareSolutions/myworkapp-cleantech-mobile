@@ -32,12 +32,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/inter_regular"
-                    android:text="Shipped to:"
+                    android:text="Shipped by:"
                     android:textColor="@color/secondary_text_color" />
 
 
                 <TextView
-                    android:id="@+id/shiipedTo"
+                    android:id="@+id/shippedBy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
@@ -49,6 +49,7 @@
 
             <TextView
                 android:id="@+id/txtStatus"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

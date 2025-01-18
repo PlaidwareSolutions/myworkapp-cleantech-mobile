@@ -19,9 +19,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.R
 import com.example.rfidapp.adapter.ShipmentAdapter
-import com.example.rfidapp.databinding.ActivityPrepareShipmentBinding
+import com.example.rfidapp.databinding.ActivityShipmentListBinding
 import com.example.rfidapp.model.network.Contact
-import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.KeyConstants.CUSTOMER_TYPE_CARRIER
 import com.example.rfidapp.util.KeyConstants.TAG_BILL_OF_LADING
@@ -32,7 +32,7 @@ import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.core.ShipmentUtil
 import com.example.rfidapp.util.hideKeyboard
 import com.example.rfidapp.viewmodel.OrderViewModel
-import com.example.rfidapp.viewmodel.PrepareShipmentViewModel
+import com.example.rfidapp.viewmodel.ShipmentViewModel
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -41,16 +41,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ShipmentListActivity : ActBase<ActivityPrepareShipmentBinding>() {
+class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
 
     private val orderViewModel: OrderViewModel by viewModels()
 
-    private val viewModel: PrepareShipmentViewModel by viewModels()
+    private val viewModel: ShipmentViewModel by viewModels()
     private var shipmentType: String = ""
 
     private var shipmentAdapter: ShipmentAdapter? = null
 
-    override fun setViewBinding() = ActivityPrepareShipmentBinding.inflate(layoutInflater)
+    override fun setViewBinding() = ActivityShipmentListBinding.inflate(layoutInflater)
 
     override fun bindObjects() {
         shipmentType = intent.getStringExtra("shipmentType") ?: ""
@@ -61,7 +61,7 @@ class ShipmentListActivity : ActBase<ActivityPrepareShipmentBinding>() {
         setSearchViewListener()
 
         CoroutineScope(Dispatchers.IO).launch {
-            viewModel.selectedOrder.collectLatest { order ->
+            viewModel.selectedShipment.collectLatest { order ->
                 runOnUiThread {
                     binding.orderDetailsButton.isEnabled = order != null
                 }
@@ -69,9 +69,9 @@ class ShipmentListActivity : ActBase<ActivityPrepareShipmentBinding>() {
         }
 
         binding.orderDetailsButton.setOnClickListener {
-            viewModel.selectedOrder.value?.id?.let {
-                val intent = Intent(this, OrderDetailActivity::class.java)
-                intent.putExtra("ORDER_ID", it)
+            viewModel.selectedShipment.value?.id?.let {
+                val intent = Intent(this, InventoryItemsActivity::class.java)
+                intent.putExtra("SHIPMENT", it)
                 startActivity(intent)
 //                finish()
             }
@@ -83,7 +83,7 @@ class ShipmentListActivity : ActBase<ActivityPrepareShipmentBinding>() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                orderViewModel.orderList.collectLatest { state ->
+                viewModel.shipmentList.collectLatest { state ->
                     runOnUiThread {
                         when (state) {
                             is ScreenState.Idle -> {}
@@ -96,7 +96,7 @@ class ShipmentListActivity : ActBase<ActivityPrepareShipmentBinding>() {
                                 binding.noDataLayout.isVisible = state.response.isEmpty()
                                 binding.noData.noDataText.text = getString(R.string.no_order_found)
                                 shipmentAdapter?.updateData(state.response) ?: run {
-                                    initAdapter(state.response as ArrayList<Order>)
+                                    initAdapter(state.response as ArrayList<Shipment>)
                                 }
                             }
 
@@ -241,12 +241,12 @@ class ShipmentListActivity : ActBase<ActivityPrepareShipmentBinding>() {
         }
     }
 
-    private fun initAdapter(orderList: ArrayList<Order> = arrayListOf()) {
+    private fun initAdapter(orderList: ArrayList<Shipment> = arrayListOf()) {
         shipmentAdapter = ShipmentAdapter(
             activity = this,
             orderList = orderList,
             onItemClick = {
-                viewModel.selectedOrder.value = it
+                viewModel.selectedShipment.value = it
                 hideKeyboard()
             }
         )

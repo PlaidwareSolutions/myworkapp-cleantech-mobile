@@ -4,18 +4,16 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.ColorStateList
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rfidapp.R
-import com.example.rfidapp.databinding.ItemSearchBinding
 import com.example.rfidapp.databinding.ItemShipmentBinding
-import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.toFormattedDate
 
 class ShipmentAdapter(
     val activity: Activity,
-    private val orderList: ArrayList<Order>,
-    val onItemClick: (Order) -> Unit
+    private val orderList: ArrayList<Shipment>,
+    val onItemClick: (Shipment) -> Unit
 ) : RecyclerView.Adapter<ShipmentAdapter.MyViewHolder>() {
 
     private var selectedOrderPos: Int? = null
@@ -25,15 +23,15 @@ class ShipmentAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(pos: Int) {
             binding.apply {
-//                with(orderList[pos]) {
-//                    orderId.text = referenceId
-//                    carrierName.text = carrier?.name ?: ""
-//                    reqBy.text = customer?.name ?: ""
-//                    reqDate.text = requiredDate?.toFormattedDate()
-//                    txtStatus.text = status?:""
+                with(orderList[pos]) {
+                    shippedBy.text = createdBy?.name
+                    carrierName.text = carrier?.name ?: ""
+                    driverName.text = driver?.name ?: ""
+                    shippedDate.text = shipmentDate?.toFormattedDate()
+                    txtDlNumber.text = driver?.dl ?: ""
 //                    val totalRequiredQuantity = items.sumOf { it.requiredQuantity ?: 0 }
 //                    txtRequiredQuantity.text = "" + totalRequiredQuantity
-//
+
 //                    if(status?.equals("INITIATED",ignoreCase = true) == true){
 //                        binding.txtStatus.backgroundTintList =
 //                            ColorStateList.valueOf(
@@ -63,18 +61,18 @@ class ShipmentAdapter(
 //                            )
 //                        )
 //                    }
-//
-//
-//                    if (selectedOrderPos == pos) {
-//                        lnrItem.backgroundTintList = ColorStateList.valueOf(
-//                            activity.getColor(R.color.colorPrimary)
-//                        )
-//                    } else {
-//                        lnrItem.backgroundTintList = ColorStateList.valueOf(
-//                            activity.getColor(R.color.bg_stroke_color)
-//                        )
-//                    }
-//                }
+
+
+                    if (selectedOrderPos == pos) {
+                        lnrItem.backgroundTintList = ColorStateList.valueOf(
+                            activity.getColor(R.color.colorPrimary)
+                        )
+                    } else {
+                        lnrItem.backgroundTintList = ColorStateList.valueOf(
+                            activity.getColor(R.color.bg_stroke_color)
+                        )
+                    }
+                }
             }
 
         }
@@ -105,7 +103,7 @@ class ShipmentAdapter(
         }
     }
 
-    fun updateData(orderList: List<Order>) {
+    fun updateData(orderList: List<Shipment>) {
         this.orderList.clear()
         this.orderList.addAll(orderList)
         notifyDataSetChanged()

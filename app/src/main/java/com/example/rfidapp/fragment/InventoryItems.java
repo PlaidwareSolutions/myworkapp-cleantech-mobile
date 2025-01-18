@@ -52,6 +52,7 @@ import com.example.rfidapp.model.network.CreateShipmentResponse;
 import com.example.rfidapp.model.network.Driver;
 import com.example.rfidapp.model.network.InputBol;
 import com.example.rfidapp.model.network.OrderDetail;
+import com.example.rfidapp.model.network.Shipment;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.ScreenState;
 import com.example.rfidapp.util.Util;
@@ -172,6 +173,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     Util utils;
 
     OrderDetail orderDetail;
+    Shipment shipment;
     String shipmentId = null;
 
     private final ActivityResultCallback<ActivityResult> resultCallback =
@@ -213,11 +215,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return true;
     }
 
-    public static InventoryItems newInstance(String str, String str2) {
+    public static InventoryItems newInstance(String str, String shipmentString) {
         InventoryItems inventoryItems = new InventoryItems();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_PARAM1, str);
-        bundle.putString(ARG_PARAM2, str2);
+        bundle.putString(ARG_PARAM2, shipmentString);
         inventoryItems.setArguments(bundle);
         return inventoryItems;
     }
@@ -228,6 +230,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.mParam1 = getArguments().getString(ARG_PARAM1);
             this.mParam2 = getArguments().getString(ARG_PARAM2);
             orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
+            shipment = new Gson().fromJson(mParam2, Shipment.class);
             Log.e("TAG243", "onCreate: "+orderDetail );
         }
     }
