@@ -4,6 +4,8 @@ import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentResponse
 import com.example.rfidapp.model.network.PdfData
+import com.example.rfidapp.model.network.ReceiveShipmentRequest
+import com.example.rfidapp.model.network.ReceiveShipmentResponse
 import com.example.rfidapp.model.network.Shipment
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -42,4 +44,11 @@ interface ShipmentApi {
         @Path("shipmentId") shipmentId: String,
         @Header("authorization") token: String
     ): ApiResponse<PdfData>
+
+    @POST("v1/shipment/receive/{shipmentId}")
+    suspend fun receiveShipment(
+        @Header("authorization") token: String,
+        @Path("shipmentId") shipmentId: String,
+        @Body receiveShipmentRequest: ReceiveShipmentRequest
+    ): ApiResponse<ReceiveShipmentResponse>
 }

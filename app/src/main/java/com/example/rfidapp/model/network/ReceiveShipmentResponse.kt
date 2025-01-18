@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateShipmentResponse(
+data class ReceiveShipmentResponse(
     @SerializedName("bols") var bols: List<String>? = listOf(),
     @SerializedName("carrier") var carrier: String? = "",
     @SerializedName("createdAt") var createdAt: String? = "",
