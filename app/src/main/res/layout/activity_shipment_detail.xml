@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.OrderDetailActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/footerLayout"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginHorizontal="@dimen/_24sdp">
+
+        <LinearLayout
+            android:id="@+id/lnrItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:background="@drawable/bg_order_details"
+            android:orientation="vertical"
+            android:padding="@dimen/_12sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Shipment #:"
+                        android:textColor="@color/secondary_text_color" />
+
+
+                    <TextView
+                        android:id="@+id/shipmentId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/secondary_dark_text_color"
+                        tools:text="I23246T5" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/inter_regular"
+                        android:gravity="end"
+                        android:text="Shipment Date:"
+                        android:textColor="@color/secondary_text_color" />
+
+                    <TextView
+                        android:id="@+id/shipmentDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:gravity="end"
+                        tools:text="12/12/2024"
+                        android:textColor="@color/secondary_dark_text_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:background="@color/bg_stroke_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Customer:"
+                        android:textColor="@color/secondary_text_color" />
+
+
+                    <TextView
+                        android:id="@+id/customerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:fontFamily="@font/inter_regular"
+                        tools:text="Tony Blair-Texas Grains"
+                        android:textColor="@color/secondary_dark_text_color" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:background="@color/bg_stroke_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Carrier:"
+                        android:textColor="@color/secondary_text_color" />
+
+
+                    <TextView
+                        android:id="@+id/carrierName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:fontFamily="@font/inter_regular"
+                        tools:text="Cleantec Logistics"
+                        android:textColor="@color/secondary_dark_text_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:background="@color/bg_stroke_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Driver Name:"
+                        android:textColor="@color/secondary_text_color" />
+
+
+                    <TextView
+                        android:id="@+id/driverName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:fontFamily="@font/inter_regular"
+                        tools:text="Anthony Blinken"
+                        android:textColor="@color/secondary_dark_text_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/inter_regular"
+                        android:gravity="end"
+                        android:text="Pickup Date:"
+                        android:textColor="@color/secondary_text_color" />
+
+                    <TextView
+                        android:id="@+id/pickupDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:gravity="end"
+                        tools:text="12/12/2024"
+                        android:textColor="@color/secondary_dark_text_color" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/lnrContent"
+            android:background="@drawable/bg_top_curve_right_outlined_4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/lnrItem"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="0dp">
+
+            <!-- Column # -->
+            <TextView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/padding_inside_table_field"
+                android:layout_marginVertical="@dimen/padding_inside_table_field"
+                android:fontFamily="@font/inter_regular"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:maxEms="2"
+                android:gravity="center"
+                android:text="  # "
+                android:textAllCaps="true"
+                android:textColor="@color/color_181818" />
+
+            <!-- Divider -->
+            <View
+                android:layout_width="@dimen/table_divider_width"
+                android:layout_height="match_parent"
+                android:background="@color/bg_stroke_color" />
+
+            <!-- Column ITEM NAME - TYPE -->
+            <TextView
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginVertical="@dimen/padding_inside_table_field"
+                android:fontFamily="@font/inter_regular"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:letterSpacing="-0.01"
+                android:text="@string/item_name_type"
+                android:textAppearance="@style/inter_400_10_16"
+                android:textColor="@color/color_181818" />
+
+            <!-- Divider -->
+            <View
+                android:visibility="invisible"
+                android:layout_width="@dimen/table_divider_width"
+                android:layout_height="match_parent"
+                android:background="@color/bg_stroke_color" />
+
+            <!-- Dynamic Columns (TOT, SHPD, ADD, BAL) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="horizontal">
+
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="@dimen/padding_inside_table_field"
+                    android:fontFamily="@font/inter_regular"
+                    android:gravity="center"
+                    android:letterSpacing="-0.01"
+                    android:text="ADD"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/inter_400_10_16"
+                    android:textColor="@color/color_181818" />
+
+                <View
+                    android:visibility="invisible"
+                    android:layout_width="@dimen/table_divider_width"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_stroke_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="@dimen/padding_inside_table_field"
+                    android:fontFamily="@font/inter_regular"
+                    android:gravity="center"
+                    android:letterSpacing="-0.01"
+                    android:text="BAL"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/inter_400_10_16"
+                    android:textColor="@color/color_181818" />
+            </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.recyclerview.widget.RecyclerView
+            android:background="@drawable/bg_bottom_curve_right_outlined_4dp"
+            android:id="@+id/rcvOrders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lnrContent"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_order" />
+
+    </RelativeLayout>
+
+    <ProgressBar
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/app_color" />
+
+    <RelativeLayout
+        android:id="@+id/footerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <include
+            android:id="@+id/footer"
+            layout="@layout/filled_outlined_button" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
