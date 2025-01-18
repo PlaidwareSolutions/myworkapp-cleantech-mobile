@@ -70,4 +70,26 @@
         <item name="lineHeight">@dimen/_10sdp</item>
     </style>
 
+    <style name="inter_500_14_18">
+        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">18sp</item>
+    </style>
+
+    <style name="inter_400_14_20">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+
+    <style name="inter_600_14_18">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">18sp</item>
+    </style>
+
 </resources>
