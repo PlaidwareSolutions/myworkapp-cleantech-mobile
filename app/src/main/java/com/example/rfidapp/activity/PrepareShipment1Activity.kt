@@ -49,7 +49,6 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
             }
         }
 
-
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 handleBackNavigation()
