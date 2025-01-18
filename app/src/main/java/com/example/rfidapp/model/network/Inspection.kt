@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class Inspection(
     @SerializedName("comment") val comment: String? = null,
     @SerializedName("state") val state: String?= null,
-    @SerializedName("tag") val tag: String?
+    @SerializedName("tag") val tag: String?= null
 )

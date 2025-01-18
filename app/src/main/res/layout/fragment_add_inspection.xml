@@ -55,6 +55,7 @@
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header"
@@ -89,59 +90,85 @@
                         android:textColor="@color/color_121212" />
 
                     <RadioGroup
-                        android:id="@+id/radioGroupComplaintType"
+                        android:id="@+id/radioGroupObservationType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <RadioButton
-                            android:paddingHorizontal="@dimen/_8sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:background="@drawable/radio_button_selector"
-                            android:button="@android:color/transparent"
-                            android:gravity="center"
-                            tools:visibility="visible"
-                            android:text="Good"
-                            style="@style/inter_600_14_18"
-                            android:textColor="@drawable/radio_button_text_selector"
-                            tools:checked="true" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                        <RadioButton
-                            android:paddingHorizontal="@dimen/_8sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            tools:visibility="visible"
-                            android:background="@drawable/radio_button_selector"
-                            android:button="@android:color/transparent"
-                            android:gravity="center"
-                            android:text="Damaged"
-                            style="@style/inter_600_14_18"
-                            android:textColor="@drawable/radio_button_text_selector" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
 
-                        <RadioButton
-                            android:paddingHorizontal="@dimen/_8sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            tools:visibility="visible"
-                            android:background="@drawable/radio_button_selector"
-                            android:button="@android:color/transparent"
-                            android:gravity="center"
-                            android:text="Repaired"
-                            style="@style/inter_600_14_18"
-                            android:textColor="@drawable/radio_button_text_selector" />
+                                <RadioButton
+                                    android:id="@+id/good"
+                                    android:layout_weight="1"
+                                    style="@style/inter_600_14_18"
+                                    android:layout_width="200dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/radio_button_selector"
+                                    android:button="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:text="Good"
+                                    android:textColor="@drawable/radio_button_text_selector"
+                                    tools:checked="true"
+                                    tools:visibility="visible" />
 
-                        <RadioButton
-                            android:paddingHorizontal="@dimen/_8sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            tools:visibility="visible"
-                            android:background="@drawable/radio_button_selector"
-                            android:button="@android:color/transparent"
-                            android:gravity="center"
-                            android:text="Scraped"
-                            style="@style/inter_600_14_18"
-                            android:textColor="@drawable/radio_button_text_selector" />
+                                <RadioButton
+                                    android:id="@+id/damaged"
+                                    android:layout_weight="1"
+                                    style="@style/inter_600_14_18"
+                                    android:layout_width="200dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/radio_button_selector"
+                                    android:button="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:text="Damaged"
+                                    android:textColor="@drawable/radio_button_text_selector"
+                                    tools:visibility="visible" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_marginTop="@dimen/_6sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/repaired"
+                                    android:layout_weight="1"
+                                    style="@style/inter_600_14_18"
+                                    android:layout_width="200dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/radio_button_selector"
+                                    android:button="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:text="Repaired"
+                                    android:textColor="@drawable/radio_button_text_selector"
+                                    tools:visibility="visible" />
+
+                                <RadioButton
+                                    android:id="@+id/scraped"
+                                    android:layout_weight="1"
+                                    style="@style/inter_600_14_18"
+                                    android:layout_width="200dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/radio_button_selector"
+                                    android:button="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:text=" Scraped"
+                                    android:textColor="@drawable/radio_button_text_selector"
+                                    tools:visibility="visible" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
 
                     </RadioGroup>
 
@@ -191,8 +218,6 @@
 
             </LinearLayout>
 
-
-
             <RelativeLayout
                 android:layout_centerInParent="true"
                 android:layout_width="match_parent"
@@ -207,8 +232,24 @@
                     android:indeterminateTint="@color/app_color" />
             </RelativeLayout>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_below="@+id/lnrContent"
+                android:id="@+id/save"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginVertical="@dimen/_12sdp"
+                android:background="@drawable/button_background"
+                android:enabled="false"
+                android:padding="@dimen/_12sdp"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="@drawable/button_text_color"
+                android:textStyle="bold" />
+
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
+
 
 </RelativeLayout>

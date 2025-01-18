@@ -45,8 +45,9 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
         val inventoryItems = InventoryItems.newInstance(intent.getStringExtra("orderDetail"), intent.getStringExtra("SHIPMENT"))
         inventoryItems.setCallback { data ->
             //Item click
-            val data: Data = Gson().fromJson(json = data)
-            val addAlbumFragment = InspectionFragment.newInstance()
+            val data: Data? = Gson().fromJson(json = data)
+            val tagId = data?.tagEpc?:"2018030712774A021A900024"
+            val addAlbumFragment = InspectionFragment.newInstance(tagId)
             addAlbumFragment.show(
                 supportFragmentManager,
                 addAlbumFragment.tag

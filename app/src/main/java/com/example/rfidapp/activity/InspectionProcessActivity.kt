@@ -41,7 +41,7 @@ class InspectionProcessActivity : ActBase<ActivityInspectionProcessBinding>() {
         inventoryItems.setCallback { data ->
             //Item click
             val data: Data = Gson().fromJson(json = data)
-            val addAlbumFragment = InspectionFragment.newInstance()
+            val addAlbumFragment = InspectionFragment.newInstance(data.tagEpc)
             addAlbumFragment.show(
                 supportFragmentManager,
                 addAlbumFragment.tag

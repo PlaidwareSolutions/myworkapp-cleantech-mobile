@@ -343,7 +343,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     startActivity(intent);
                 }
                 else {
-                    callback.onClickListener("");
+
                 }
             }
         });

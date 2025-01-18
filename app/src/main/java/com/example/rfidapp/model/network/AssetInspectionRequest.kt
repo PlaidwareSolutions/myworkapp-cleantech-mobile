@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AssetInspectionRequest(
     @SerializedName("inspection") val inspection: List<Inspection>?= null,
-    @SerializedName("userLocation") val userLocation: UserLocation?
+    @SerializedName("userLocation") val userLocation: UserLocation?= null
 )
