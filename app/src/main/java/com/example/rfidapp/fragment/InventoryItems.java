@@ -255,11 +255,19 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     private void setupUI() {
-        binding.orderDate.setText(orderDetail.getCreatedAt());
-        binding.orderId.setText(orderDetail.getReferenceId());
-        binding.customerName.setText(orderDetail.getCustomer().getName());
-        binding.carrierName.setText(orderDetail.getCarrier().getName());
+        if (orderDetail != null) {
+            binding.orderDate.setText(orderDetail.getCreatedAt());
+            binding.orderId.setText(orderDetail.getReferenceId());
+            binding.customerName.setText(orderDetail.getCustomer().getName());
+            binding.carrierName.setText(orderDetail.getCarrier().getName());
+        } else if (shipment != null) {
+            binding.orderDate.setText(shipment.getCreatedAt());
+            binding.orderId.setText(shipment.getReferenceId());
+            binding.customerName.setText(shipment.getCreatedBy().getName());
+            binding.carrierName.setText(shipment.getCarrier().getName());
+        } else {
 
+        }
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
