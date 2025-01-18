@@ -1,0 +1,214 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:animateLayoutChanges="true">
+
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+
+            <ImageButton
+                android:id="@+id/imageButtonBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:src="@drawable/back_24"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:text="Inspection Process"
+                android:textAppearance="@style/ToolbarTitle"
+                android:textColor="@color/colorPrimary" />
+
+            <View
+                android:layout_below="@+id/textViewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:alpha="0.2"
+                android:background="@color/placeholderTextColor" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_marginBottom="16dp"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/lnrContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="14dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="Observation"
+                        android:textAppearance="@style/inter_400_10_10"
+                        android:letterSpacing="-0.02"
+                        android:textColor="@color/color_121212" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroupComplaintType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:paddingHorizontal="@dimen/_14sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:background="@drawable/radio_button_selector"
+                            android:button="@android:color/transparent"
+                            android:gravity="center"
+                            tools:visibility="visible"
+                            android:text="Good"
+                            style="@style/inter_600_14_18"
+                            android:textColor="@drawable/radio_button_text_selector"
+                            tools:checked="true" />
+
+                        <RadioButton
+                            android:paddingHorizontal="@dimen/_14sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            tools:visibility="visible"
+                            android:background="@drawable/radio_button_selector"
+                            android:button="@android:color/transparent"
+                            android:gravity="center"
+                            android:text="Damaged"
+                            style="@style/inter_600_14_18"
+                            android:textColor="@drawable/radio_button_text_selector" />
+
+                        <RadioButton
+                            android:paddingHorizontal="@dimen/_14sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            tools:visibility="visible"
+                            android:background="@drawable/radio_button_selector"
+                            android:button="@android:color/transparent"
+                            android:gravity="center"
+                            android:text="Repaired"
+                            style="@style/inter_600_14_18"
+                            android:textColor="@drawable/radio_button_text_selector" />
+
+                        <RadioButton
+                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            tools:visibility="visible"
+                            android:background="@drawable/radio_button_selector"
+                            android:button="@android:color/transparent"
+                            android:gravity="center"
+                            android:text="Scraped"
+                            style="@style/inter_600_14_18"
+                            android:textColor="@drawable/radio_button_text_selector" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="Description"
+                        android:textAppearance="@style/inter_500_14_18"
+                        android:letterSpacing="-0.02"
+                        android:textColor="@color/color_121212" />
+
+                    <RelativeLayout
+                        android:background="@drawable/bg_filled_outlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/editTextAlbumDesc"
+                            android:layout_width="match_parent"
+                            android:layout_height="84dp"
+                            android:gravity="top|start"
+                            android:importantForAutofill="no"
+                            android:inputType="textMultiLine"
+                            android:lines="6"
+                            android:maxLines="6"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginVertical="12dp"
+                            android:background="@null"
+                            style="@style/inter_400_14_20"
+                            android:letterSpacing="-0.01"
+                            android:hint="Enter comment here..."
+                            android:textColorHint="@color/background_stroke_color"
+                            android:textColor="@color/background_stroke_color" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <RelativeLayout
+                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:visibility="gone"
+                    android:id="@+id/progressBar"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_centerInParent="true"
+                    android:indeterminateTint="@color/app_color" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

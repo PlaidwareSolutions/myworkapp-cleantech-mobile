@@ -45,6 +45,7 @@ import com.example.rfidapp.database.InvDB;
 import com.example.rfidapp.databinding.FragmentInventoryItemsBinding;
 import com.example.rfidapp.entity.InventoryItemsEntity;
 import com.example.rfidapp.entity.InventoryListEntity;
+import com.example.rfidapp.model.Data;
 import com.example.rfidapp.model.EpcModel;
 import com.example.rfidapp.model.OrderShipmentData;
 import com.example.rfidapp.model.network.CreateShipmentRequest;
@@ -171,8 +172,17 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     String update = "";
     Util utils;
 
-    OrderDetail orderDetail;
+    OrderDetail orderDetail = null;
     String shipmentId = null;
+
+    public interface ClickListner {
+        void onClickListener(String data);
+    }
+    private ClickListner callback;
+
+    public void setCallback(ClickListner callback) {
+        this.callback = callback;
+    }
 
     private final ActivityResultCallback<ActivityResult> resultCallback =
             result -> {
@@ -227,8 +237,12 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         if (getArguments() != null) {
             this.mParam1 = getArguments().getString(ARG_PARAM1);
             this.mParam2 = getArguments().getString(ARG_PARAM2);
-            orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
-            Log.e("TAG243", "onCreate: "+orderDetail );
+            if(mParam1.isEmpty()){
+                orderDetail = null;
+            }else{
+                orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
+                Log.e("TAG243", "onCreate: "+orderDetail );
+            }
         }
     }
 
@@ -252,52 +266,60 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     private void setupUI() {
-        binding.orderDate.setText(orderDetail.getCreatedAt());
-        binding.orderId.setText(orderDetail.getReferenceId());
-        binding.customerName.setText(orderDetail.getCustomer().getName());
-        binding.carrierName.setText(orderDetail.getCarrier().getName());
+        if(orderDetail == null){
+            binding.lnrItem.setVisibility(View.GONE);
+        }else{
+            binding.orderDate.setText(orderDetail.getCreatedAt());
+            binding.orderId.setText(orderDetail.getReferenceId());
+            binding.customerName.setText(orderDetail.getCustomer().getName());
+            binding.carrierName.setText(orderDetail.getCarrier().getName());
+        }
 
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Create Shipment Flow
-                CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
-                ArrayList<InputBol> bills = new ArrayList<>();
-                List<String> tagsList = tagList.stream()
-                        .map(map -> map.get(InventoryItems.TAG_EPC))
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-                bills.add(new InputBol(orderDetail.getId(),tagsList));
+                if (orderDetail == null) {
+                    //Inspection Process:
 
-                createShipmentRequest.setBols(bills);
-                createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
-                Date date = new Date();
-                @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-                String formattedDate = formatter.format(date);
-                createShipmentRequest.setShipmentDate(formattedDate);
-                createShipmentRequest.setDriver(new Driver("", ""));
-                ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
-                OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
-                if (orderShipmentData == null) {
-                    orderShipmentData = new OrderShipmentData(
-                            orderDetail.getId(),
-                            orderDetail.getReferenceId(),
-                            orderDetail.getTotalCount(),
-                            tagsList.size(),
-                            (ArrayList<String>) tagsList
-                    );
                 } else {
-                    //todo:update logic here
-                    ArrayList<String> tags = orderShipmentData.getTags();
-                    tags.addAll(tagsList);
-                    tags.stream().distinct();
-                    orderShipmentData.setTags(tags);
-                }
-                ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
-                Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                    //Create Shipment Flow
+                    CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
+                    ArrayList<InputBol> bills = new ArrayList<>();
+                    List<String> tagsList = tagList.stream()
+                            .map(map -> map.get(InventoryItems.TAG_EPC))
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+                    bills.add(new InputBol(orderDetail.getId(),tagsList));
+
+                    createShipmentRequest.setBols(bills);
+                    createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+                    Date date = new Date();
+                    @SuppressLint("SimpleDateFormat")
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+                    String formattedDate = formatter.format(date);
+                    createShipmentRequest.setShipmentDate(formattedDate);
+                    createShipmentRequest.setDriver(new Driver("", ""));
+                    ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
+                    OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
+                    if (orderShipmentData == null) {
+                        orderShipmentData = new OrderShipmentData(
+                                orderDetail.getId(),
+                                orderDetail.getReferenceId(),
+                                orderDetail.getTotalCount(),
+                                tagsList.size(),
+                                (ArrayList<String>) tagsList
+                        );
+                    } else {
+                        //todo:update logic here
+                        ArrayList<String> tags = orderShipmentData.getTags();
+                        tags.addAll(tagsList);
+                        tags.stream().distinct();
+                        orderShipmentData.setTags(tags);
+                    }
+                    ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
+                    Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
 //                startActivityForResult.launch(intent);
-                startActivity(intent);
+                    startActivity(intent);
 //                mContext.finish();
                 /*if (shipmentId == null) {
                     //Create
@@ -306,6 +328,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     //Update
                     shipmentViewModel.updateShipments(shipmentId, createShipmentRequest);
                 }*/
+                }
             }
         });
     }
@@ -997,7 +1020,18 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             viewHolder.tvTagCount.setText("Read Count: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
 //            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
             viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI_NUMBER));
-            viewHolder.llList.setOnClickListener(v -> this.showPopup(i, v));
+            viewHolder.llList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    HashMap<String, String> stringStringHashMap = InventoryItems.this.tagList.get(i);
+                    Data data = new Data(
+                            stringStringHashMap.getOrDefault(InventoryItems.TAG_EPC, ""),
+                            stringStringHashMap.getOrDefault(InventoryItems.TAG_COUNT, ""),
+                            stringStringHashMap.getOrDefault(InventoryItems.TAG_RSSI_NUMBER, "")
+                    );
+                    callback.onClickListener(new Gson().toJson(data));
+                }
+            });
             if (i == InventoryItems.this.selectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));
             } else {
