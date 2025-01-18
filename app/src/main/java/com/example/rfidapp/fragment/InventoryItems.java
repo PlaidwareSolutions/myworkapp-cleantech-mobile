@@ -317,9 +317,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     orderShipmentData.setTags(tags);
                 }
                 ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
-                Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                if (orderDetail != null) {
+                    Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                    startActivity(intent);
+                } else if (shipment != null) {
+                    Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                    startActivity(intent);
+                } else {
+
+                }
 //                startActivityForResult.launch(intent);
-                startActivity(intent);
 //                mContext.finish();
                 /*if (shipmentId == null) {
                     //Create
