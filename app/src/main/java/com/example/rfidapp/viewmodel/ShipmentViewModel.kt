@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.ShipmentRepository
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentResponse
+import com.example.rfidapp.model.network.Order
 import com.example.rfidapp.model.network.ReceiveShipmentRequest
 import com.example.rfidapp.model.network.ReceiveShipmentResponse
 import com.example.rfidapp.model.network.Shipment
@@ -35,6 +36,7 @@ class ShipmentViewModel @Inject constructor(
     val receiveShipmentList: StateFlow<ScreenState<ReceiveShipmentResponse>> = _receiveShipmentList.asStateFlow()
     val receiveShipmentListLiveData = _receiveShipmentList.asLiveData()
 
+    val selectedShipment: MutableStateFlow<Shipment?> = MutableStateFlow(null)
 
     init {
         getShipments()

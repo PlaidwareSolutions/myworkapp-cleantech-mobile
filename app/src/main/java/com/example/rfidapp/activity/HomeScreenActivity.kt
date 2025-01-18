@@ -50,7 +50,12 @@ class HomeScreenActivity : AppCompatActivity() {
             }
 
             receiving.setOnClickListener {
-                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java).putExtra("shipmentType", "receiving"))
+                startActivity(
+                    Intent(
+                        this@HomeScreenActivity,
+                        ShipmentListActivity::class.java
+                    )
+                )
             }
 
             inventory.setOnClickListener {

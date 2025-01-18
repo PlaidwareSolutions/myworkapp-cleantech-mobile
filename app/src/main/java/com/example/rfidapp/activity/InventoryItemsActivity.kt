@@ -5,6 +5,7 @@ import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
 import com.example.rfidapp.fragment.InventoryItems
 import com.example.rfidapp.model.network.OrderDetail
+import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.PreferenceManager
 import com.example.rfidapp.util.constants.Constants
@@ -17,10 +18,12 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
 
     override fun setViewBinding() = ActivityInventoryItemsBinding.inflate(layoutInflater)
 
-    var orderDetail: OrderDetail?= null
+    private var orderDetail: OrderDetail?= null
+    private var shipment: Shipment?= null
 
     override fun bindObjects() {
         orderDetail = Gson().fromJson(intent.getStringExtra("orderDetail") ?: "")
+        shipment = Gson().fromJson(intent.getStringExtra("SHIPMENT") ?: "")
     }
 
     override fun bindListeners() {
@@ -32,7 +35,10 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
     override fun bindMethods() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
         supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainerView.id, InventoryItems.newInstance(intent.getStringExtra("orderDetail") ,""))
+            .replace(
+                binding.fragmentContainerView.id,
+                InventoryItems.newInstance(intent.getStringExtra("orderDetail"), intent.getStringExtra("SHIPMENT"))
+            )
             .commit()
     }
 

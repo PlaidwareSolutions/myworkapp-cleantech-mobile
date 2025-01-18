@@ -53,6 +53,7 @@ import com.example.rfidapp.model.network.CreateShipmentResponse;
 import com.example.rfidapp.model.network.Driver;
 import com.example.rfidapp.model.network.InputBol;
 import com.example.rfidapp.model.network.OrderDetail;
+import com.example.rfidapp.model.network.Shipment;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.ScreenState;
 import com.example.rfidapp.util.Util;
@@ -223,11 +224,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return true;
     }
 
-    public static InventoryItems newInstance(String str, String str2) {
+    public static InventoryItems newInstance(String str, String shipmentString) {
         InventoryItems inventoryItems = new InventoryItems();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_PARAM1, str);
-        bundle.putString(ARG_PARAM2, str2);
+        bundle.putString(ARG_PARAM2, shipmentString);
         inventoryItems.setArguments(bundle);
         return inventoryItems;
     }
@@ -237,12 +238,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         if (getArguments() != null) {
             this.mParam1 = getArguments().getString(ARG_PARAM1);
             this.mParam2 = getArguments().getString(ARG_PARAM2);
-            if(mParam1.isEmpty()){
-                orderDetail = null;
-            }else{
-                orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
-                Log.e("TAG243", "onCreate: "+orderDetail );
-            }
+            orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
+            shipment = new Gson().fromJson(mParam2, Shipment.class);
+            Log.e("TAG243", "onCreate: "+orderDetail );
         }
     }
 
@@ -266,60 +264,62 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     private void setupUI() {
-        if(orderDetail == null){
-            binding.lnrItem.setVisibility(View.GONE);
-        }else{
+        if (orderDetail != null) {
             binding.orderDate.setText(orderDetail.getCreatedAt());
             binding.orderId.setText(orderDetail.getReferenceId());
             binding.customerName.setText(orderDetail.getCustomer().getName());
             binding.carrierName.setText(orderDetail.getCarrier().getName());
+        } else if (shipment != null) {
+            binding.orderDate.setText(shipment.getCreatedAt());
+            binding.orderId.setText(shipment.getReferenceId());
+            binding.customerName.setText(shipment.getCreatedBy().getName());
+            binding.carrierName.setText(shipment.getCarrier().getName());
+        } else {
+            binding.lnrItem.setVisibility(View.GONE);
         }
 
+        }
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (orderDetail == null) {
-                    //Inspection Process:
+                //Create Shipment Flow
+                CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
+                ArrayList<InputBol> bills = new ArrayList<>();
+                List<String> tagsList = tagList.stream()
+                        .map(map -> map.get(InventoryItems.TAG_EPC))
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                bills.add(new InputBol(orderDetail.getId(),tagsList));
 
+                createShipmentRequest.setBols(bills);
+                createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+                Date date = new Date();
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+                String formattedDate = formatter.format(date);
+                createShipmentRequest.setShipmentDate(formattedDate);
+                createShipmentRequest.setDriver(new Driver("", ""));
+                ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
+                OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
+                if (orderShipmentData == null) {
+                    orderShipmentData = new OrderShipmentData(
+                            orderDetail.getId(),
+                            orderDetail.getReferenceId(),
+                            orderDetail.getTotalCount(),
+                            tagsList.size(),
+                            (ArrayList<String>) tagsList
+                    );
                 } else {
-                    //Create Shipment Flow
-                    CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
-                    ArrayList<InputBol> bills = new ArrayList<>();
-                    List<String> tagsList = tagList.stream()
-                            .map(map -> map.get(InventoryItems.TAG_EPC))
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
-                    bills.add(new InputBol(orderDetail.getId(),tagsList));
-
-                    createShipmentRequest.setBols(bills);
-                    createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
-                    Date date = new Date();
-                    @SuppressLint("SimpleDateFormat")
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-                    String formattedDate = formatter.format(date);
-                    createShipmentRequest.setShipmentDate(formattedDate);
-                    createShipmentRequest.setDriver(new Driver("", ""));
-                    ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
-                    OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
-                    if (orderShipmentData == null) {
-                        orderShipmentData = new OrderShipmentData(
-                                orderDetail.getId(),
-                                orderDetail.getReferenceId(),
-                                orderDetail.getTotalCount(),
-                                tagsList.size(),
-                                (ArrayList<String>) tagsList
-                        );
-                    } else {
-                        //todo:update logic here
-                        ArrayList<String> tags = orderShipmentData.getTags();
-                        tags.addAll(tagsList);
-                        tags.stream().distinct();
-                        orderShipmentData.setTags(tags);
-                    }
-                    ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
-                    Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                    //todo:update logic here
+                    ArrayList<String> tags = orderShipmentData.getTags();
+                    tags.addAll(tagsList);
+                    tags.stream().distinct();
+                    orderShipmentData.setTags(tags);
+                }
+                ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
+                Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
 //                startActivityForResult.launch(intent);
-                    startActivity(intent);
+                startActivity(intent);
 //                mContext.finish();
                 /*if (shipmentId == null) {
                     //Create
@@ -328,7 +328,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     //Update
                     shipmentViewModel.updateShipments(shipmentId, createShipmentRequest);
                 }*/
-                }
             }
         });
     }
