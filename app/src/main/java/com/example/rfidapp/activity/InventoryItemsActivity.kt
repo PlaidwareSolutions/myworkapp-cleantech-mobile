@@ -21,12 +21,16 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
 
     override fun setViewBinding() = ActivityInventoryItemsBinding.inflate(layoutInflater)
 
-    private var orderDetail: OrderDetail?= null
-    private var shipment: Shipment?= null
+    private var orderDetail: OrderDetail? = null
+    private var shipment: Shipment? = null
 
     override fun bindObjects() {
-        orderDetail = Gson().fromJson(intent.getStringExtra("orderDetail") ?: "")
-        shipment = Gson().fromJson(intent.getStringExtra("SHIPMENT") ?: "")
+        intent.getStringExtra("orderDetail")?.let {
+            orderDetail = Gson().fromJson<OrderDetail>(it)
+        }
+        intent.getStringExtra("SHIPMENT")?.let {
+            shipment = Gson().fromJson<Shipment>(it)
+        }
     }
 
     override fun bindListeners() {

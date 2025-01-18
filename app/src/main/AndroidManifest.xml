@@ -73,6 +73,9 @@
             android:name=".activity.ShipmentListActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.ShipmentDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.PrepareShipmentActivity"
             android:exported="false" />
         <activity

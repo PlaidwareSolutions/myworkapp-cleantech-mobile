@@ -39,6 +39,7 @@ import androidx.room.Room;
 import com.example.rfidapp.R;
 import com.example.rfidapp.activity.InventoryItemsActivity;
 import com.example.rfidapp.activity.PrepareShipment1Activity;
+import com.example.rfidapp.activity.ShipmentDetailActivity;
 import com.example.rfidapp.adapter.InvItemAdapter;
 import com.example.rfidapp.dao.InvItemsDao;
 import com.example.rfidapp.database.InvDB;
@@ -338,8 +339,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                             .filter(Objects::nonNull)
                             .collect(Collectors.toList());
 
-                    Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                    Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
                     intent.putExtra("tags",new Gson().toJson(tagsList));
+                    intent.putExtra("SHIPMENT",new Gson().toJson(shipment));
                     startActivity(intent);
                 }
                 else {
