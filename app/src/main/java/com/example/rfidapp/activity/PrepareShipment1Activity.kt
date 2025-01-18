@@ -3,6 +3,7 @@ package com.example.rfidapp.activity
 import android.content.Intent
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.adapter.ShipmentOrderAdapter
 import com.example.rfidapp.databinding.ActivityPrepareShipment1Binding
@@ -10,6 +11,8 @@ import com.example.rfidapp.model.OrderShipmentData
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.core.ShipmentUtil
+import com.example.rfidapp.util.openPdf
+import com.example.rfidapp.viewmodel.ShipmentDetailViewModel
 import com.example.rfidapp.viewmodel.ShipmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +27,7 @@ import java.util.Locale
 class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
     private val viewModel: ShipmentViewModel by viewModels()
+    private val shipmentDetailVM: ShipmentDetailViewModel by viewModels()
     private var createShipmentRequest: CreateShipmentRequest? = null
 
     override fun setViewBinding() = ActivityPrepareShipment1Binding.inflate(layoutInflater)
@@ -55,20 +59,21 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         binding.apply {
             footer.apply {
                 outlinedOutlined.setOnClickListener {
-                    createShipmentRequest?.let { it1 -> viewModel.createShipments(it1) }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        runOnUiThread{
+                            progressBar.isVisible = true
+                        }
+                        shipmentDetailVM.fetchShipmentPdf().collectLatest {
+                            runOnUiThread {
+                                progressBar.isVisible = false
+                                it.data?.url?.let { it1 -> openPdf(it1) }
+                            }
+                        }
+                    }
+
                 }
                 filledButton.setOnClickListener {
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        runOnUiThread{
-//                            progressBar.isVisible = true
-//                        }
-//                        viewModel.fetchOrderPdf().collectLatest {
-//                            runOnUiThread {
-//                                progressBar.isVisible = false
-//                                it.data?.url?.let { it1 -> openPdf(it1) }
-//                            }
-//                        }
-//                    }
+                    createShipmentRequest?.let { it1 -> viewModel.createShipments(it1) }
                 }
             }
 

@@ -4,6 +4,7 @@ import com.example.rfidapp.data.network.ShipmentApi
 import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentResponse
+import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.Shipment
 import javax.inject.Inject
 
@@ -34,5 +35,9 @@ class ShipmentRepository @Inject constructor(private val shipmentApi: ShipmentAp
 
     suspend fun getShipmentById(token: String, shipmentId: String): ApiResponse<Shipment> {
         return shipmentApi.getShipmentById(token = token, shipmentId = shipmentId)
+    }
+
+    suspend fun getShipmentPdf(shipmentId: String, token: String): ApiResponse<PdfData> {
+        return shipmentApi.getShipmentIdPdf(shipmentId, token)
     }
 }

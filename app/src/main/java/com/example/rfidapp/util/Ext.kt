@@ -2,6 +2,8 @@ package com.example.rfidapp.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
@@ -84,4 +86,20 @@ fun View.hide() {
 
 fun View.invisible() {
     visibility = View.INVISIBLE
+}
+
+fun Activity.openPdf(pdfUrl: String) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(Uri.parse(pdfUrl), "application/pdf")
+            flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+        }
+        startActivity(intent)
+    } catch (e: Exception) {
+        // Fallback: Open in Chrome or default browser
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl)).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(browserIntent)
+    }
 }

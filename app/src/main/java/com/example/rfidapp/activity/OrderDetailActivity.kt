@@ -12,6 +12,7 @@ import com.example.rfidapp.databinding.ActivityOrderDetailBinding
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
+import com.example.rfidapp.util.openPdf
 import com.example.rfidapp.util.toFormattedDate
 import com.example.rfidapp.viewmodel.OrderDetailViewModel
 import com.google.gson.Gson
@@ -134,19 +135,4 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         binding.rcvOrders.adapter = adapter
     }
 
-    private fun openPdf(pdfUrl: String) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(Uri.parse(pdfUrl), "application/pdf")
-                flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-            }
-            startActivity(intent)
-        } catch (e: Exception) {
-            // Fallback: Open in Chrome or default browser
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl)).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(browserIntent)
-        }
-    }
 }

@@ -3,6 +3,7 @@ package com.example.rfidapp.data.network
 import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentResponse
+import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.Shipment
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -35,4 +36,10 @@ interface ShipmentApi {
         @Header("authorization") token: String,
         @Path("shipmentId") shipmentId: String
     ): ApiResponse<Shipment>
+
+    @GET("v1/shipment/{shipmentId}/pdf")
+    suspend fun getShipmentIdPdf(
+        @Path("shipmentId") shipmentId: String,
+        @Header("authorization") token: String
+    ): ApiResponse<PdfData>
 }

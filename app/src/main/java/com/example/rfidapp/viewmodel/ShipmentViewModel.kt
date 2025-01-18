@@ -4,16 +4,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.ShipmentRepository
+import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentResponse
+import com.example.rfidapp.model.network.OrderDetail
+import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.SharedPrefs
 import com.example.rfidapp.util.getErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
