@@ -73,7 +73,7 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
                 val intent = Intent(this, OrderDetailActivity::class.java)
                 intent.putExtra("ORDER_ID", it)
                 startActivity(intent)
-//                finish()
+                finish()
             }
         }
 
