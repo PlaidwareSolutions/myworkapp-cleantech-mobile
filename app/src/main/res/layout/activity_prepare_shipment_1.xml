@@ -338,14 +338,29 @@
         android:indeterminateTint="@color/app_color" />
 
     <RelativeLayout
+        android:paddingTop="8dp"
+        android:paddingBottom="12dp"
         android:id="@+id/footerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <include
-            android:id="@+id/footer"
-            layout="@layout/filled_outlined_button" />
+        <TextView
+            android:id="@+id/filledButton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/_24sdp"
+            android:layout_marginEnd="@dimen/_24sdp"
+            android:background="@drawable/button_background"
+            android:backgroundTint="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center_vertical|center"
+            tools:text="Filled Button"
+            android:textAppearance="@style/inter_700_12_10"
+            android:textColor="@drawable/button_text_color" />
     </RelativeLayout>
 
 </RelativeLayout>

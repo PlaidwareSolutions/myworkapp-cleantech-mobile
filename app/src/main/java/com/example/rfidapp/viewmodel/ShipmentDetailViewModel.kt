@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.ShipmentRepository
 import com.example.rfidapp.model.network.ApiResponse
-import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.ScreenState
@@ -46,13 +45,12 @@ class ShipmentDetailViewModel @Inject constructor(private val shipmentRepository
         }
     }
 
-    fun fetchShipmentPdf(): Flow<ApiResponse<PdfData>> = flow {
+    fun fetchShipmentPdf(referenceId: String?): Flow<ApiResponse<PdfData>> = flow {
         try {
             SharedPrefs.accessToken?.let { token ->
                 if (_shipment.value is ScreenState.Success) {
                     val response = shipmentRepository.getShipmentPdf(
-                        (_shipment.value as ScreenState.Success<Shipment?>).response?.id
-                            ?: "", token
+                        referenceId ?: "", token
                     )
                     emit(response)
                 }
