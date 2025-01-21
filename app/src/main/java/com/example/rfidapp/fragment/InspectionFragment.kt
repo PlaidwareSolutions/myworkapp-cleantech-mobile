@@ -65,16 +65,16 @@ class InspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_inspe
             radioGroupObservationType.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
                     R.id.good -> {
-                        state = "GOOD"
+                        state = "CLEANED"
                     }
                     R.id.damaged -> {
                         state = "DAMAGED"
                     }
                     R.id.repaired -> {
-                        state = "REPAIRED"
+                        state = "FIXED"
                     }
                     R.id.scraped -> {
-                        state = "SCRAPED"
+                        state = "DECOMMISSIONED"
                     }
                 }
             }
