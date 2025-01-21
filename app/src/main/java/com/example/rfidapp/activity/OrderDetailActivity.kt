@@ -55,7 +55,6 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
     @SuppressLint("SetTextI18n")
     override fun bindListeners() {
-
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.orderDetail.collectLatest {
                 runOnUiThread {
@@ -102,7 +101,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                             InventoryItemsActivity::class.java
                         ).putExtra("orderDetail", Gson().toJson(orderDetail))
                     )
-//                    finish()
+                    finish()
                 }
                 outlinedOutlined.setOnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {

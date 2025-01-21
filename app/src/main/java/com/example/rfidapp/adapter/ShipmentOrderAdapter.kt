@@ -22,8 +22,8 @@ class ShipmentOrderAdapter(
                     itemName.text = orderRefId
                     srNo.text = (pos + 1).toString()
                     txtTotal.text = totalQuantity.toString()
-                    txtShipped.text = shippedQuantity.toString()
-                    txtAdd.text = getRemainingQuantity().toString()
+                    txtAdd.text = shippedQuantity.toString()
+                    txtBalance.text = getRemainingQuantity().toString()
 
                     views.isVisible = position != orderList.size - 1
                 }

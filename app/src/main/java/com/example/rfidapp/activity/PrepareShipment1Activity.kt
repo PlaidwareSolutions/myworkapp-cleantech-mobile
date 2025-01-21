@@ -149,6 +149,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                 val intent = Intent(this, OrderDetailActivity::class.java)
                 intent.putExtra("ORDER_ID", orderShipmentData.orderId)
                 startActivity(intent)
+                finish()
             }
         )
         binding.rcvOrders.layoutManager =
