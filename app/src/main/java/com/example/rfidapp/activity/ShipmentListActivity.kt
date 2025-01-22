@@ -54,6 +54,7 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
     override fun setViewBinding() = ActivityShipmentListBinding.inflate(layoutInflater)
 
     override fun bindObjects() {
+        viewModel.getShipments(orderType = "INBOUND")
         shipmentType = intent.getStringExtra("shipmentType") ?: ""
         orderViewModel.fetchContacts()
     }
@@ -64,17 +65,17 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.selectedShipment.collectLatest { order ->
                 runOnUiThread {
-                    binding.orderDetailsButton.isEnabled = order != null
+                    binding.receiveShipmentButton.isEnabled = order != null
                 }
             }
         }
 
-        binding.orderDetailsButton.setOnClickListener {
+        binding.receiveShipmentButton.setOnClickListener {
             viewModel.selectedShipment.value?.let {
                 val intent = Intent(this, InventoryItemsActivity::class.java)
                 intent.putExtra("SHIPMENT", Gson().toJson(it))
                 startActivity(intent)
-//                finish()
+                finish()
             }
         }
 
@@ -242,10 +243,10 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
         }
     }
 
-    private fun initAdapter(orderList: ArrayList<Shipment> = arrayListOf()) {
+    private fun initAdapter(shipmentList: ArrayList<Shipment> = arrayListOf()) {
         shipmentAdapter = ShipmentAdapter(
             activity = this,
-            orderList = orderList,
+            orderList = shipmentList,
             onItemClick = {
                 viewModel.selectedShipment.value = it
                 hideKeyboard()

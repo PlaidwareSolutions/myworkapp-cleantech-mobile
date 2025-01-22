@@ -1,12 +1,16 @@
 package com.example.rfidapp.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.widget.EditText
+import android.widget.FrameLayout
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rfidapp.R
 import com.example.rfidapp.adapter.OrderDetailAdapter
 import com.example.rfidapp.databinding.ActivityOrderDetailBinding
 import com.example.rfidapp.model.network.OrderDetail
@@ -126,12 +130,54 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
     private fun initView(items: List<OrderDetail.Item>) {
         val adapter = OrderDetailAdapter(
             orderId = orderDetail?.id ?: "",
+            orderType = orderDetail?.type?:"",
             activity = this,
             orderList = items,
+            onItemClick = {
+                showAddItemQuantityDialog()
+            }
         )
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvOrders.adapter = adapter
     }
+
+    fun showAddItemQuantityDialog() {
+        val input = EditText(this).apply {
+            hint = "Enter item quantity"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        }
+
+        val container = FrameLayout(this).apply {
+            addView(input, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                marginStart = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+                marginEnd = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+            })
+        }
+
+        // Build the AlertDialog
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Add Item Quantity")
+            .setMessage("Please enter the quantity of the item you want to add:")
+            .setView(container)
+            .setPositiveButton("Add") { dialog, _ ->
+                val quantity = input.text.toString()
+                if (quantity.isNotEmpty()) {
+                    //Data
+                } else {
+                    showToast("Quantity cannot be empty")
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }.create()
+
+        dialog.show()
+    }
+
 
 }

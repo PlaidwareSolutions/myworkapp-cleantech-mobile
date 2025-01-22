@@ -52,8 +52,5 @@ class ShipmentDetailAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.bind(position)
-        holder.itemView.setOnClickListener {
-
-        }
     }
 }

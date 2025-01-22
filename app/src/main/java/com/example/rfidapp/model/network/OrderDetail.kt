@@ -17,6 +17,7 @@ data class OrderDetail(
     @SerializedName("updatedBy") var updatedBy: UpdatedBy? = null,
     @SerializedName("__v") var v: Int = 0,
     @SerializedName("pdfKey") var pdfKey: String? = null,
+    @SerializedName("type") var type: String? = null,
 ){
     data class Item(
         @SerializedName("_id") var id: String? = null,
