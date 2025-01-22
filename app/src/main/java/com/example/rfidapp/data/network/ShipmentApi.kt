@@ -1,6 +1,7 @@
 package com.example.rfidapp.data.network
 
 import com.example.rfidapp.model.network.ApiResponse
+import com.example.rfidapp.model.network.CreateInBoundShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentResponse
 import com.example.rfidapp.model.network.PdfData
@@ -20,6 +21,12 @@ interface ShipmentApi {
     suspend fun createShipment(
         @Header("authorization") token: String,
         @Body shipmentRequest: CreateShipmentRequest
+    ): ApiResponse<CreateShipmentResponse>
+
+    @POST("v1/shipment/create")
+    suspend fun createShipmentInbound(
+        @Header("authorization") token: String,
+        @Body shipmentRequest: CreateInBoundShipmentRequest
     ): ApiResponse<CreateShipmentResponse>
 
     @PUT("v1/shipment/{shipmentId}")

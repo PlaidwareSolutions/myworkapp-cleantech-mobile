@@ -322,7 +322,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     if (orderDetail != null) {
                         Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
                         startActivity(intent);
-                        mContext.finish();
+//                        mContext.finish();
                     }
 //                startActivityForResult.launch(intent);
 //                mContext.finish();
