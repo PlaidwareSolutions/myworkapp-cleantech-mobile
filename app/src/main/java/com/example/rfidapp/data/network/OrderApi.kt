@@ -35,6 +35,7 @@ interface OrderApi {
         @Query("carrier") carrierId: String? = null,
         @Query("referenceId") referenceId: String? = null,
         @Query("customer") customerId: String? = null,
+        @Query("status") status: String? = "APPROVED,SHIPPED-PARTIAL"
     ): ApiResponse<ArrayList<Order>>
 
     @GET("v1/order/{orderId}")
