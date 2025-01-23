@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -996,6 +997,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public TextView tvEPCTID;
         public TextView tvTagCount;
         public TextView tvTagRssi;
+        public ImageView ivDelete;
 
         public ViewHolder() {
         }
@@ -1003,6 +1005,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
     public class MyAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
+
+        public boolean isScanning = false;
 
         public long getItemId(int i) {
             return (long) i;
@@ -1030,6 +1034,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 viewHolder.tvTagCount = (TextView) view2.findViewById(R.id.TvTagCount);
                 viewHolder.tvTagRssi = (TextView) view2.findViewById(R.id.TvTagRssi);
                 viewHolder.llList = (LinearLayout) view2.findViewById(R.id.ll_list);
+                viewHolder.ivDelete = (ImageView) view2.findViewById(R.id.btnDelete);
                 view2.setTag(viewHolder);
             } else {
                 view2 = view;
@@ -1056,6 +1061,18 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else {
                 view2.setBackgroundColor(0);
             }
+            if (isScanning){
+                viewHolder.ivDelete.setVisibility(View.GONE);
+            }else {
+                viewHolder.ivDelete.setVisibility(View.VISIBLE);
+            }
+            viewHolder.ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InventoryItems.this.tagList.remove(i);
+                    notifyDataSetChanged();
+                }
+            });
             return view2;
         }
 
@@ -1443,6 +1460,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     private void start() {
+        adapter.isScanning = true;
         this.binding.btStart.setText("STOP");
         this.mContext.barcodeDecoder.startScan();
     }
@@ -1463,6 +1481,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
         this.isBar = false;
         this.binding.btStart.setText("Start");
+        adapter.isScanning = true;
         this.mContext.stop();
     }
 
