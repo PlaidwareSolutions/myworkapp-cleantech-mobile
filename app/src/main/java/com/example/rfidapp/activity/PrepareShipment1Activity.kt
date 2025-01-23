@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -18,6 +19,8 @@ import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.core.ShipmentUtil
+import com.example.rfidapp.util.downloadPDF
+import com.example.rfidapp.util.openDocument
 import com.example.rfidapp.util.openPdf
 import com.example.rfidapp.viewmodel.ShipmentDetailViewModel
 import com.example.rfidapp.viewmodel.ShipmentViewModel
@@ -74,29 +77,70 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
                         is ScreenState.Success -> {
                             it.response.let { it1 ->
-                                showToast("Shipment created successfully")
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    runOnUiThread {
-                                        binding.progressBar.isVisible = true
-                                    }
-                                    shipmentDetailVM.fetchShipmentPdf(referenceId = it1.referenceId).collectLatest {
-                                        runOnUiThread {
-                                            binding.progressBar.isVisible = false
-                                            Handler(Looper.getMainLooper()).postDelayed({
-                                                startActivity(Intent(this@PrepareShipment1Activity, HomeScreenActivity::class.java).apply {
-                                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                                })
-                                            },1500)
-                                            it.data?.url?.let { it1 -> openPdf(it1) }
-                                        }
-                                    }
-                                }
+                                Toast.makeText(this@PrepareShipment1Activity, "Shipment created successfully", Toast.LENGTH_SHORT).show()
+                                shipmentDetailVM.fetchShipmentPdf(referenceId = it1.id)
                             }
                         }
 
                         is ScreenState.Error -> {
                             binding.progressBar.isVisible = false
                             showToast(it.message)
+                        }
+                    }
+                }
+            }
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            shipmentDetailVM.shipmentPdf.collectLatest {
+                runOnUiThread {
+                    when (it) {
+                        ScreenState.Idle -> {}
+                        ScreenState.Loading -> {
+                            binding.progressBar.isVisible = true
+                        }
+
+                        is ScreenState.Error -> {
+                            binding.progressBar.isVisible = false
+                            showToast(it.message)
+                        }
+
+                        is ScreenState.Success -> {
+                            it.response.let {
+                                binding.progressBar.isVisible = false
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    startActivity(
+                                        Intent(
+                                            this@PrepareShipment1Activity,
+                                            HomeScreenActivity::class.java
+                                        ).apply {
+                                            intent.flags =
+                                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                        })
+                                }, 1500)
+                                it?.url?.let { it1 -> openPdf(it1) }
+                                /*downloadPDF(
+                                        activity = this@PrepareShipment1Activity,
+                                        fileUrl =  it.url?:"",
+                                        mFileName = it.fileName,
+                                        isDownload = true,
+                                        onSuccessListener = { s: String ->
+                                            runOnUiThread {
+                                                showToast(
+                                                    ("Your file is ready to view in Downloads folder.")
+                                                )
+                                                this@PrepareShipment1Activity.openDocument((s))
+                                            }
+                                        },
+                                        onFailureListener = { s: String ->
+                                            runOnUiThread {
+                                               showToast(
+                                                    (s)
+                                                )
+                                            }
+                                        }
+                                    )*/
+                            }
                         }
                     }
                 }

@@ -14,6 +14,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ShipmentApi {
     @POST("v1/shipment/create")
@@ -37,7 +38,8 @@ interface ShipmentApi {
 
     @GET("v1/shipment/")
     suspend fun getShipments(
-        @Header("authorization") token: String
+        @Header("authorization") token: String,
+        @Query("orderType") orderType:String
     ): ApiResponse<ArrayList<Shipment>>
 
     @GET("v1/shipment/{shipmentId}")

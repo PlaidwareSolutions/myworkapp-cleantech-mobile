@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.ShipmentRepository
 import com.example.rfidapp.model.network.ApiResponse
+import com.example.rfidapp.model.network.CreateShipmentResponse
 import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.ScreenState
@@ -26,6 +27,10 @@ class ShipmentDetailViewModel @Inject constructor(private val shipmentRepository
         MutableStateFlow(ScreenState.Idle)
     val shipment: StateFlow<ScreenState<Shipment?>> = _shipment.asStateFlow()
 
+    private val _shipmentPdf: MutableStateFlow<ScreenState<PdfData>> =
+        MutableStateFlow(ScreenState.Idle)
+    val shipmentPdf: StateFlow<ScreenState<PdfData>> = _shipmentPdf.asStateFlow()
+
     fun fetchShipmentDetail(shipmentId: String) {
         viewModelScope.launch {
             _shipment.value = ScreenState.Loading
@@ -45,18 +50,23 @@ class ShipmentDetailViewModel @Inject constructor(private val shipmentRepository
         }
     }
 
-    fun fetchShipmentPdf(referenceId: String?): Flow<ApiResponse<PdfData>> = flow {
-        try {
+    fun fetchShipmentPdf(referenceId: String?) {
+        viewModelScope.launch {
+            _shipmentPdf.value = ScreenState.Loading
             SharedPrefs.accessToken?.let { token ->
-                if (_shipment.value is ScreenState.Success) {
-                    val response = shipmentRepository.getShipmentPdf(
-                        referenceId ?: "", token
-                    )
-                    emit(response)
+                try {
+                    val response = shipmentRepository.getShipmentPdf(referenceId ?: "", token)
+                    if (response.isSuccess()) {
+                        _shipmentPdf.value =
+                            ScreenState.Success(response.data ?: PdfData())
+                    } else {
+                        _shipmentPdf.value =
+                            ScreenState.Error(message = response.message ?: "Unknown error")
+                    }
+                } catch (e: Exception) {
+                    _shipmentPdf.value = ScreenState.Error(message = e.getErrorMessage())
                 }
             }
-        } catch (e: Exception) {
-            emit(ApiResponse(success = false, data = null)) // Handle error response appropriately
         }
     }
 }

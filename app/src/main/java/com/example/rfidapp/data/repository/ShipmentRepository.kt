@@ -31,8 +31,8 @@ class ShipmentRepository @Inject constructor(private val shipmentApi: ShipmentAp
         )
     }
 
-    suspend fun getShipments(token: String): ApiResponse<ArrayList<Shipment>> {
-        return shipmentApi.getShipments(token = token)
+    suspend fun getShipments(token: String,orderType:String): ApiResponse<ArrayList<Shipment>> {
+        return shipmentApi.getShipments(token = token,orderType)
     }
 
     suspend fun getShipmentById(token: String, shipmentId: String): ApiResponse<Shipment> {

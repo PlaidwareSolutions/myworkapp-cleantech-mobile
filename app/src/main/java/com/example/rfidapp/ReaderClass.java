@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import kotlin.jvm.JvmStatic;
 public class ReaderClass extends AppCompatActivity {
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 100;
     private static final int BLUETOOTH_PERMISSION_REQUEST = 103;
@@ -463,6 +464,7 @@ public class ReaderClass extends AppCompatActivity {
         }
     }
 
+    @JvmStatic
     public void showToast(String str) {
         Toast toast2 = this.toast;
         if (toast2 != null) {

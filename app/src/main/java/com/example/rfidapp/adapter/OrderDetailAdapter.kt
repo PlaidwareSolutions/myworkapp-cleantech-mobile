@@ -11,27 +11,34 @@ import com.example.rfidapp.util.core.ShipmentUtil
 
 class OrderDetailAdapter(
     val orderId: String,
+    val orderType:String,
     val activity: Activity,
-    private val orderList: List<OrderDetail.Item>
+    private val orderList: List<OrderDetail.Item>,
+    private val onItemClick:(OrderDetail.Item)->Unit
 ) : RecyclerView.Adapter<OrderDetailAdapter.MyViewHolder>() {
 
 
     inner class MyViewHolder(val binding: ItemOrderBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(pos: Int) {
             binding.apply {
-                with(orderList[pos]){
+                with(orderList[pos]) {
                     itemName.text = product?.name ?: ""
                     srNo.text = pos.toString()
                     txtQty.text = (requiredQuantity ?: 0).toString()
-                    ShipmentUtil.orderShipments.value.firstOrNull { it.orderId == orderId }?.let { orderShipmentData ->
-                        txtShipped.text = orderShipmentData.shippedQuantity.toString()
-                        txtBalance.text = orderShipmentData.getRemainingQuantity().toString()
-                    }
+                    ShipmentUtil.orderShipments.value.firstOrNull { it.orderId == orderId }
+                        ?.let { orderShipmentData ->
+                            txtShipped.text = orderShipmentData.shippedQuantity.toString()
+                            txtBalance.text = orderShipmentData.getRemainingQuantity().toString()
+                        }
 
                     views.isVisible = position != orderList.size - 1
                 }
+                root.setOnClickListener {
+                    if(orderType == "INBOUND"){
+                        onItemClick.invoke(orderList[pos])
+                    }
+                }
             }
-
         }
     }
 
@@ -47,8 +54,5 @@ class OrderDetailAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.bind(position)
-        holder.itemView.setOnClickListener {
-
-        }
     }
 }
