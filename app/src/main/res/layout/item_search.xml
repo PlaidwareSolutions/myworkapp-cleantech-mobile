@@ -31,7 +31,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/inter_regular"
                     android:text="Order:"
                     android:textColor="@color/secondary_text_color" />
 
@@ -41,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:fontFamily="@font/inter_bold"
+                    android:textStyle="bold"
                     android:textColor="@color/secondary_dark_text_color"
                     tools:text="I23246T5" />
 
@@ -54,7 +53,6 @@
                 android:layout_gravity="center"
                 android:background="@drawable/bg_order_details"
                 android:backgroundTint="@color/color_bg_status_initiated"
-                android:fontFamily="@font/inter_regular"
                 android:gravity="end"
                 android:paddingHorizontal="4dp"
                 android:paddingVertical="4dp"
@@ -68,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -82,7 +80,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/inter_regular"
                     android:text="Req by:"
                     android:textColor="@color/secondary_text_color" />
 
@@ -92,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:fontFamily="@font/inter_bold"
+                    android:textStyle="bold"
                     android:textColor="@color/secondary_dark_text_color"
                     tools:text="Tony Blair-Texas Grains" />
 
@@ -113,10 +110,10 @@
 
                     <TextView
                         android:id="@+id/reqDate"
+                        android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
-                        android:fontFamily="@font/inter_bold"
                         android:textColor="@color/secondary_dark_text_color"
                         tools:text="11/11/11" />
 
@@ -145,7 +142,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/inter_regular"
                     android:text="Carrier:"
                     android:textColor="@color/secondary_text_color" />
 
@@ -155,7 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:fontFamily="@font/inter_bold"
+                    android:textStyle="bold"
                     android:text="Cleantec Logistics"
                     android:textColor="@color/secondary_dark_text_color" />
 
@@ -177,7 +173,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:fontFamily="@font/inter_regular"
                         android:text="Qty:"
                         android:textColor="@color/secondary_text_color" />
 
@@ -187,7 +182,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
-                        android:fontFamily="@font/inter_bold"
+                        android:textStyle="bold"
                         android:textColor="@color/secondary_dark_text_color"
                         tools:text="200" />
 
