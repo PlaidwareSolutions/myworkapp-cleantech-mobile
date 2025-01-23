@@ -75,6 +75,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/cycleCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -136,6 +137,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/tagFinder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

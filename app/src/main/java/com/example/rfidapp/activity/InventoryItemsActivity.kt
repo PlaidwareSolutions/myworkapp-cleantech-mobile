@@ -1,10 +1,10 @@
 package com.example.rfidapp.activity
 
 import androidx.room.Room.databaseBuilder
-import com.example.rfidapp.R
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
 import com.example.rfidapp.fragment.InspectionFragment
+import com.example.rfidapp.fragment.InspectionHistoryFragment
 import com.example.rfidapp.fragment.InventoryItems
 import com.example.rfidapp.model.Data
 import com.example.rfidapp.model.network.OrderDetail
@@ -51,11 +51,17 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
             //Item click
             val data: Data? = Gson().fromJson(json = data)
             val tagId = data?.tagEpc?:"2018030712774A021A900024"
-            val addAlbumFragment = InspectionFragment.newInstance(tagId)
-            addAlbumFragment.show(
+            val inspectionFragment: InspectionFragment = InspectionFragment.newInstance(tagId)
+            inspectionFragment.show(
                 supportFragmentManager,
-                addAlbumFragment.tag
+                inspectionFragment.tag
             )
+
+            /*val inspectionHistoryFragment = InspectionHistoryFragment.newInstance("2018030712774A021A900024")
+            inspectionHistoryFragment.show(
+                supportFragmentManager,
+                inspectionHistoryFragment.tag
+            )*/
         }
         supportFragmentManager.beginTransaction()
             .replace(

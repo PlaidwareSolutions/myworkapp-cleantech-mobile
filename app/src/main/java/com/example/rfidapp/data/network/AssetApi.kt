@@ -1,6 +1,7 @@
 package com.example.rfidapp.data.network
 
 import com.example.rfidapp.model.network.ApiResponse
+import com.example.rfidapp.model.network.Asset
 import com.example.rfidapp.model.network.AssetInspectionRequest
 import com.example.rfidapp.model.network.AssetInspectionResponse
 import com.example.rfidapp.model.network.AssetListResponse
@@ -31,6 +32,19 @@ interface AssetApi {
     suspend fun getAssets(
         @Header("authorization") token: String
     ): ApiResponse<AssetListResponse>
+
+
+    @GET("v1/asset/{assetId}")
+    suspend fun getAssetsByID(
+        @Header("authorization") token: String,
+        @Path("assetId") assetId: String
+    ): ApiResponse<AssetListResponse>
+
+    @GET("v1/asset/tag/{tagId}")
+    suspend fun getAssetsByTagID(
+        @Header("authorization") token: String,
+        @Path("tagId") tagId: String
+    ): ApiResponse<List<Asset>>
 
     @POST("v1/asset/inspect")
     suspend fun assetInspection(

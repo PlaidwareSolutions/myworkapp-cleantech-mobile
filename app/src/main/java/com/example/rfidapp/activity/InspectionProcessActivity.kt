@@ -2,11 +2,8 @@ package com.example.rfidapp.activity
 
 import com.example.rfidapp.R
 import com.example.rfidapp.databinding.ActivityInspectionProcessBinding
-import com.example.rfidapp.databinding.ActivitySettingsBinding
-import com.example.rfidapp.fragment.AppSettings
-import com.example.rfidapp.fragment.InspectionFragment
+import com.example.rfidapp.fragment.AddInspectionFragment
 import com.example.rfidapp.fragment.InventoryItems
-import com.example.rfidapp.fragment.InventoryItems.ClickListner
 import com.example.rfidapp.model.Data
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.PreferenceManager
@@ -41,10 +38,10 @@ class InspectionProcessActivity : ActBase<ActivityInspectionProcessBinding>() {
         inventoryItems.setCallback { data ->
             //Item click
             val data: Data = Gson().fromJson(json = data)
-            val addAlbumFragment = InspectionFragment.newInstance(data.tagEpc)
-            addAlbumFragment.show(
+            val addInspectionFragment = AddInspectionFragment.newInstance(data.tagEpc)
+            addInspectionFragment.show(
                 supportFragmentManager,
-                addAlbumFragment.tag
+                addInspectionFragment.tag
             )
 
         }
