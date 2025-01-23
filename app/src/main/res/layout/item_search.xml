@@ -28,6 +28,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:textSize="@dimen/_11ssp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -36,6 +37,7 @@
 
 
                 <TextView
+                    android:textSize="@dimen/_11ssp"
                     android:id="@+id/orderId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,6 +49,7 @@
             </LinearLayout>
 
             <TextView
+                android:textSize="@dimen/_11ssp"
                 android:id="@+id/txtStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,6 +80,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:textSize="@dimen/_11ssp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -85,6 +89,7 @@
 
 
                 <TextView
+                    android:textSize="@dimen/_11ssp"
                     android:id="@+id/reqBy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,6 +114,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:textSize="@dimen/_11ssp"
                         android:id="@+id/reqDate"
                         android:textStyle="bold"
                         android:layout_width="match_parent"
@@ -139,6 +145,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:textSize="@dimen/_11ssp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -147,6 +154,7 @@
 
 
                 <TextView
+                    android:textSize="@dimen/_11ssp"
                     android:id="@+id/carrierName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -170,6 +178,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:textSize="@dimen/_11ssp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -178,6 +187,7 @@
 
 
                     <TextView
+                        android:textSize="@dimen/_11ssp"
                         android:id="@+id/txtRequiredQuantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
