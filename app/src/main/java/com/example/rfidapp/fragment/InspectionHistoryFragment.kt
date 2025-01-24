@@ -67,7 +67,7 @@ class InspectionHistoryFragment : MaxHeightBottomSheet(R.layout.fragment_inspect
                             binding.progressBar.isVisible = false
                             it.response?.let {
                                 if((it[0].history?.size ?: 0) > 0){
-                                    setUpAdapter(it[0].history)
+                                    setUpAdapter(it[0].product?.name,it[0].history)
                                 }else{
                                     binding.rcvHistory.isVisible = false
                                     binding.noItem.root.isVisible = true
@@ -99,11 +99,12 @@ class InspectionHistoryFragment : MaxHeightBottomSheet(R.layout.fragment_inspect
         }
     }
 
-    private fun setUpAdapter(history: List<HistoryAsset>?) {
+    private fun setUpAdapter(name: String?, history: List<HistoryAsset>?) {
         binding.rcvHistory.isVisible = true
         val adapter = TagHistoryAdapter(
             activity = requireActivity(),
             historyList = history?: arrayListOf(),
+            name = name?:"",
             onItemClick = {
 
             }

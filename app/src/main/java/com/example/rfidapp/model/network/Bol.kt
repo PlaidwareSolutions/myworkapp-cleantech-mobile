@@ -16,5 +16,6 @@ data class Bol(
     @SerializedName("referenceId") var referenceId: String? = "",
     @SerializedName("tags") var tags: List<String>? = listOf(),
     @SerializedName("updatedAt") var updatedAt: String? = "",
+    @SerializedName("orderType") var orderType: String? = "",
     @SerializedName("__v") var v: Int? = 0
 )

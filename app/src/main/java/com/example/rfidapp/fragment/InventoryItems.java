@@ -281,6 +281,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             binding.lnrItem.setVisibility(View.GONE);
         }
 
+        if(orderDetail == null && shipment == null){
+            binding.save.setVisibility(View.GONE);
+        }
+
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -347,7 +351,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     startActivity(intent);
                 }
                 else {
-
+                    /*callback.onClickListener("");*/
                 }
             }
         });

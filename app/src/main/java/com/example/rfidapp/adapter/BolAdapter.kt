@@ -4,25 +4,23 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rfidapp.databinding.ItemTagHistoryBinding
-import com.example.rfidapp.model.OrderShipmentData
-import com.example.rfidapp.model.network.HistoryAsset
+import com.example.rfidapp.databinding.ItemBolBinding
+import com.example.rfidapp.model.network.Bol
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class TagHistoryAdapter(
+class BolAdapter(
     val activity: Activity,
-    private val historyList: List<HistoryAsset>,
-    private val onItemClick: (HistoryAsset) -> Unit,
-    private val name:String
-) : RecyclerView.Adapter<TagHistoryAdapter.MyViewHolder>() {
+    val bolList: List<Bol>,
+    private val onItemClick: (Bol) -> Unit,
+) : RecyclerView.Adapter<BolAdapter.MyViewHolder>() {
 
 
-    inner class MyViewHolder(val binding: ItemTagHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyViewHolder(val binding: ItemBolBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(pos: Int) {
             binding.apply {
-                with(historyList[pos]){
+                with(bolList[pos]){
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
                     val outputFormat = SimpleDateFormat("d MMM yyyy, h:mm a", Locale.US)
                     val date: Date? = createdAt?.let { inputFormat.parse(it) }
@@ -30,12 +28,12 @@ class TagHistoryAdapter(
 
                     textViewTimeStamp.text = formattedDate
                     textViewDescription.text = "Lorem ipsum dolor sit amet"
-                    txtName.text = name
-                    txtState.text = state
+                    txtName.text = ""
+                    txtState.text = ""
                 }
 
                 root.setOnClickListener {
-                    onItemClick.invoke(historyList[pos])
+                    onItemClick.invoke(bolList[pos])
                 }
             }
 
@@ -43,14 +41,14 @@ class TagHistoryAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MyViewHolder(
-        ItemTagHistoryBinding.inflate(
+        ItemBolBinding.inflate(
             activity.layoutInflater,
             parent,
             false
         )
     )
 
-    override fun getItemCount() = historyList.size
+    override fun getItemCount() = bolList.size
 
     override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.bind(position)

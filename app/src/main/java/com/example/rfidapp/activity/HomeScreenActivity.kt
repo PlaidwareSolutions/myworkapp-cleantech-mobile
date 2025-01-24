@@ -35,7 +35,7 @@ class HomeScreenActivity : AppCompatActivity() {
             }
 
             billOfLading.setOnClickListener {
-                startActivity(Intent(this@HomeScreenActivity, BoLActivity::class.java))
+                startActivity(Intent(this@HomeScreenActivity, CreateBoLActivity::class.java))
             }
             iconImage.setOnClickListener {
                 scanningToggleVisibility()

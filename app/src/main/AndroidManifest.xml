@@ -93,6 +93,11 @@
         <activity
             android:name=".activity.BoLActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".activity.CreateBoLActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activity.InspectionProcessActivity"
             android:exported="false" />
