@@ -1,5 +1,7 @@
 package com.example.rfidapp.fragment;
 
+import static com.example.rfidapp.ReaderClass.mReader;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -217,7 +219,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
 
         binding.save.setOnClickListener(view -> {
-            if (InventoryItemsActivity.mReader.isWorking()) {
+            if (InventoryItemsActivity.mReader != null && InventoryItemsActivity.mReader.isWorking()) {
                 this.mContext.highlightToast("Kindly Stop Reading First..", 2);
             } else {
                 if (orderDetail != null) {
@@ -313,7 +315,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 }
             } else if (!this.mContext.isC5Device) {
                 clearDialog();
-            } else if (InventoryItemsActivity.mReader.isWorking()) {
+            } else if (mReader.isWorking()) {
                 this.mContext.highlightToast("Kindly Stop Reading First..", 2);
             } else {
                 clearDialog();
@@ -400,9 +402,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else {
                 stopInventory();
             }
-        } else if (InventoryItemsActivity.mReader == null) {
+        } else if (mReader == null) {
         } else {
-            if (InventoryItemsActivity.mReader.startInventoryTag()) {
+            if (mReader.startInventoryTag()) {
                 /*binding.imgScan.setVisibility(View.GONE);*/
                 this.binding.btStart.setText(this.mContext.getString(R.string.title_stop_Inventory));
                 this.loopFlag = true;
@@ -490,8 +492,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         if (this.loopFlag) {
             this.loopFlag = false;
             if (!PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") || InventoryItemsActivity.mBtReader == null || !this.mContext.isBtConnect) {
-                if (InventoryItemsActivity.mReader != null) {
-                    if (InventoryItemsActivity.mReader.stopInventory()) {
+                if (mReader != null) {
+                    if (mReader.stopInventory()) {
                         this.binding.btStart.setText(this.mContext.getString(R.string.btInventory));
                     } else {
                         UIHelper.ToastMessage(this.mContext, R.string.uhf_msg_inventory_stop_fail);
@@ -671,8 +673,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             while (InventoryItems.this.loopFlag) {
                 if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") && InventoryItemsActivity.mBtReader != null && InventoryItems.this.mContext.isBtConnect) {
                     uHFTAGInfo = InventoryItemsActivity.mBtReader.readTagFromBuffer();
-                } else if (InventoryItemsActivity.mReader != null) {
-                    uHFTAGInfo = InventoryItemsActivity.mReader.readTagFromBuffer();
+                } else if (mReader != null) {
+                    uHFTAGInfo = mReader.readTagFromBuffer();
                 }
                 if (uHFTAGInfo != null) {
                     Message obtainMessage = InventoryItems.this.handler.obtainMessage();
