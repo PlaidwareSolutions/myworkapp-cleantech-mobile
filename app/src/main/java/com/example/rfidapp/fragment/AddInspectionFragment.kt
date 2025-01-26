@@ -1,5 +1,6 @@
 package com.example.rfidapp.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_inspection) {
+class AddInspectionFragment(var onDismissListner:()->Unit) : BottomSheetDialogFragment(R.layout.fragment_add_inspection) {
 
     lateinit var binding: FragmentAddInspectionBinding
     private val assetViewModel: AssetViewModel by viewModels()
@@ -34,7 +35,8 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
         @JvmStatic
         fun newInstance(
             tagID: String,
-        ) = AddInspectionFragment().apply {
+            onDismissListner:()->Unit
+        ) = AddInspectionFragment(onDismissListner).apply {
             this.tagID = tagID
         }
     }
@@ -127,6 +129,7 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 this@AddInspectionFragment.dismiss()
+
                             }
                         }
 
@@ -142,5 +145,10 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
                 }
             }
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        onDismissListner.invoke()
+        super.onDismiss(dialog)
     }
 }

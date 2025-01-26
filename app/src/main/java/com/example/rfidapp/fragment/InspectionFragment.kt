@@ -37,21 +37,25 @@ class InspectionFragment : BottomSheetDialogFragment(R.layout.fragment_inspectio
     private fun setupUI() {
         binding.apply {
             addInspection.setOnClickListener {
-                val addInspectionFragment = AddInspectionFragment.newInstance(tagID)
+                val addInspectionFragment = AddInspectionFragment.newInstance(tagID,{
+                    dismiss()
+                })
                 addInspectionFragment.show(
                     childFragmentManager,
                     addInspectionFragment.tag
                 )
-                dismiss()
+                /*dismiss()*/
             }
 
             inspectionHistory.setOnClickListener {
-                val inspectionHistoryFragment = InspectionHistoryFragment.newInstance(tagID)
+                val inspectionHistoryFragment = InspectionHistoryFragment.newInstance(tagID,{
+                    dismiss()
+                })
                 inspectionHistoryFragment.show(
                     childFragmentManager,
                     inspectionHistoryFragment.tag
                 )
-                dismiss()
+                /*dismiss()*/
             }
 
             cancel.setOnClickListener {
