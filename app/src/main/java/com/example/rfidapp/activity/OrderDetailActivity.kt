@@ -106,6 +106,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                             this@OrderDetailActivity,
                             InventoryItemsActivity::class.java
                         ).putExtra("orderDetail", Gson().toJson(orderDetail))
+                            .putExtra("shippedCount", orderDetail?.shippedItems?.size ?: 0)
                     )
 //                    finish()
                 }

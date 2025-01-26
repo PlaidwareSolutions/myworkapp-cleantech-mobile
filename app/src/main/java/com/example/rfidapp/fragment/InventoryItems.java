@@ -75,6 +75,7 @@ import io.reactivex.schedulers.Schedulers;
 public class InventoryItems extends KeyDownFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
     public static final String TAG_COUNT = "tagCount";
     public static final String TAG_EPC = "tagEPC";
     public static final String TAG_EPC_TID = "tagEpcTID";
@@ -163,20 +164,24 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return true;
     }
 
-    public static InventoryItems newInstance(String str, String shipmentString) {
+    public static InventoryItems newInstance(String orderDetailString, String shipmentString, int alreadyShippedCount) {
         InventoryItems inventoryItems = new InventoryItems();
         Bundle bundle = new Bundle();
-        bundle.putString(ARG_PARAM1, str);
+        bundle.putString(ARG_PARAM1, orderDetailString);
         bundle.putString(ARG_PARAM2, shipmentString);
+        bundle.putInt(ARG_PARAM3, alreadyShippedCount);
         inventoryItems.setArguments(bundle);
         return inventoryItems;
     }
+
+    int alreadyShippedCount = 0;
 
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         if (getArguments() != null) {
             String mParam1 = getArguments().getString(ARG_PARAM1);
             String mParam2 = getArguments().getString(ARG_PARAM2);
+            alreadyShippedCount = getArguments().getInt(ARG_PARAM3);
             orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
             shipment = new Gson().fromJson(mParam2, Shipment.class);
             Log.e("TAG243", "onCreate: " + orderDetail);
@@ -240,7 +245,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                                 orderDetail.getId(),
                                 orderDetail.getReferenceId(),
                                 orderDetail.getTotalCount(),
-                                tagsList.size(),
+                                tagsList.size() + alreadyShippedCount,
                                 (ArrayList<String>) tagsList
                         );
                     } else {
@@ -253,6 +258,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
                     if (orderDetail != null) {
                         Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+//                        if (alreadyShippedCount != 0) {
+//                            intent.putExtra("alreadyShippedCount", alreadyShippedCount);
+//                        }
                         startActivity(intent);
                         requireActivity().finish();
                     }
