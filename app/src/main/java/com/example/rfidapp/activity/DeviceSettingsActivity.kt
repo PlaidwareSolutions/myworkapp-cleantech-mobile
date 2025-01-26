@@ -54,8 +54,9 @@ class DeviceSettingsActivity : ActBase<ActivityDeviceSettingsBinding>() {
         } else {
             highlightToast("Please Connect Device First..", 2)
         }
-        binding.slPwr.value = ("" + power).toFloat()
-        binding.tvPwr.text = "$power dBm"
+        val safePower = power.coerceIn(6, 30)
+        binding.slPwr.value = safePower.toFloat()
+        binding.tvPwr.text = "$safePower dBm"
 
         binding.slPwr.addOnChangeListener { _, f, _ ->
             if ((!PreferenceManager.getStringValue(Constants.GET_DEVICE)

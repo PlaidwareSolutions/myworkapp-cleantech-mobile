@@ -78,7 +78,7 @@ class InspectionHistoryFragment : MaxHeightBottomSheet(R.layout.fragment_inspect
 
                         is ScreenState.Error -> {
                             binding.progressBar.isVisible = false
-                            Toast.makeText(
+                            if(isAdded) Toast.makeText(
                                 requireActivity(),
                                 it.message,
                                 Toast.LENGTH_SHORT
