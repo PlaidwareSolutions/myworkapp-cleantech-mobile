@@ -5,15 +5,12 @@ import android.app.Activity
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rfidapp.databinding.ItemBolBinding
-import com.example.rfidapp.model.network.Bol
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.example.rfidapp.model.network.BolX
 
 class BolAdapter(
     val activity: Activity,
-    val bolList: List<Bol>,
-    private val onItemClick: (Bol) -> Unit,
+    val bolList: List<BolX>,
+    private val onItemClick: (BolX) -> Unit,
 ) : RecyclerView.Adapter<BolAdapter.MyViewHolder>() {
 
 
@@ -21,15 +18,19 @@ class BolAdapter(
         fun bind(pos: Int) {
             binding.apply {
                 with(bolList[pos]){
-                    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
-                    val outputFormat = SimpleDateFormat("d MMM yyyy, h:mm a", Locale.US)
-                    val date: Date? = createdAt?.let { inputFormat.parse(it) }
-                    val formattedDate = date?.let { outputFormat.format(it) }
-
-                    textViewTimeStamp.text = formattedDate
-                    textViewDescription.text = "Lorem ipsum dolor sit amet"
-                    txtName.text = ""
-                    txtState.text = ""
+                    bolNumber.text = referenceId
+                    carrierName.text = getCarrierName()
+                    customerName.text = getCustomerName()
+                    createdDate.text = getCreatedDate()
+//                    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+//                    val outputFormat = SimpleDateFormat("d MMM yyyy, h:mm a", Locale.US)
+//                    val date: Date? = createdAt?.let { inputFormat.parse(it) }
+//                    val formattedDate = date?.let { outputFormat.format(it) }
+//
+//                    textViewTimeStamp.text = formattedDate
+//                    textViewDescription.text = "Lorem ipsum dolor sit amet"
+//                    txtName.text = ""
+//                    txtState.text = ""
                 }
 
                 root.setOnClickListener {

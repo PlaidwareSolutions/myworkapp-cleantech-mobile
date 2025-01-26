@@ -7,5 +7,6 @@ import java.io.Serializable
 data class Item(
     @SerializedName("_id") var id: String? = null,
     @SerializedName("product") var product: Product? = null,
-    @SerializedName("requiredQuantity") var requiredQuantity: Int? = null
+    @SerializedName("requiredQuantity") var requiredQuantity: Int? = null,
+    @SerializedName("quantity") var quantity: Int? = null
 ) : Serializable

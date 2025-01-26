@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.BolRepository
 import com.example.rfidapp.model.network.Bol
+import com.example.rfidapp.model.network.BolX
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.SharedPrefs
 import com.example.rfidapp.util.getErrorMessage
@@ -17,15 +18,28 @@ import javax.inject.Inject
 @HiltViewModel
 class BolViewModel @Inject constructor(private val bolRepository: BolRepository) : ViewModel(){
 
-    private val _getBol = MutableStateFlow<ScreenState<List<Bol>>>(ScreenState.Idle)
-    val getBol: StateFlow<ScreenState<List<Bol>>> = _getBol.asStateFlow()
+    private val _getBol = MutableStateFlow<ScreenState<List<BolX>>>(ScreenState.Idle)
+    val getBol: StateFlow<ScreenState<List<BolX>>> = _getBol.asStateFlow()
 
-    fun fetchBolList(){
+    fun fetchBolList(
+        orderNumber: String? = null,
+        customer: String? = null,
+        carrier: String? = null,
+        bolNumber: String? = null,
+        shipmentNumber: String? = null,
+    ) {
         viewModelScope.launch {
             _getBol.value = ScreenState.Loading
             SharedPrefs.accessToken?.let { token ->
                 try {
-                    val response = bolRepository.fetchBolList(token)
+                    val response = bolRepository.fetchBolList(
+                        token = token,
+                        orderNumber = orderNumber,
+                        customer = customer,
+                        carrier = carrier,
+                        bolNumber = bolNumber,
+                        shipmentNumber = shipmentNumber
+                    )
                     if (response.isSuccess()) {
                         _getBol.value = ScreenState.Success(response.data?: listOf())
                     } else {

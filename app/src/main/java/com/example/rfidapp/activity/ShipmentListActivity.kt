@@ -75,7 +75,6 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
                 val intent = Intent(this, InventoryItemsActivity::class.java)
                 intent.putExtra("SHIPMENT", Gson().toJson(it))
                 startActivity(intent)
-                finish()
             }
         }
 

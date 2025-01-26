@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:itemCount="4"
-            tools:listitem="@layout/item_tag_history"
+            tools:listitem="@layout/item_order_shipment"
             tools:visibility="visible" />
 
         <include
