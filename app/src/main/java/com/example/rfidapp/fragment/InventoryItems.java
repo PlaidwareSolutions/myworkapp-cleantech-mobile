@@ -254,6 +254,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     if (orderDetail != null) {
                         Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
                         startActivity(intent);
+                        requireActivity().finish();
                     }
                 } else if (shipment != null) {
                     List<String> tagsList = tagList.stream()
@@ -265,6 +266,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     intent.putExtra("tags", new Gson().toJson(tagsList));
                     intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
                     startActivity(intent);
+                    requireActivity().finish();
                 } else {
                 }
             }
