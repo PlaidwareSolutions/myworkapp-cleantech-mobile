@@ -4,7 +4,6 @@ import androidx.room.Room.databaseBuilder
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
 import com.example.rfidapp.fragment.InspectionFragment
-import com.example.rfidapp.fragment.InspectionHistoryFragment
 import com.example.rfidapp.fragment.InventoryItems
 import com.example.rfidapp.model.Data
 import com.example.rfidapp.model.network.OrderDetail
@@ -23,6 +22,7 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
 
     private var orderDetail: OrderDetail? = null
     private var shipment: Shipment? = null
+    private var isInspection:Boolean = false
 
     override fun bindObjects() {
         intent.getStringExtra("orderDetail")?.let {
@@ -31,6 +31,11 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
         intent.getStringExtra("SHIPMENT")?.let {
             shipment = Gson().fromJson<Shipment>(it)
         }
+
+        intent.getBooleanExtra("isInspection",false).let {
+            isInspection = it
+        }
+
     }
 
     override fun bindListeners() {
@@ -49,19 +54,15 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
         val inventoryItems = InventoryItems.newInstance(intent.getStringExtra("orderDetail"), intent.getStringExtra("SHIPMENT"))
         inventoryItems.setCallback { data ->
             //Item click
-            val data: Data? = Gson().fromJson(json = data)
-            val tagId = data?.tagEpc?:"2018030712774A021A900024"
-            val inspectionFragment: InspectionFragment = InspectionFragment.newInstance(tagId)
-            inspectionFragment.show(
-                supportFragmentManager,
-                inspectionFragment.tag
-            )
-
-            /*val inspectionHistoryFragment = InspectionHistoryFragment.newInstance("2018030712774A021A900024")
-            inspectionHistoryFragment.show(
-                supportFragmentManager,
-                inspectionHistoryFragment.tag
-            )*/
+            if(isInspection){
+                val data: Data? = Gson().fromJson(json = data)
+                val tagId = data?.tagEpc?:""
+                val inspectionFragment: InspectionFragment = InspectionFragment.newInstance(tagId)
+                inspectionFragment.show(
+                    supportFragmentManager,
+                    inspectionFragment.tag
+                )
+            }
         }
         supportFragmentManager.beginTransaction()
             .replace(
