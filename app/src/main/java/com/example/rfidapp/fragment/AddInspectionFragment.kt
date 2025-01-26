@@ -120,13 +120,13 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
 
                         is ScreenState.Success -> {
                             binding.progressBar.isVisible = false
-                            it.response?.let { it->
+                            it.response.let {
                                 Toast.makeText(
                                     requireActivity(),
                                     "Item inspected successfully",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                dismiss()
+                                this@AddInspectionFragment.dismiss()
                             }
                         }
 
