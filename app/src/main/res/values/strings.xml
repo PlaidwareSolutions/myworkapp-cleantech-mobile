@@ -67,5 +67,7 @@
     <string name="no_carrier_found">Oops! Carrier not found</string>
     <string name="myworkapp_io">MyWorkApp.io</string>
     <string name="action_not_supported">Document downloaded. Unable to open the same due to unsupported file type.</string>
+    <string name="scan_count">Scan count</string>
+    <string name="save_items">Save Items</string>
 
 </resources>

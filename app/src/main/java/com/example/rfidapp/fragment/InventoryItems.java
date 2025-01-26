@@ -83,6 +83,36 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     MyAdapter adapter;
     FragmentInventoryItemsBinding binding;
     public ClearDataAsyncTask clearDataAsyncTask;
+    InvItemsViewModel invItemsViewModel;
+    InvListViewModel invListViewModel;
+    List<EpcModel> inv_epc;
+    boolean isAleart = false;
+    int limit = 200000;
+    public boolean loopFlag = false;
+    InventoryItemsActivity mContext;
+    public String miliSec;
+    int page = 0;
+    int scannedItems = 0;
+    public int selectItem = -1;
+    public ArrayList<HashMap<String, String>> tagList = new ArrayList<>();
+    public ArrayList<HashMap<String, String>> tagSearchList;
+    private final List<String> tempData = new ArrayList<>();
+    int total;
+    UhfInfo uhfInfo = new UhfInfo();
+    Util utils;
+    OrderDetail orderDetail;
+    Shipment shipment;
+
+    public interface ClickListner {
+        void onClickListener(String data);
+    }
+
+    private ClickListner callback;
+
+    public void setCallback(ClickListner callback) {
+        this.callback = callback;
+    }
+
     Handler handler = new Handler(Looper.getMainLooper()) {
         @SuppressLint("HandlerLeak")
         public void handleMessage(Message message) {
@@ -103,33 +133,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             InventoryItems.this.setTotalTime();
         }
     };
-    InvItemsViewModel invItemsViewModel;
-    InvListViewModel invListViewModel;
-    List<EpcModel> inv_epc;
-    boolean isAleart = false;
-    boolean isSearch = false;
-    int limit = 200000;
-    public boolean loopFlag = false;
-    InventoryItemsActivity mContext;
-    public String miliSec;
-    int page = 0;
-    int scannedItems = 0;
-    public int selectItem = -1;
-    public ArrayList<HashMap<String, String>> tagList = new ArrayList<>();
-    public ArrayList<HashMap<String, String>> tagSearchList;
-    private final List<String> tempData = new ArrayList<>();
-    private int total;
-    UhfInfo uhfInfo = new UhfInfo();
-    Util utils;
-    OrderDetail orderDetail;
-    Shipment shipment;
-    public interface ClickListner {
-        void onClickListener(String data);
-    }
-    private ClickListner callback;
-    public void setCallback(ClickListner callback) {
-        this.callback = callback;
-    }
 
     static int binarySearch(List<String> list, String str) {
         int i = 0;
@@ -176,7 +179,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             String mParam2 = getArguments().getString(ARG_PARAM2);
             orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
             shipment = new Gson().fromJson(mParam2, Shipment.class);
-            Log.e("TAG243", "onCreate: "+orderDetail );
+            Log.e("TAG243", "onCreate: " + orderDetail);
         }
     }
 
@@ -185,7 +188,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.binding = FragmentInventoryItemsBinding.inflate(layoutInflater, viewGroup, false);
         this.invItemsViewModel = new ViewModelProvider(this).get(InvItemsViewModel.class);
         this.invListViewModel = new ViewModelProvider(this).get(InvListViewModel.class);
-
         setupUI();
         return this.binding.getRoot();
     }
@@ -205,69 +207,73 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             binding.lnrItem.setVisibility(View.GONE);
         }
 
-        if(orderDetail == null && shipment == null){
+        if (orderDetail == null && shipment == null) {
             binding.save.setVisibility(View.GONE);
         }
 
         binding.save.setOnClickListener(view -> {
-            if(orderDetail != null){
-                //Create Shipment Flow
-                CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
-                ArrayList<InputBol> bills = new ArrayList<>();
-                List<String> tagsList = tagList.stream()
-                        .map(map -> map.get(InventoryItems.TAG_EPC))
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-                bills.add(new InputBol(orderDetail.getId(),tagsList));
-
-                createShipmentRequest.setBols(bills);
-                createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
-                Date date = new Date();
-                @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-                String formattedDate = formatter.format(date);
-                createShipmentRequest.setShipmentDate(formattedDate);
-                createShipmentRequest.setDriver(new Driver("", ""));
-                ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
-                OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
-                if (orderShipmentData == null) {
-                    orderShipmentData = new OrderShipmentData(
-                            orderDetail.getId(),
-                            orderDetail.getReferenceId(),
-                            orderDetail.getTotalCount(),
-                            tagsList.size(),
-                            (ArrayList<String>) tagsList
-                    );
+            if (this.mContext.isBTDevice) {
+                if (InventoryItemsActivity.mBtReader.isWorking()) {
+                    this.mContext.highlightToast("Kindly Stop Reading First..", 2);
                 } else {
-                    //todo:update logic here
-                    ArrayList<String> tags = orderShipmentData.getTags();
-                    tags.addAll(tagsList);
-                    tags.stream().distinct();
-                    orderShipmentData.setTags(tags);
-                }
-                ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
-                if (orderDetail != null) {
-                    Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
-                    startActivity(intent);
-                }
-            }
-            else if (shipment != null) {
-                List<String> tagsList = tagList.stream()
-                        .map(map -> map.get(InventoryItems.TAG_EPC))
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+                    if (orderDetail != null) {
+                        //Create Shipment Flow
+                        CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
+                        ArrayList<InputBol> bills = new ArrayList<>();
+                        List<String> tagsList = tagList.stream()
+                                .map(map -> map.get(InventoryItems.TAG_EPC))
+                                .filter(Objects::nonNull)
+                                .collect(Collectors.toList());
+                        bills.add(new InputBol(orderDetail.getId(), tagsList));
 
-                Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
-                intent.putExtra("tags",new Gson().toJson(tagsList));
-                intent.putExtra("SHIPMENT",new Gson().toJson(shipment));
-                startActivity(intent);
-            }
-            else {
-                /*callback.onClickListener("");*/
+                        createShipmentRequest.setBols(bills);
+                        createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+                        Date date = new Date();
+                        @SuppressLint("SimpleDateFormat")
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+                        String formattedDate = formatter.format(date);
+                        createShipmentRequest.setShipmentDate(formattedDate);
+                        createShipmentRequest.setDriver(new Driver("", ""));
+                        ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
+                        OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
+                        if (orderShipmentData == null) {
+                            orderShipmentData = new OrderShipmentData(
+                                    orderDetail.getId(),
+                                    orderDetail.getReferenceId(),
+                                    orderDetail.getTotalCount(),
+                                    tagsList.size(),
+                                    (ArrayList<String>) tagsList
+                            );
+                        } else {
+                            //todo:update logic here
+                            ArrayList<String> tags = orderShipmentData.getTags();
+                            tags.addAll(tagsList);
+                            tags.stream().distinct();
+                            orderShipmentData.setTags(tags);
+                        }
+                        ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
+                        if (orderDetail != null) {
+                            Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                            startActivity(intent);
+                        }
+                    } else if (shipment != null) {
+                        List<String> tagsList = tagList.stream()
+                                .map(map -> map.get(InventoryItems.TAG_EPC))
+                                .filter(Objects::nonNull)
+                                .collect(Collectors.toList());
+
+                        Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
+                        intent.putExtra("tags", new Gson().toJson(tagsList));
+                        intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
+                        startActivity(intent);
+                    } else {
+                    }
+                }
             }
         });
     }
 
+    @Override
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
         InventoryItemsActivity mainActivity = (InventoryItemsActivity) getActivity();
@@ -284,54 +290,13 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.utils = new Util(getContext());
         this.binding.btStart.setOnClickListener(this);
         this.binding.btClear.setOnClickListener(this);
-        binding.save.setOnClickListener(view -> {
-            //Create Shipment Flow
-            CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
-            ArrayList<InputBol> bills = new ArrayList<>();
-            List<String> tagsList = tagList.stream()
-                    .map(map -> map.get(InventoryItems.TAG_EPC))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-            bills.add(new InputBol(orderDetail.getId(),tagsList));
 
-            createShipmentRequest.setBols(bills);
-            createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
-            Date date = new Date();
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-            String formattedDate = formatter.format(date);
-            createShipmentRequest.setShipmentDate(formattedDate);
-            createShipmentRequest.setDriver(new Driver("", ""));
-            ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
-            OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
-            if (orderShipmentData == null) {
-                orderShipmentData = new OrderShipmentData(
-                        orderDetail.getId(),
-                        orderDetail.getReferenceId(),
-                        orderDetail.getTotalCount(),
-                        tagsList.size(),
-                        (ArrayList<String>) tagsList
-                );
-            } else {
-                ArrayList<String> tags = orderShipmentData.getTags();
-                tags.addAll(tagsList);
-                tags.stream().distinct();
-                orderShipmentData.setTags(tags);
-            }
-            ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
-            Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
-            startActivity(intent);
-            mContext.finish();
-        });
-
-        InventoryItems.this.isSearch = false;
-        InventoryItems.this.binding.LvSearchTags.setVisibility(android.view.View.GONE);
         InventoryItems.this.binding.LvTags.setVisibility(android.view.View.VISIBLE);
         loadData(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
     }
 
     public void onClick(View view) {
-       if (view.getId() == R.id.bt_clear) {
+        if (view.getId() == R.id.bt_clear) {
             if (this.mContext.isBTDevice) {
                 if (InventoryItemsActivity.mBtReader.isWorking()) {
                     this.mContext.highlightToast("Kindly Stop Reading First..", 2);
@@ -345,8 +310,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else {
                 clearDialog();
             }
-        }
-        else if (view.getId() == R.id.bt_start) {
+        } else if (view.getId() == R.id.bt_start) {
             if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
                 if (PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).isEmpty()) {
                     insertValues();
@@ -383,7 +347,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
-                    public void onSubscribe(Disposable disposable) {}
+                    public void onSubscribe(Disposable disposable) {
+                    }
 
                     @Override
                     public void onComplete() {
@@ -394,7 +359,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
                     @Override
                     public void onError(Throwable th) {
-                        Toast.makeText(requireActivity(),th.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireActivity(), th.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -456,13 +421,14 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return inventoryItemsEntity;
     }
 
-    private void insertValues(final InventoryItemsEntity inventoryItemsEntity, String str) {
-        Completable.fromAction(() -> this.insertValues(inventoryItemsEntity))
+    private void insertValues(final InventoryItemsEntity inventoryItemsEntity) {
+        Completable.fromAction(() -> invItemsViewModel.insert(inventoryItemsEntity))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
-                    public void onSubscribe(Disposable d) {}
+                    public void onSubscribe(Disposable d) {
+                    }
 
                     @Override
                     public void onComplete() {
@@ -474,11 +440,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         InventoryItems.this.updateValues(inventoryItemsEntity);
                     }
                 });
-    }
-
-
-    public void insertValues(InventoryItemsEntity inventoryItemsEntity) {
-        this.invItemsViewModel.insert(inventoryItemsEntity);
     }
 
     @SuppressLint("CheckResult")
@@ -507,13 +468,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
-                    public void onSubscribe(Disposable disposable) {}
+                    public void onSubscribe(Disposable disposable) {
+                    }
 
                     @Override
-                    public void onComplete() {}
+                    public void onComplete() {
+                    }
 
                     @Override
-                    public void onError(Throwable th) {}
+                    public void onError(Throwable th) {
+                    }
                 });
     }
 
@@ -545,27 +509,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
         mainActivity.setInventoryItemBarCount(mainActivity.getItemBarCount());
     }
-    class TagThread extends Thread {
-        TagThread() {
-        }
 
-        public void run() {
-            UHFTAGInfo uHFTAGInfo = null;
-            while (InventoryItems.this.loopFlag) {
-                if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") && InventoryItemsActivity.mBtReader != null && InventoryItems.this.mContext.isBtConnect) {
-                    uHFTAGInfo = InventoryItemsActivity.mBtReader.readTagFromBuffer();
-                } else if (InventoryItemsActivity.mReader != null) {
-                    uHFTAGInfo = InventoryItemsActivity.mReader.readTagFromBuffer();
-                }
-                if (uHFTAGInfo != null) {
-                    Message obtainMessage = InventoryItems.this.handler.obtainMessage();
-                    obtainMessage.obj = uHFTAGInfo;
-                    InventoryItems.this.handler.sendMessage(obtainMessage);
-                    InventoryItems.this.mContext.playSound(1);
-                }
-            }
-        }
-    }
     public String mergeTidEpc(String str, String str2, String str3) {
         String str4 = "EPC:" + str2;
         if (!TextUtils.isEmpty(str) && !str.equals("0000000000000000") && !str.equals("000000000000000000000000")) {
@@ -573,10 +517,12 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
         return (str3 == null || str3.isEmpty()) ? str4 : str4 + "\nUSER:" + str3;
     }
+
     public void setTotalTime() {
         System.currentTimeMillis();
     }
-    public void addDataToList(String str, String str2, String str3,String str4, boolean z) {
+
+    public void addDataToList(String str, String str2, String str3, String str4, boolean z) {
         if (StringUtils.isNotEmpty(str)) {
             int checkIsExist = checkIsExist(str);
             HashMap<String, String> hashMap = new HashMap<>();
@@ -600,7 +546,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 this.tempData.add(str);
                 this.binding.tvCount.setText(String.valueOf(this.adapter.getCount()));
                 if (z) {
-                    insertValues(setItemsDetail(str), str);
+                    insertValues(setItemsDetail(str));
                 }
                 if (this.binding.tvCount.getText().toString().equals("0")) {
                     btCancel("grey");
@@ -639,6 +585,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public ViewHolder() {
         }
     }
+
     public class MyAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
 
@@ -677,10 +624,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 view2 = view;
                 viewHolder = (ViewHolder) view.getTag();
             }
-            viewHolder.tvEPCTID.setText("EPC [Hex]: "+ InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
-            viewHolder.tvTagCount.setText("Read Count: "+ InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
+            viewHolder.tvEPCTID.setText("EPC [Hex]: " + InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
+            viewHolder.tvTagCount.setText("Read Count: " + InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
 //            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
-            viewHolder.tvTagRssi.setText("RSSI: "+ InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI_NUMBER));
+            viewHolder.tvTagRssi.setText("RSSI: " + InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI_NUMBER));
             viewHolder.llList.setOnClickListener(view1 -> {
                 HashMap<String, String> stringStringHashMap = InventoryItems.this.tagList.get(i);
                 Data data = new Data(
@@ -695,9 +642,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else {
                 view2.setBackgroundColor(0);
             }
-            if (isScanning){
+            if (isScanning) {
                 viewHolder.ivDelete.setVisibility(View.GONE);
-            }else {
+            } else {
                 viewHolder.ivDelete.setVisibility(View.VISIBLE);
             }
             viewHolder.ivDelete.setOnClickListener(view3 -> {
@@ -709,32 +656,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    public class setEpc extends AsyncTask<List<InventoryItemsEntity>, Boolean, Boolean> {
-        public setEpc() {
-        }
-
-        @Override
-        public Boolean doInBackground(List<InventoryItemsEntity>... listArr) {
-            for (int i = 0; i < listArr[0].size(); i++) {
-                InventoryItems.this.addDataToList(listArr[0].get(i).getEpc(), "", listArr[0].get(i).getTimeStamp(), "",false);
-            }
-            return null;
-        }
-
-        @Override
-        public void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        public void onPostExecute(Boolean bool) {
-            InventoryItems.this.adapter.notifyDataSetChanged();
-            InventoryItems.this.utils.hideProgressBar();
-            super.onPostExecute(bool);
-        }
-    }
-
     private void clearDialog() {
         new AlertDialog.Builder(getContext()).setIcon(R.drawable.delete_24).setTitle("Clear Data").setMessage("Do you want to clear all data?").setPositiveButton("Yes", (dialogInterface, i) -> {
 
@@ -743,6 +664,29 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             dialogInterface.dismiss();
         }).setNegativeButton("No", null).show();
     }
+
+    class TagThread extends Thread {
+        TagThread() {
+        }
+
+        public void run() {
+            UHFTAGInfo uHFTAGInfo = null;
+            while (InventoryItems.this.loopFlag) {
+                if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equals("1") && InventoryItemsActivity.mBtReader != null && InventoryItems.this.mContext.isBtConnect) {
+                    uHFTAGInfo = InventoryItemsActivity.mBtReader.readTagFromBuffer();
+                } else if (InventoryItemsActivity.mReader != null) {
+                    uHFTAGInfo = InventoryItemsActivity.mReader.readTagFromBuffer();
+                }
+                if (uHFTAGInfo != null) {
+                    Message obtainMessage = InventoryItems.this.handler.obtainMessage();
+                    obtainMessage.obj = uHFTAGInfo;
+                    InventoryItems.this.handler.sendMessage(obtainMessage);
+                    InventoryItems.this.mContext.playSound(1);
+                }
+            }
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     public class ClearDataAsyncTask extends AsyncTask<Void, Integer, Boolean> {
         public ProgressDialog progressDialog;
@@ -823,6 +767,32 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
             InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
             InventoryItems.this.clearDataAsyncTask = null;
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public class setEpc extends AsyncTask<List<InventoryItemsEntity>, Boolean, Boolean> {
+        public setEpc() {
+        }
+
+        @Override
+        public Boolean doInBackground(List<InventoryItemsEntity>... listArr) {
+            for (int i = 0; i < listArr[0].size(); i++) {
+                InventoryItems.this.addDataToList(listArr[0].get(i).getEpc(), "", listArr[0].get(i).getTimeStamp(), "", false);
+            }
+            return null;
+        }
+
+        @Override
+        public void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        public void onPostExecute(Boolean bool) {
+            InventoryItems.this.adapter.notifyDataSetChanged();
+            InventoryItems.this.utils.hideProgressBar();
+            super.onPostExecute(bool);
         }
     }
 }
