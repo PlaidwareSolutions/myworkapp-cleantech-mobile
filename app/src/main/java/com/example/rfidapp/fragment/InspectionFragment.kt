@@ -42,7 +42,7 @@ class InspectionFragment : BottomSheetDialogFragment(R.layout.fragment_inspectio
                     childFragmentManager,
                     addInspectionFragment.tag
                 )
-                /*dismiss()*/
+                dismiss()
             }
 
             inspectionHistory.setOnClickListener {
@@ -51,7 +51,7 @@ class InspectionFragment : BottomSheetDialogFragment(R.layout.fragment_inspectio
                     childFragmentManager,
                     inspectionHistoryFragment.tag
                 )
-                /*dismiss()*/
+                dismiss()
             }
 
             cancel.setOnClickListener {
