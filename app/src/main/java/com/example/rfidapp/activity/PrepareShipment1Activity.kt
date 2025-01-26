@@ -226,7 +226,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
     private fun initData(){
         binding.apply {
             createShipmentRequest?.let {
-                shipmentId.text = ""
+                txtShipmentId.text = ""
                 val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault())
                 val date: Date = originalFormat.parse(it.shipmentDate ?: "") ?: return
 
