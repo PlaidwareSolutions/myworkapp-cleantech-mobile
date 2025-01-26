@@ -5,12 +5,8 @@ import android.app.Activity
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rfidapp.databinding.ItemOrderBinding
 import com.example.rfidapp.databinding.ItemShipmentCountBinding
-import com.example.rfidapp.model.network.Bol
 import com.example.rfidapp.model.network.Item
-import com.example.rfidapp.model.network.OrderDetail
-import com.example.rfidapp.util.core.ShipmentUtil
 
 class ShipmentDetailAdapter(
     val activity: Activity,

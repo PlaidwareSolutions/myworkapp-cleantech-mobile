@@ -6,15 +6,16 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rfidapp.databinding.ItemOrderBinding
-import com.example.rfidapp.model.network.OrderDetail
+import com.example.rfidapp.model.network.Item
 import com.example.rfidapp.util.core.ShipmentUtil
 
 class OrderDetailAdapter(
     val orderId: String,
     val orderType:String,
     val activity: Activity,
-    private val orderList: List<OrderDetail.Item>,
-    private val onItemClick:(OrderDetail.Item)->Unit
+    private val orderList: List<Item>,
+    private val onItemClick: (Item) -> Unit,
+    private val shippedQuantity: Int
 ) : RecyclerView.Adapter<OrderDetailAdapter.MyViewHolder>() {
 
 
@@ -25,6 +26,7 @@ class OrderDetailAdapter(
                     itemName.text = product?.name ?: ""
                     srNo.text = pos.toString()
                     txtQty.text = (requiredQuantity ?: 0).toString()
+                    txtShipped.text = shippedQuantity.toString()
                     ShipmentUtil.orderShipments.value.firstOrNull { it.orderId == orderId }
                         ?.let { orderShipmentData ->
                             txtShipped.text = orderShipmentData.shippedQuantity.toString()

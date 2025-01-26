@@ -3,7 +3,6 @@ package com.example.rfidapp.activity
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -13,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.R
 import com.example.rfidapp.adapter.OrderDetailAdapter
 import com.example.rfidapp.databinding.ActivityOrderDetailBinding
-import com.example.rfidapp.model.network.OrderDetail
+import com.example.rfidapp.model.network.Item
+import com.example.rfidapp.model.network.orderdetail.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.openPdf
@@ -47,10 +47,12 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         binding.customerName.text = orderDetail.customer?.name
         binding.pickupDate.text = orderDetail.requiredDate?.toFormattedDate()
         binding.orderDate.text = orderDetail.createdAt?.toFormattedDate()
-        if (orderDetail.items.isEmpty().not()) {
+        if (orderDetail.items?.isEmpty()?.not() == true) {
             binding.rcvOrders.isVisible = true
             binding.lnrContent.isVisible = true
-            initView(orderDetail.items)
+            orderDetail.items?.let {
+                initView(it)
+            }
         } else {
             binding.rcvOrders.isVisible = false
             binding.lnrContent.isVisible = false
@@ -127,12 +129,13 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
     override fun bindMethods() {
     }
 
-    private fun initView(items: List<OrderDetail.Item>) {
+    private fun initView(items: List<Item>) {
         val adapter = OrderDetailAdapter(
             orderId = orderDetail?.id ?: "",
             orderType = orderDetail?.type?:"",
             activity = this,
             orderList = items,
+            shippedQuantity = orderDetail?.shippingDetails?.size ?: 0,
             onItemClick = {
                 showAddItemQuantityDialog()
             }
@@ -142,7 +145,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         binding.rcvOrders.adapter = adapter
     }
 
-    fun showAddItemQuantityDialog() {
+    private fun showAddItemQuantityDialog() {
         val input = EditText(this).apply {
             hint = "Enter item quantity"
             inputType = android.text.InputType.TYPE_CLASS_NUMBER

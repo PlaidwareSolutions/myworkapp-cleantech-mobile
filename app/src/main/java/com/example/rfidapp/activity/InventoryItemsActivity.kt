@@ -4,11 +4,10 @@ import androidx.room.Room.databaseBuilder
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
 import com.example.rfidapp.fragment.InspectionFragment
-import com.example.rfidapp.fragment.InspectionHistoryFragment
 import com.example.rfidapp.fragment.InventoryItems
 import com.example.rfidapp.model.Data
-import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.Shipment
+import com.example.rfidapp.model.network.orderdetail.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.PreferenceManager
 import com.example.rfidapp.util.constants.Constants

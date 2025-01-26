@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.OrderRepository
 import com.example.rfidapp.model.network.ApiResponse
-import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.PdfData
+import com.example.rfidapp.model.network.orderdetail.OrderDetail
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -4,9 +4,9 @@ import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateOrderRequest
 import com.example.rfidapp.model.network.CreateOrderResponse
 import com.example.rfidapp.model.network.Order
-import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.UpdateOrderRequest
+import com.example.rfidapp.model.network.orderdetail.OrderDetail
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header

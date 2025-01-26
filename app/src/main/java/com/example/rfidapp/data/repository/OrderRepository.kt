@@ -5,9 +5,9 @@ import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.CreateOrderRequest
 import com.example.rfidapp.model.network.CreateOrderResponse
 import com.example.rfidapp.model.network.Order
-import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.model.network.PdfData
 import com.example.rfidapp.model.network.UpdateOrderRequest
+import com.example.rfidapp.model.network.orderdetail.OrderDetail
 import javax.inject.Inject
 
 class OrderRepository @Inject constructor(private val orderApi: OrderApi) {
