@@ -1,0 +1,116 @@
+package com.example.rfidapp.fragment
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rfidapp.R
+import com.example.rfidapp.adapter.TagHistoryAdapter
+import com.example.rfidapp.databinding.FragmentInspectionHistoryBinding
+import com.example.rfidapp.model.network.HistoryAsset
+import com.example.rfidapp.util.ScreenState
+import com.example.rfidapp.util.views.MaxHeightBottomSheet
+import com.example.rfidapp.viewmodel.AssetViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
+@AndroidEntryPoint
+class InspectionHistoryFragment : MaxHeightBottomSheet(R.layout.fragment_inspection_history) {
+
+    lateinit var binding: FragmentInspectionHistoryBinding
+    private val assetViewModel: AssetViewModel by viewModels()
+    var tagID: String = ""
+
+    companion object {
+        @JvmStatic
+        fun newInstance(
+            tagID: String,
+        ) = InspectionHistoryFragment().apply {
+            this.tagID = tagID
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        dialog?.setCancelable(false)
+        binding = FragmentInspectionHistoryBinding.inflate(inflater, container, false)
+        setupUI()
+        setUpObserver()
+        return binding.root
+    }
+
+    private fun setUpObserver() {
+        assetViewModel.getAssetByTagID(tagID)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            assetViewModel.assetHistory.collectLatest {
+                requireActivity().runOnUiThread {
+                    when (it) {
+                        is ScreenState.Idle -> {
+
+                        }
+                        is ScreenState.Loading -> {
+                            binding.progressBar.isVisible = true
+                        }
+
+                        is ScreenState.Success -> {
+                            binding.progressBar.isVisible = false
+                            it.response?.let {
+                                if((it[0].history?.size ?: 0) > 0){
+                                    setUpAdapter(it[0].product?.name,it[0].history)
+                                }else{
+                                    binding.rcvHistory.isVisible = false
+                                    binding.noItem.root.isVisible = true
+                                    binding.noItem.noDataText.text = "No History"
+                                }
+                            }
+                        }
+
+                        is ScreenState.Error -> {
+                            binding.progressBar.isVisible = false
+                            Toast.makeText(
+                                requireActivity(),
+                                it.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupUI() {
+        binding.apply {
+
+            cancel.setOnClickListener {
+                dismiss()
+            }
+        }
+    }
+
+    private fun setUpAdapter(name: String?, history: List<HistoryAsset>?) {
+        binding.rcvHistory.isVisible = true
+        val adapter = TagHistoryAdapter(
+            activity = requireActivity(),
+            historyList = history?: arrayListOf(),
+            name = name?:"",
+            onItemClick = {
+
+            }
+        )
+        binding.rcvHistory.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.rcvHistory.adapter = adapter
+    }
+}

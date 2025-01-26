@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.ShipmentRepository
 import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.model.network.CreateShipmentResponse
+import com.example.rfidapp.model.network.Order
+import com.example.rfidapp.model.network.ReceiveShipmentRequest
+import com.example.rfidapp.model.network.ReceiveShipmentResponse
 import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.SharedPrefs
@@ -27,19 +30,21 @@ class ShipmentViewModel @Inject constructor(
 
     private val _createShipmentList = MutableStateFlow<ScreenState<CreateShipmentResponse>>(ScreenState.Idle)
     val createShipmentList: StateFlow<ScreenState<CreateShipmentResponse>> = _createShipmentList.asStateFlow()
-
     val createShipmentListLiveData = _createShipmentList.asLiveData()
 
-    init {
-        getShipments()
-    }
+    private val _receiveShipmentList = MutableStateFlow<ScreenState<ReceiveShipmentResponse>>(ScreenState.Idle)
+    val receiveShipmentList: StateFlow<ScreenState<ReceiveShipmentResponse>> = _receiveShipmentList.asStateFlow()
+    val receiveShipmentListLiveData = _receiveShipmentList.asLiveData()
 
-    private fun getShipments() {
+    val selectedShipment: MutableStateFlow<Shipment?> = MutableStateFlow(null)
+
+
+    fun getShipments(orderType:String="") {
         viewModelScope.launch {
             _shipmentList.value = ScreenState.Loading
             SharedPrefs.accessToken?.let { token ->
                 try {
-                    val response = shipmentRepository.getShipments(token)
+                    val response = shipmentRepository.getShipments(token,orderType)
                     if (response.isSuccess()) {
                         _shipmentList.value = ScreenState.Success(response.data ?: emptyList())
                     } else {
@@ -90,6 +95,27 @@ class ShipmentViewModel @Inject constructor(
                     }
                 } catch (e: Exception) {
                     _createShipmentList.value = ScreenState.Error(message = e.getErrorMessage())
+                }
+            }
+        }
+    }
+
+    fun receiveShipments(shipmentId:String,shipmentRequest: ReceiveShipmentRequest){
+        viewModelScope.launch {
+            _receiveShipmentList.value = ScreenState.Loading
+            SharedPrefs.accessToken?.let { token ->
+                try {
+                    val response = shipmentRepository.receiveShipmentById(token, shipmentId = shipmentId ,
+                        shipmentRequest = shipmentRequest
+                    )
+                    if (response.isSuccess()) {
+                        _receiveShipmentList.value = ScreenState.Success(response.data ?: ReceiveShipmentResponse())
+                    } else {
+                        _receiveShipmentList.value =
+                            ScreenState.Error(message = response.message ?: "Unknown error")
+                    }
+                }   catch (e: Exception) {
+                    _receiveShipmentList.value = ScreenState.Error(message = e.getErrorMessage())
                 }
             }
         }

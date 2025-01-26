@@ -35,7 +35,7 @@ class HomeScreenActivity : AppCompatActivity() {
             }
 
             billOfLading.setOnClickListener {
-                startActivity(Intent(this@HomeScreenActivity, BoLActivity::class.java))
+                startActivity(Intent(this@HomeScreenActivity, CreateBoLActivity::class.java))
             }
             iconImage.setOnClickListener {
                 scanningToggleVisibility()
@@ -50,7 +50,12 @@ class HomeScreenActivity : AppCompatActivity() {
             }
 
             receiving.setOnClickListener {
-                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java).putExtra("shipmentType", "receiving"))
+                startActivity(
+                    Intent(
+                        this@HomeScreenActivity,
+                        ShipmentListActivity::class.java
+                    )
+                )
             }
 
             inventory.setOnClickListener {

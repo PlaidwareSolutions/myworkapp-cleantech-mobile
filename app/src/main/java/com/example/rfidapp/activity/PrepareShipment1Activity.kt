@@ -1,12 +1,17 @@
 package com.example.rfidapp.activity
 
-import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
-import android.view.View
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rfidapp.R
 import com.example.rfidapp.adapter.ShipmentOrderAdapter
 import com.example.rfidapp.databinding.ActivityPrepareShipment1Binding
 import com.example.rfidapp.model.OrderShipmentData
@@ -14,6 +19,10 @@ import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.core.ShipmentUtil
+import com.example.rfidapp.util.downloadPDF
+import com.example.rfidapp.util.openDocument
+import com.example.rfidapp.util.openPdf
+import com.example.rfidapp.viewmodel.ShipmentDetailViewModel
 import com.example.rfidapp.viewmodel.ShipmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +37,7 @@ import java.util.Locale
 class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
     private val viewModel: ShipmentViewModel by viewModels()
+    private val shipmentDetailVM: ShipmentDetailViewModel by viewModels()
     private var createShipmentRequest: CreateShipmentRequest? = null
 
     override fun setViewBinding() = ActivityPrepareShipment1Binding.inflate(layoutInflater)
@@ -49,58 +59,98 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
             }
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.createShipmentList.collectLatest { state ->
-                runOnUiThread {
-                    when (state) {
-                        is ScreenState.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
-                        is ScreenState.Success -> {
-                            binding.progressBar.visibility = View.GONE
-                            val response = state.response
-                            binding.txtShipmentId.text = response.referenceId
-                            Toast.makeText(this@PrepareShipment1Activity, "Shipment created successfully", Toast.LENGTH_SHORT).show()
-                        }
-                        is ScreenState.Error -> {
-                            val errorMessage = state.message
-                            Toast.makeText(this@PrepareShipment1Activity, errorMessage, Toast.LENGTH_SHORT).show()
-                            binding.progressBar.visibility = View.GONE
-                        }
-
-                        ScreenState.Idle -> {
-
-                        }
-                    }
-                }
-            }
-        }
-
-
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 handleBackNavigation()
             }
         })
 
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.createShipmentList.collectLatest {
+                runOnUiThread {
+                    when(it){
+                        ScreenState.Idle -> {}
+                        ScreenState.Loading -> {
+                            binding.progressBar.isVisible = true
+
+                        }
+
+                        is ScreenState.Success -> {
+                            it.response.let { it1 ->
+                                Toast.makeText(this@PrepareShipment1Activity, "Shipment created successfully", Toast.LENGTH_SHORT).show()
+                                shipmentDetailVM.fetchShipmentPdf(referenceId = it1.id)
+                            }
+                        }
+
+                        is ScreenState.Error -> {
+                            binding.progressBar.isVisible = false
+                            showToast(it.message)
+                        }
+                    }
+                }
+            }
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            shipmentDetailVM.shipmentPdf.collectLatest {
+                runOnUiThread {
+                    when (it) {
+                        ScreenState.Idle -> {}
+                        ScreenState.Loading -> {
+                            binding.progressBar.isVisible = true
+                        }
+
+                        is ScreenState.Error -> {
+                            binding.progressBar.isVisible = false
+                            showToast(it.message)
+                        }
+
+                        is ScreenState.Success -> {
+                            it.response.let {
+                                binding.progressBar.isVisible = false
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    startActivity(
+                                        Intent(
+                                            this@PrepareShipment1Activity,
+                                            HomeScreenActivity::class.java
+                                        ).apply {
+                                            intent.flags =
+                                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                        })
+                                }, 1500)
+                                it?.url?.let { it1 -> openPdf(it1) }
+                                /*downloadPDF(
+                                        activity = this@PrepareShipment1Activity,
+                                        fileUrl =  it.url?:"",
+                                        mFileName = it.fileName,
+                                        isDownload = true,
+                                        onSuccessListener = { s: String ->
+                                            runOnUiThread {
+                                                showToast(
+                                                    ("Your file is ready to view in Downloads folder.")
+                                                )
+                                                this@PrepareShipment1Activity.openDocument((s))
+                                            }
+                                        },
+                                        onFailureListener = { s: String ->
+                                            runOnUiThread {
+                                               showToast(
+                                                    (s)
+                                                )
+                                            }
+                                        }
+                                    )*/
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         binding.apply {
-            footer.apply {
-                outlinedOutlined.setOnClickListener {
-                    createShipmentRequest?.let { it1 -> viewModel.createShipments(it1) }
-                }
-                filledButton.setOnClickListener {
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        runOnUiThread{
-//                            progressBar.isVisible = true
-//                        }
-//                        viewModel.fetchOrderPdf().collectLatest {
-//                            runOnUiThread {
-//                                progressBar.isVisible = false
-//                                it.data?.url?.let { it1 -> openPdf(it1) }
-//                            }
-//                        }
-//                    }
-                }
+
+            filledButton.setOnClickListener {
+                confirmationDialog()
             }
 
             addOrder.setOnClickListener {
@@ -109,7 +159,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                 intent.putExtra("SHOULD_CLEAR", false)
                 intent.putExtra("shipmentType", "orders")
                 startActivity(intent)
-                finish()
+//                finish()
             }
         }
     }
@@ -131,10 +181,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
     fun initView(){
         initToolbar()
         binding.apply {
-            footer.apply {
-                filledButton.text = "Save Shipment"
-                outlinedOutlined.text = "Finalize & Print"
-            }
+            filledButton.text = "Finalize & Print"
         }
     }
 
@@ -146,12 +193,27 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                 val intent = Intent(this, OrderDetailActivity::class.java)
                 intent.putExtra("ORDER_ID", orderShipmentData.orderId)
                 startActivity(intent)
+//                finish()
             }
         )
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvOrders.adapter = adapter
     }
+
+    /*private fun updateOrderDetail(orderDetail: OrderDetail) {
+        binding.orderId.text = orderDetail.referenceId
+        binding.carrierName.text = orderDetail.carrier?.name
+        binding.orderDate.text = orderDetail.createdAt?.toFormattedDate()
+        if (orderDetail.items.isEmpty().not()) {
+            binding.rcvOrders.isVisible = true
+            binding.lnrContent.isVisible = true
+            initViewData(orderDetail.items)
+        } else {
+            binding.rcvOrders.isVisible = false
+            binding.lnrContent.isVisible = false
+        }
+    }*/
 
     private fun handleBackNavigation() {
         val resultIntent = Intent().apply {
@@ -161,13 +223,13 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
     }
 
 
-    @SuppressLint("SetTextI18n")
     private fun initData(){
         binding.apply {
             createShipmentRequest?.let {
-                txtShipmentId.text = "To be generated"
+                shipmentId.text = ""
                 val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault())
                 val date: Date = originalFormat.parse(it.shipmentDate ?: "") ?: return
+
                 val desiredFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
                 val formattedDate = desiredFormat.format(date)
                 shipmentDate.text = formattedDate
@@ -175,6 +237,23 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                 driverName.setText(it.driver?.name ?: "")
             }
         }
+    }
+
+    private fun confirmationDialog() {
+        val alertDialog =  AlertDialog.Builder(this).setIcon(R.drawable.ic_logo)
+            .setTitle("Shipment Confirmation" as CharSequence)
+            .setMessage("The shipment will be saved and finalize the print of the shipment" as CharSequence).setPositiveButton(
+                "Yes" as CharSequence
+            ) { dialogInterface, _ ->
+                dialogInterface.dismiss()
+                createShipmentRequest?.let { it1 -> viewModel.createShipments(it1) }
+            }
+            .setNegativeButton("No" as CharSequence, null as DialogInterface.OnClickListener?)
+            .show()
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.app_color_red))
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.rs_green))
+
     }
 
 }

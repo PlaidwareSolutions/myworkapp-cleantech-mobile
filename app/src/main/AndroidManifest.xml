@@ -70,6 +70,12 @@
             android:name=".activity.OrderDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.ShipmentListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ShipmentDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.PrepareShipmentActivity"
             android:exported="false" />
         <activity
@@ -87,6 +93,11 @@
         <activity
             android:name=".activity.BoLActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".activity.CreateBoLActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activity.InspectionProcessActivity"
             android:exported="false" />
@@ -152,6 +163,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
     </application>
 
 </manifest>

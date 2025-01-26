@@ -1,17 +1,22 @@
 package com.example.rfidapp.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.widget.EditText
+import android.widget.FrameLayout
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rfidapp.R
 import com.example.rfidapp.adapter.OrderDetailAdapter
 import com.example.rfidapp.databinding.ActivityOrderDetailBinding
 import com.example.rfidapp.model.network.OrderDetail
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
+import com.example.rfidapp.util.openPdf
 import com.example.rfidapp.util.toFormattedDate
 import com.example.rfidapp.viewmodel.OrderDetailViewModel
 import com.google.gson.Gson
@@ -54,7 +59,6 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
     @SuppressLint("SetTextI18n")
     override fun bindListeners() {
-
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.orderDetail.collectLatest {
                 runOnUiThread {
@@ -101,7 +105,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                             InventoryItemsActivity::class.java
                         ).putExtra("orderDetail", Gson().toJson(orderDetail))
                     )
-                    finish()
+//                    finish()
                 }
                 outlinedOutlined.setOnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {
@@ -125,27 +129,55 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
     private fun initView(items: List<OrderDetail.Item>) {
         val adapter = OrderDetailAdapter(
+            orderId = orderDetail?.id ?: "",
+            orderType = orderDetail?.type?:"",
             activity = this,
             orderList = items,
+            onItemClick = {
+                showAddItemQuantityDialog()
+            }
         )
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvOrders.adapter = adapter
     }
 
-    private fun openPdf(pdfUrl: String) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(Uri.parse(pdfUrl), "application/pdf")
-                flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-            }
-            startActivity(intent)
-        } catch (e: Exception) {
-            // Fallback: Open in Chrome or default browser
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl)).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(browserIntent)
+    fun showAddItemQuantityDialog() {
+        val input = EditText(this).apply {
+            hint = "Enter item quantity"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
         }
+
+        val container = FrameLayout(this).apply {
+            addView(input, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                marginStart = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+                marginEnd = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+            })
+        }
+
+        // Build the AlertDialog
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Add Item Quantity")
+            .setMessage("Please enter the quantity of the item you want to add:")
+            .setView(container)
+            .setPositiveButton("Add") { dialog, _ ->
+                val quantity = input.text.toString()
+                if (quantity.isNotEmpty()) {
+                    //Data
+                } else {
+                    showToast("Quantity cannot be empty")
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }.create()
+
+        dialog.show()
     }
+
+
 }

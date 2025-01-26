@@ -1,5 +1,9 @@
 package com.example.rfidapp.data.network
 
+import com.example.rfidapp.model.network.ApiResponse
+import com.example.rfidapp.model.network.Asset
+import com.example.rfidapp.model.network.AssetInspectionRequest
+import com.example.rfidapp.model.network.AssetInspectionResponse
 import com.example.rfidapp.model.network.AssetListResponse
 import com.example.rfidapp.model.network.CreateAssetRequest
 import com.example.rfidapp.model.network.CreateAssetResponse
@@ -15,17 +19,36 @@ interface AssetApi {
     suspend fun createAsset(
         @Header("authorization") token: String,
         @Body assetRequest: CreateAssetRequest
-    ): CreateAssetResponse
+    ): ApiResponse<CreateAssetResponse>
 
     @PUT("v1/asset/{id}")
     suspend fun updateAsset(
         @Header("authorization") token: String,
         @Path("id") assetId: String,
         @Body assetUpdateRequest: CreateAssetRequest
-    ): CreateAssetResponse
+    ): ApiResponse<CreateAssetResponse>
 
     @GET("v1/asset")
     suspend fun getAssets(
         @Header("authorization") token: String
-    ): AssetListResponse
+    ): ApiResponse<AssetListResponse>
+
+
+    @GET("v1/asset/{assetId}")
+    suspend fun getAssetsByID(
+        @Header("authorization") token: String,
+        @Path("assetId") assetId: String
+    ): ApiResponse<AssetListResponse>
+
+    @GET("v1/asset/tag/{tagId}")
+    suspend fun getAssetsByTagID(
+        @Header("authorization") token: String,
+        @Path("tagId") tagId: String
+    ): ApiResponse<List<Asset>>
+
+    @POST("v1/asset/inspect")
+    suspend fun assetInspection(
+        @Header("authorization") token: String,
+        @Body assetInspectionRequest: AssetInspectionRequest
+    ): ApiResponse<AssetInspectionResponse>
 }

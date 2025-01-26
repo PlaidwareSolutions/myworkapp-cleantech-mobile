@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,18 +31,21 @@ import androidx.room.Room;
 import com.example.rfidapp.R;
 import com.example.rfidapp.activity.InventoryItemsActivity;
 import com.example.rfidapp.activity.PrepareShipment1Activity;
+import com.example.rfidapp.activity.ShipmentDetailActivity;
 import com.example.rfidapp.adapter.InvItemAdapter;
 import com.example.rfidapp.dao.InvItemsDao;
 import com.example.rfidapp.database.InvDB;
 import com.example.rfidapp.databinding.FragmentInventoryItemsBinding;
 import com.example.rfidapp.entity.InventoryItemsEntity;
 import com.example.rfidapp.entity.InventoryListEntity;
+import com.example.rfidapp.model.Data;
 import com.example.rfidapp.model.EpcModel;
 import com.example.rfidapp.model.OrderShipmentData;
 import com.example.rfidapp.model.network.CreateShipmentRequest;
 import com.example.rfidapp.model.network.Driver;
 import com.example.rfidapp.model.network.InputBol;
 import com.example.rfidapp.model.network.OrderDetail;
+import com.example.rfidapp.model.network.Shipment;
 import com.example.rfidapp.util.PreferenceManager;
 import com.example.rfidapp.util.Util;
 import com.example.rfidapp.util.constants.Constants;
@@ -154,8 +159,19 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     Util utils;
 
     OrderDetail orderDetail;
+    Shipment shipment;
     String shipmentId = null;
 
+    public interface ClickListner {
+        void onClickListener(String data);
+    }
+    private ClickListner callback;
+
+    public void setCallback(ClickListner callback) {
+        this.callback = callback;
+    }
+
+    private final ActivityResultCallback<ActivityResult> resultCallback =
     /*private final ActivityResultCallback<ActivityResult> resultCallback =
             result -> {
                 if (result.getResultCode() == getActivity().RESULT_OK) {
@@ -196,11 +212,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return true;
     }
 
-    public static InventoryItems newInstance(String str, String str2) {
+    public static InventoryItems newInstance(String str, String shipmentString) {
         InventoryItems inventoryItems = new InventoryItems();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_PARAM1, str);
-        bundle.putString(ARG_PARAM2, str2);
+        bundle.putString(ARG_PARAM2, shipmentString);
         inventoryItems.setArguments(bundle);
         return inventoryItems;
     }
@@ -211,6 +227,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.mParam1 = getArguments().getString(ARG_PARAM1);
             this.mParam2 = getArguments().getString(ARG_PARAM2);
             orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
+            shipment = new Gson().fromJson(mParam2, Shipment.class);
             Log.e("TAG243", "onCreate: "+orderDetail );
         }
     }
@@ -235,10 +252,94 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     }
 
     private void setupUI() {
-        binding.orderDate.setText(orderDetail.getCreatedAt());
-        binding.orderId.setText(orderDetail.getReferenceId());
-        binding.customerName.setText(orderDetail.getCustomer().getName());
-        binding.carrierName.setText(orderDetail.getCarrier().getName());
+        if (orderDetail != null) {
+            binding.orderDate.setText(orderDetail.getCreatedAt());
+            binding.orderId.setText(orderDetail.getReferenceId());
+            binding.customerName.setText(orderDetail.getCustomer().getName());
+            binding.carrierName.setText(orderDetail.getCarrier().getName());
+        } else if (shipment != null) {
+            binding.orderDate.setText(shipment.getCreatedAt());
+            binding.orderId.setText(shipment.getReferenceId());
+            binding.customerName.setText(shipment.getCreatedBy().getName());
+            binding.carrierName.setText(shipment.getCarrier().getName());
+        } else {
+            binding.lnrItem.setVisibility(View.GONE);
+        }
+
+        if(orderDetail == null && shipment == null){
+            binding.save.setVisibility(View.GONE);
+        }
+
+        binding.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(orderDetail != null){
+                    //Create Shipment Flow
+                    CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
+                    ArrayList<InputBol> bills = new ArrayList<>();
+                    List<String> tagsList = tagList.stream()
+                            .map(map -> map.get(InventoryItems.TAG_EPC))
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+                    bills.add(new InputBol(orderDetail.getId(),tagsList));
+
+                    createShipmentRequest.setBols(bills);
+                    createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+                    Date date = new Date();
+                    @SuppressLint("SimpleDateFormat")
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+                    String formattedDate = formatter.format(date);
+                    createShipmentRequest.setShipmentDate(formattedDate);
+                    createShipmentRequest.setDriver(new Driver("", ""));
+                    ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
+                    OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
+                    if (orderShipmentData == null) {
+                        orderShipmentData = new OrderShipmentData(
+                                orderDetail.getId(),
+                                orderDetail.getReferenceId(),
+                                orderDetail.getTotalCount(),
+                                tagsList.size(),
+                                (ArrayList<String>) tagsList
+                        );
+                    } else {
+                        //todo:update logic here
+                        ArrayList<String> tags = orderShipmentData.getTags();
+                        tags.addAll(tagsList);
+                        tags.stream().distinct();
+                        orderShipmentData.setTags(tags);
+                    }
+                    ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
+                    if (orderDetail != null) {
+                        Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                        startActivity(intent);
+//                        mContext.finish();
+                    }
+//                startActivityForResult.launch(intent);
+//                mContext.finish();
+                /*if (shipmentId == null) {
+                    //Create
+                    shipmentViewModel.createShipments(createShipmentRequest);
+                } else {
+                    //Update
+                    shipmentViewModel.updateShipments(shipmentId, createShipmentRequest);
+                }*/
+                }
+                else if (shipment != null) {
+                    List<String> tagsList = tagList.stream()
+                            .map(map -> map.get(InventoryItems.TAG_EPC))
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+
+                    Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
+                    intent.putExtra("tags",new Gson().toJson(tagsList));
+                    intent.putExtra("SHIPMENT",new Gson().toJson(shipment));
+                    startActivity(intent);
+                }
+                else {
+                    /*callback.onClickListener("");*/
+                }
+            }
+        });
     }
 
     /*private void bindListeners(){
@@ -941,6 +1042,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public TextView tvEPCTID;
         public TextView tvTagCount;
         public TextView tvTagRssi;
+        public ImageView ivDelete;
 
         public ViewHolder() {
         }
@@ -948,6 +1050,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
     public class MyAdapter extends BaseAdapter {
         private final LayoutInflater mInflater;
+
+        public boolean isScanning = false;
 
         public long getItemId(int i) {
             return (long) i;
@@ -975,6 +1079,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 viewHolder.tvTagCount = (TextView) view2.findViewById(R.id.TvTagCount);
                 viewHolder.tvTagRssi = (TextView) view2.findViewById(R.id.TvTagRssi);
                 viewHolder.llList = (LinearLayout) view2.findViewById(R.id.ll_list);
+                viewHolder.ivDelete = (ImageView) view2.findViewById(R.id.btnDelete);
                 view2.setTag(viewHolder);
             } else {
                 view2 = view;
@@ -984,12 +1089,35 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             viewHolder.tvTagCount.setText("Read Count: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
 //            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
             viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI_NUMBER));
-            /*viewHolder.llList.setOnClickListener(v -> this.showPopup(i, v));*/
+            viewHolder.llList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    HashMap<String, String> stringStringHashMap = InventoryItems.this.tagList.get(i);
+                    Data data = new Data(
+                            stringStringHashMap.getOrDefault(InventoryItems.TAG_EPC, ""),
+                            stringStringHashMap.getOrDefault(InventoryItems.TAG_COUNT, ""),
+                            stringStringHashMap.getOrDefault(InventoryItems.TAG_RSSI_NUMBER, "")
+                    );
+                    callback.onClickListener(new Gson().toJson(data));
+                }
+            });
             if (i == InventoryItems.this.selectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));
             } else {
                 view2.setBackgroundColor(0);
             }
+            if (isScanning){
+                viewHolder.ivDelete.setVisibility(View.GONE);
+            }else {
+                viewHolder.ivDelete.setVisibility(View.VISIBLE);
+            }
+            viewHolder.ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InventoryItems.this.tagList.remove(i);
+                    notifyDataSetChanged();
+                }
+            });
             return view2;
         }
 
@@ -1298,6 +1426,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }*/
 
+    private void start() {
+        adapter.isScanning = true;
+        this.binding.btStart.setText("STOP");
+    }
     /*private void start() {
         this.binding.btStart.setText("STOP");
         this.mContext.barcodeDecoder.startScan();
@@ -1319,6 +1451,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
         this.isBar = false;
         this.binding.btStart.setText("Start");
+        adapter.isScanning = true;
         this.mContext.stop();
     }*/
 

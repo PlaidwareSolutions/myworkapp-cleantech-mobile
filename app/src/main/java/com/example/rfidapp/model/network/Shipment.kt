@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Shipment(
-    @SerializedName("bols") var bols: List<String>? = listOf(),
+    @SerializedName("bols") var bols: List<Bol>? = listOf(),
     @SerializedName("carrier") var carrier: Carrier? = null,
     @SerializedName("createdAt") var createdAt: String? = "",
     @SerializedName("createdBy") var createdBy: CreatedBy? = CreatedBy(),

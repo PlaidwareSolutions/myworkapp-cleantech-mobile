@@ -118,6 +118,26 @@
                 android:textAppearance="@style/inter_400_10_16"
                 android:textColor="@color/secondary_dark_text_color"
                 android:fontFamily="@font/inter_regular"/>
+
+            <View
+                android:visibility="invisible"
+                android:layout_width="@dimen/table_divider_width"
+                android:layout_height="match_parent"
+                android:background="@color/bg_stroke_color" />
+
+            <TextView
+                android:id="@+id/txtBalance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/padding_inside_table_field"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:letterSpacing="-0.01"
+                android:text="0"
+                android:textAllCaps="true"
+                android:textAppearance="@style/inter_400_10_16"
+                android:textColor="@color/secondary_dark_text_color"
+                android:fontFamily="@font/inter_regular"/>
         </LinearLayout>
 
 

@@ -3,8 +3,12 @@ package com.example.rfidapp.activity
 import androidx.room.Room.databaseBuilder
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
+import com.example.rfidapp.fragment.InspectionFragment
+import com.example.rfidapp.fragment.InspectionHistoryFragment
 import com.example.rfidapp.fragment.InventoryItems
+import com.example.rfidapp.model.Data
 import com.example.rfidapp.model.network.OrderDetail
+import com.example.rfidapp.model.network.Shipment
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.PreferenceManager
 import com.example.rfidapp.util.constants.Constants
@@ -17,22 +21,53 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
 
     override fun setViewBinding() = ActivityInventoryItemsBinding.inflate(layoutInflater)
 
-    var orderDetail: OrderDetail?= null
+    private var orderDetail: OrderDetail? = null
+    private var shipment: Shipment? = null
 
     override fun bindObjects() {
-        orderDetail = Gson().fromJson(intent.getStringExtra("orderDetail") ?: "")
+        intent.getStringExtra("orderDetail")?.let {
+            orderDetail = Gson().fromJson<OrderDetail>(it)
+        }
+        intent.getStringExtra("SHIPMENT")?.let {
+            shipment = Gson().fromJson<Shipment>(it)
+        }
     }
 
     override fun bindListeners() {
-        binding.imageButtonBack.setOnClickListener {
-            finish()
+        binding.apply {
+            toolbar.apply {
+                toolbarTitle.text = "Scan Item"
+                btnBack.setOnClickListener {
+                    finish()
+                }
+            }
         }
     }
 
     override fun bindMethods() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
+        val inventoryItems = InventoryItems.newInstance(intent.getStringExtra("orderDetail"), intent.getStringExtra("SHIPMENT"))
+        inventoryItems.setCallback { data ->
+            //Item click
+            val data: Data? = Gson().fromJson(json = data)
+            val tagId = data?.tagEpc?:"2018030712774A021A900024"
+            val inspectionFragment: InspectionFragment = InspectionFragment.newInstance(tagId)
+            inspectionFragment.show(
+                supportFragmentManager,
+                inspectionFragment.tag
+            )
+
+            /*val inspectionHistoryFragment = InspectionHistoryFragment.newInstance("2018030712774A021A900024")
+            inspectionHistoryFragment.show(
+                supportFragmentManager,
+                inspectionHistoryFragment.tag
+            )*/
+        }
         supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainerView.id, InventoryItems.newInstance(intent.getStringExtra("orderDetail") ,""))
+            .replace(
+                binding.fragmentContainerView.id,
+                inventoryItems
+            )
             .commit()
     }
 

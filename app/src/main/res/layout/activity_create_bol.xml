@@ -1,204 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/_24sdp"
-    android:scrollbars="none"
-    android:background="@color/white">
+    android:orientation="vertical"
+    tools:context=".activity.OrderDetailActivity">
 
-    <LinearLayout
-        android:layout_marginTop="@dimen/_24sdp"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_layout" />
+
+    <RelativeLayout
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="start">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-            <!-- Ship To -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginEnd="8dp">
-
-                <TextView
-                    android:id="@+id/shipToLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ship To:"
-                    android:textAppearance="@style/inter_400_12_14"
-                    android:layout_marginBottom="4dp" />
-
-                <EditText
-                    android:id="@+id/shipToInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter destination"
-                    android:padding="@dimen/_10sdp"
-                    android:textAppearance="@style/inter_400_10_10"
-                    android:background="@drawable/bg_edit_text" />
-            </LinearLayout>
-
-            <!-- Ship From -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
-
-                <TextView
-                    android:id="@+id/shipFromLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ship From:"
-                    android:textAppearance="@style/inter_400_12_14"
-                    android:layout_marginBottom="4dp" />
-
-                <EditText
-                    android:id="@+id/shipFromInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter destination"
-                    android:padding="@dimen/_10sdp"
-                    android:textAppearance="@style/inter_400_10_10"
-                    android:background="@drawable/bg_edit_text" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Ship Date -->
-        <TextView
-            android:id="@+id/shipDateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ship Date:"
-            android:textAppearance="@style/inter_400_12_14"
-            android:layout_marginTop="8dp" />
-
-        <EditText
-            android:id="@+id/shipDateInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="MM/DD/YYYY"
-            android:padding="@dimen/_10sdp"
-            android:textAppearance="@style/inter_400_10_10"
-            android:background="@drawable/bg_edit_text"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Carrier -->
-        <TextView
-            android:id="@+id/carrierLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Carrier:"
-            android:textAppearance="@style/inter_400_12_14"
-            android:layout_marginTop="8dp" />
-
-        <EditText
-            android:id="@+id/carrierInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="3PL Logistics"
-            android:padding="@dimen/_10sdp"
-            android:textAppearance="@style/inter_400_10_10"
-            android:background="@drawable/bg_edit_text"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Driver Name -->
-        <TextView
-            android:id="@+id/driverNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Driver Name:"
-            android:textAppearance="@style/inter_400_12_14"
-            android:layout_marginTop="8dp" />
-
-        <EditText
-            android:id="@+id/driverNameInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="TBD"
-            android:padding="@dimen/_10sdp"
-            android:textAppearance="@style/inter_400_10_10"
-            android:background="@drawable/bg_edit_text"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Driver License -->
-        <TextView
-            android:id="@+id/driverLicenseLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Driver License:"
-            android:textAppearance="@style/inter_400_12_14"
-            android:layout_marginTop="8dp" />
-
-        <EditText
-            android:id="@+id/driverLicenseInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="TBD"
-            android:padding="@dimen/_10sdp"
-            android:textAppearance="@style/inter_400_10_10"
-            android:background="@drawable/bg_edit_text"
-            android:layout_marginBottom="24dp" />
-
-        <!-- License Plate -->
-        <TextView
-            android:id="@+id/licensePlateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LIC Plate:"
-            android:textAppearance="@style/inter_400_12_14"
-            android:layout_marginTop="8dp" />
-
-        <EditText
-            android:id="@+id/licensePlateInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="TBD"
-            android:padding="@dimen/_10sdp"
-            android:textAppearance="@style/inter_400_10_10"
-            android:background="@drawable/bg_edit_text"
-            android:layout_marginBottom="16dp" />
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:paddingHorizontal="@dimen/_24sdp"
+            android:scrollbars="none"
+            android:background="@color/white">
 
-            <!-- Dynamic Container -->
-            <ScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/itemContainer"
+                    android:id="@+id/dataLyout"
+                    android:layout_marginTop="@dimen/_24sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </ScrollView>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="start">
 
-            <!-- Add Item Button -->
-            <Button
-                android:id="@+id/addItemButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Add Item"
-                android:backgroundTint="@color/app_color"
-                android:textColor="@android:color/white"
-                android:padding="@dimen/_12sdp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                    <!-- Ship Date -->
+                    <TextView
+                        android:id="@+id/shipDateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order Number:"
+                        android:textAppearance="@style/inter_400_12_14"
+                        android:layout_marginTop="8dp" />
+
+                    <EditText
+                        android:id="@+id/shipDateInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="MM/DD/YYYY"
+                        android:padding="@dimen/_10sdp"
+                        android:textAppearance="@style/inter_400_10_10"
+                        android:background="@drawable/bg_edit_text"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Carrier -->
+                    <TextView
+                        android:id="@+id/carrierLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bol Number:"
+                        android:textAppearance="@style/inter_400_12_14"
+                        android:layout_marginTop="8dp" />
+
+                    <EditText
+                        android:id="@+id/carrierInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="3PL Logistics"
+                        android:padding="@dimen/_10sdp"
+                        android:textAppearance="@style/inter_400_10_10"
+                        android:background="@drawable/bg_edit_text"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Driver Name -->
+                    <TextView
+                        android:id="@+id/driverNameLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Shipment Number:"
+                        android:textAppearance="@style/inter_400_12_14"
+                        android:layout_marginTop="8dp" />
+
+                    <EditText
+                        android:id="@+id/driverNameInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="TBD"
+                        android:padding="@dimen/_10sdp"
+                        android:textAppearance="@style/inter_400_10_10"
+                        android:background="@drawable/bg_edit_text"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Driver License -->
+                    <TextView
+                        android:id="@+id/driverLicenseLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Customer:"
+                        android:textAppearance="@style/inter_400_12_14"
+                        android:layout_marginTop="8dp" />
+
+                    <EditText
+                        android:id="@+id/driverLicenseInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="TBD"
+                        android:padding="@dimen/_10sdp"
+                        android:textAppearance="@style/inter_400_10_10"
+                        android:background="@drawable/bg_edit_text"
+                        android:layout_marginBottom="24dp" />
+
+                    <!-- License Plate -->
+                    <TextView
+                        android:id="@+id/licensePlateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Carrier:"
+                        android:textAppearance="@style/inter_400_12_14"
+                        android:layout_marginTop="8dp" />
+
+                    <EditText
+                        android:id="@+id/licensePlateInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="TBD"
+                        android:padding="@dimen/_10sdp"
+                        android:textAppearance="@style/inter_400_10_10"
+                        android:background="@drawable/bg_edit_text"
+                        android:layout_marginBottom="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <!-- Dynamic Container -->
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@color/white">
+
+                            <LinearLayout
+                                android:id="@+id/itemContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical" />
+                        </ScrollView>
 
 
-    </LinearLayout>
-</ScrollView>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+    <!-- Add Item Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/doneButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginVertical="@dimen/_12sdp"
+        android:background="@drawable/button_background"
+        android:enabled="false"
+        android:padding="@dimen/_8sdp"
+        android:text="Done"
+        android:textAllCaps="false"
+        android:textColor="@drawable/button_text_color"
+        android:textStyle="bold" />
+
+</RelativeLayout>
+
