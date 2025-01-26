@@ -51,7 +51,12 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
 
     override fun bindMethods() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
-        val inventoryItems = InventoryItems.newInstance(intent.getStringExtra("orderDetail"), intent.getStringExtra("SHIPMENT"))
+        val alreadyShippedItemCount = intent.getIntExtra("shippedCount", 0)
+        val inventoryItems = InventoryItems.newInstance(
+            intent.getStringExtra("orderDetail"),
+            intent.getStringExtra("SHIPMENT"),
+            alreadyShippedItemCount
+        )
         inventoryItems.setCallback { data ->
             //Item click
             if(isInspection){
