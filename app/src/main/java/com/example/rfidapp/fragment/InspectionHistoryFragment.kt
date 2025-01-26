@@ -1,5 +1,6 @@
 package com.example.rfidapp.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class InspectionHistoryFragment : MaxHeightBottomSheet(R.layout.fragment_inspection_history) {
+class InspectionHistoryFragment(var onDismissListner:()->Unit) : MaxHeightBottomSheet(R.layout.fragment_inspection_history) {
 
     lateinit var binding: FragmentInspectionHistoryBinding
     private val assetViewModel: AssetViewModel by viewModels()
@@ -32,7 +33,8 @@ class InspectionHistoryFragment : MaxHeightBottomSheet(R.layout.fragment_inspect
         @JvmStatic
         fun newInstance(
             tagID: String,
-        ) = InspectionHistoryFragment().apply {
+            onDismissListner:()->Unit
+        ) = InspectionHistoryFragment(onDismissListner).apply {
             this.tagID = tagID
         }
     }
@@ -116,5 +118,10 @@ class InspectionHistoryFragment : MaxHeightBottomSheet(R.layout.fragment_inspect
         binding.rcvHistory.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.rcvHistory.adapter = adapter
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        onDismissListner.invoke()
+        super.onDismiss(dialog)
     }
 }
