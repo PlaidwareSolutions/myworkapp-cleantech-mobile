@@ -36,15 +36,6 @@ class InspectionProcessActivity : ActBase<ActivityInspectionProcessBinding>() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
         val inventoryItems = InventoryItems.newInstance("" ,"")
         inventoryItems.setCallback { data ->
-            //Item click
-            val data: Data = Gson().fromJson(json = data)
-            val addInspectionFragment = AddInspectionFragment.newInstance(data.tagEpc,{
-
-            })
-            addInspectionFragment.show(
-                supportFragmentManager,
-                addInspectionFragment.tag
-            )
 
         }
         supportFragmentManager.beginTransaction()
