@@ -25,7 +25,7 @@ class InventoryActivity : ActBase<ActivityInventoryBinding>() {
         }
 
         binding.inspection.setOnClickListener {
-            startActivity(Intent(this, InventoryItemsActivity::class.java))
+            startActivity(Intent(this, InventoryItemsActivity::class.java).putExtra("isInspection",true))
         }
 
         binding.cycleCount.setOnClickListener {

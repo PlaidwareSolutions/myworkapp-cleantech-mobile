@@ -13,7 +13,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:orientation="vertical">
 
             <LinearLayout
@@ -163,6 +162,7 @@
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:textAppearance="@style/inter_400_12_16"
                         android:textColor="@color/black"
+                        android:text="0"
                         tools:text="50" />
                 </LinearLayout>
 

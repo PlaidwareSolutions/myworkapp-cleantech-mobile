@@ -1,5 +1,6 @@
 package com.example.rfidapp.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_inspection) {
+class AddInspectionFragment(var onDismissListner:()->Unit) : BottomSheetDialogFragment(R.layout.fragment_add_inspection) {
 
     lateinit var binding: FragmentAddInspectionBinding
     private val assetViewModel: AssetViewModel by viewModels()
@@ -34,7 +35,8 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
         @JvmStatic
         fun newInstance(
             tagID: String,
-        ) = AddInspectionFragment().apply {
+            onDismissListner:()->Unit
+        ) = AddInspectionFragment(onDismissListner).apply {
             this.tagID = tagID
         }
     }
@@ -45,9 +47,13 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentAddInspectionBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupObservers()
-        return binding.root
     }
 
     private fun setupUI() {
@@ -116,13 +122,14 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
 
                         is ScreenState.Success -> {
                             binding.progressBar.isVisible = false
-                            it.response?.let { it->
+                            it.response.let {
                                 Toast.makeText(
                                     requireActivity(),
                                     "Item inspected successfully",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                dismiss()
+                                this@AddInspectionFragment.dismiss()
+
                             }
                         }
 
@@ -138,5 +145,10 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
                 }
             }
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        onDismissListner.invoke()
+        super.onDismiss(dialog)
     }
 }
