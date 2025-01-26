@@ -1,12 +1,12 @@
 package com.example.rfidapp.model.network
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateInBoundShipmentRequest(
-    @SerialName("bols") var bols: List<Bol>? = listOf(),
-    @SerialName("carrier") var carrier: String? = "",
-    @SerialName("driver") var driver: Driver? = Driver(),
-    @SerialName("shipmentDate") var shipmentDate: String? = ""
+    @SerializedName("bols") var bols: List<Bol>? = listOf(),
+    @SerializedName("carrier") var carrier: String? = "",
+    @SerializedName("driver") var driver: Driver? = Driver(),
+    @SerializedName("shipmentDate") var shipmentDate: String? = ""
 )
