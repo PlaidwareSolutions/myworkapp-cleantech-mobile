@@ -46,7 +46,7 @@ class AboutActivity : ActBase<ActivityAboutBinding>() {
     @SuppressLint("HardwareIds")
     override fun bindMethods() {
         binding.apply {
-            buildVersion.text = BuildConfig.VERSION_NAME
+            buildVersion.text = "1.0"
             buildType.text = BuildConfig.BUILD_TYPE
             val buildTimeMillis = BuildConfig.BUILD_TIME.toLong()
             val buildTimeTxt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())

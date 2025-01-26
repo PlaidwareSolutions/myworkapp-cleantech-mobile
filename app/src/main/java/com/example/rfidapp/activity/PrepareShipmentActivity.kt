@@ -78,7 +78,9 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
         }
 
         binding.toolbar.btnBack.setOnClickListener {
-            finish()
+            runOnUiThread {
+                finish()
+            }
         }
 
         lifecycleScope.launch {
@@ -132,12 +134,6 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
 
             }
         })
-//        binding.searchAutoComplete.onItemSelectedListener { adapterView, view, position, l ->
-//            val selectedContact = contactList[position]
-////            binding.searchAutoComplete.setText(selectedContact.name)
-//            binding.searchAutoComplete.clearFocus()
-//            orderViewModel.performSearchByCustomer(selectedContact.id)
-//        }
     }
 
     override fun bindMethods() {

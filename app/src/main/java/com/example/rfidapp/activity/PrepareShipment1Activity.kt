@@ -150,7 +150,9 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         binding.apply {
 
             filledButton.setOnClickListener {
-                confirmationDialog()
+                if (!isFinishing && !isDestroyed) {
+                    confirmationDialog()
+                }
             }
 
             addOrder.setOnClickListener {
@@ -226,7 +228,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
     private fun initData(){
         binding.apply {
             createShipmentRequest?.let {
-                shipmentId.text = ""
+                txtShipmentId.text = ""
                 val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault())
                 val date: Date = originalFormat.parse(it.shipmentDate ?: "") ?: return
 
@@ -240,20 +242,23 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
     }
 
     private fun confirmationDialog() {
-        val alertDialog =  AlertDialog.Builder(this).setIcon(R.drawable.ic_logo)
-            .setTitle("Shipment Confirmation" as CharSequence)
-            .setMessage("The shipment will be saved and finalize the print of the shipment" as CharSequence).setPositiveButton(
-                "Yes" as CharSequence
-            ) { dialogInterface, _ ->
+        if (isFinishing || isDestroyed) return // Prevents leak
+
+        val alertDialog = AlertDialog.Builder(this@PrepareShipment1Activity)
+            .setIcon(R.drawable.ic_logo)
+            .setTitle("Shipment Confirmation")
+            .setMessage("The shipment will be saved and finalize the print of the shipment")
+            .setPositiveButton("Yes") { dialogInterface, _ ->
                 dialogInterface.dismiss()
-                createShipmentRequest?.let { it1 -> viewModel.createShipments(it1) }
+                createShipmentRequest?.let { request -> viewModel.createShipments(request) }
             }
-            .setNegativeButton("No" as CharSequence, null as DialogInterface.OnClickListener?)
+            .setNegativeButton("No", null)
             .show()
 
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.app_color_red))
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.rs_green))
-
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            ?.setTextColor(ContextCompat.getColor(this, R.color.app_color_red))
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            ?.setTextColor(ContextCompat.getColor(this, R.color.rs_green))
     }
 
 }

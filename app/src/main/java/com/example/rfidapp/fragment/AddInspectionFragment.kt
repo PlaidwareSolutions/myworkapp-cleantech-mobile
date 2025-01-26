@@ -128,7 +128,7 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
 
                         is ScreenState.Error -> {
                             binding.progressBar.isVisible = false
-                            Toast.makeText(
+                            if(isAdded) Toast.makeText(
                                 requireActivity(),
                                 it.message,
                                 Toast.LENGTH_SHORT
