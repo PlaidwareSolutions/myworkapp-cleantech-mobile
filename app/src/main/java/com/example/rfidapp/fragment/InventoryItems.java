@@ -212,57 +212,61 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
 
         binding.save.setOnClickListener(view -> {
-            if (orderDetail != null) {
-                //Create Shipment Flow
-                CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
-                ArrayList<InputBol> bills = new ArrayList<>();
-                List<String> tagsList = tagList.stream()
-                        .map(map -> map.get(InventoryItems.TAG_EPC))
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-                bills.add(new InputBol(orderDetail.getId(), tagsList));
-
-                createShipmentRequest.setBols(bills);
-                createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
-                Date date = new Date();
-                @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-                String formattedDate = formatter.format(date);
-                createShipmentRequest.setShipmentDate(formattedDate);
-                createShipmentRequest.setDriver(new Driver("", ""));
-                ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
-                OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
-                if (orderShipmentData == null) {
-                    orderShipmentData = new OrderShipmentData(
-                            orderDetail.getId(),
-                            orderDetail.getReferenceId(),
-                            orderDetail.getTotalCount(),
-                            tagsList.size(),
-                            (ArrayList<String>) tagsList
-                    );
-                } else {
-                    //todo:update logic here
-                    ArrayList<String> tags = orderShipmentData.getTags();
-                    tags.addAll(tagsList);
-                    tags.stream().distinct();
-                    orderShipmentData.setTags(tags);
-                }
-                ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
-                if (orderDetail != null) {
-                    Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
-                    startActivity(intent);
-                }
-            } else if (shipment != null) {
-                List<String> tagsList = tagList.stream()
-                        .map(map -> map.get(InventoryItems.TAG_EPC))
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-
-                Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
-                intent.putExtra("tags", new Gson().toJson(tagsList));
-                intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
-                startActivity(intent);
+            if (InventoryItemsActivity.mReader.isWorking()) {
+                this.mContext.highlightToast("Kindly Stop Reading First..", 2);
             } else {
+                if (orderDetail != null) {
+                    //Create Shipment Flow
+                    CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
+                    ArrayList<InputBol> bills = new ArrayList<>();
+                    List<String> tagsList = tagList.stream()
+                            .map(map -> map.get(InventoryItems.TAG_EPC))
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+                    bills.add(new InputBol(orderDetail.getId(), tagsList));
+
+                    createShipmentRequest.setBols(bills);
+                    createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+                    Date date = new Date();
+                    @SuppressLint("SimpleDateFormat")
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+                    String formattedDate = formatter.format(date);
+                    createShipmentRequest.setShipmentDate(formattedDate);
+                    createShipmentRequest.setDriver(new Driver("", ""));
+                    ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
+                    OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
+                    if (orderShipmentData == null) {
+                        orderShipmentData = new OrderShipmentData(
+                                orderDetail.getId(),
+                                orderDetail.getReferenceId(),
+                                orderDetail.getTotalCount(),
+                                tagsList.size(),
+                                (ArrayList<String>) tagsList
+                        );
+                    } else {
+                        //todo:update logic here
+                        ArrayList<String> tags = orderShipmentData.getTags();
+                        tags.addAll(tagsList);
+                        tags.stream().distinct();
+                        orderShipmentData.setTags(tags);
+                    }
+                    ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
+                    if (orderDetail != null) {
+                        Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                        startActivity(intent);
+                    }
+                } else if (shipment != null) {
+                    List<String> tagsList = tagList.stream()
+                            .map(map -> map.get(InventoryItems.TAG_EPC))
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+
+                    Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
+                    intent.putExtra("tags", new Gson().toJson(tagsList));
+                    intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
+                    startActivity(intent);
+                } else {
+                }
             }
         });
     }
@@ -305,18 +309,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 clearDialog();
             }
         } else if (view.getId() == R.id.bt_start) {
-            if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
-                if (PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).isEmpty()) {
-                    insertValues();
-                } else if (this.mContext.isC5Device) {
-                    readTag();
-                } else if (!this.mContext.isBTDevice) {
-                    this.mContext.highlightToast("Kindly Use RFID Device", 2);
-                } else if (this.mContext.isBtConnect) {
-                    readTag();
-                } else {
-                    this.mContext.highlightToast("Please Connect Device First..", 2);
-                }
+            if (PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).isEmpty()) {
+                insertValues();
+            } else if (this.mContext.isC5Device) {
+                readTag();
+            } else if (!this.mContext.isBTDevice) {
+                this.mContext.highlightToast("Kindly Use RFID Device", 2);
+            } else if (this.mContext.isBtConnect) {
+                readTag();
+            } else {
+                this.mContext.highlightToast("Please Connect Device First..", 2);
             }
         }
     }
@@ -405,13 +407,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         InventoryItemsEntity inventoryItemsEntity = new InventoryItemsEntity();
         inventoryItemsEntity.setEpc(str);
         inventoryItemsEntity.setTimeStamp(Util.getDateTime());
-        if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
-            inventoryItemsEntity.setEpcInv(str + "rs" + PreferenceManager.getStringValue(Constants.INV_ID_RFID));
-            inventoryItemsEntity.setInventory(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
-        } else {
-            inventoryItemsEntity.setEpcInv(str + "rs" + PreferenceManager.getStringValue(Constants.INV_ID_BAR));
-            inventoryItemsEntity.setInventory(PreferenceManager.getStringValue(Constants.INV_ID_BAR));
-        }
+        inventoryItemsEntity.setEpcInv(str + "rs" + PreferenceManager.getStringValue(Constants.INV_ID_RFID));
+        inventoryItemsEntity.setInventory(PreferenceManager.getStringValue(Constants.INV_ID_RFID));
         return inventoryItemsEntity;
     }
 
@@ -497,11 +494,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
         }
         InventoryItemsActivity mainActivity = this.mContext;
-        if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
-            mainActivity.setInventoryItemCount(mainActivity.getItemCount());
-            return;
-        }
-        mainActivity.setInventoryItemBarCount(mainActivity.getItemBarCount());
+        mainActivity.setInventoryItemCount(mainActivity.getItemCount());
     }
 
     public String mergeTidEpc(String str, String str2, String str3) {
@@ -703,7 +696,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public Boolean doInBackground(Void... voidArr) {
             InvDB build = Room.databaseBuilder(InventoryItems.this.getContext().getApplicationContext(), InvDB.class, "Inventory_db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
             InvItemsDao invItemsDao = build.invItemsDao();
-            if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
                 List<String> epcList = new ArrayList<>();
                 for (HashMap<String, String> tag : InventoryItems.this.tagList) {
                     if (tag.containsKey(InventoryItems.TAG_EPC)) {
@@ -719,18 +711,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         InventoryItems.this.binding.tvCount.setText("0");
                     });
                     new Handler(Looper.getMainLooper()).post(this::doInBackgroundClearDataAsyncTask);
-
                 }
-            } else if (invItemsDao.delData(PreferenceManager.getStringValue(Constants.INV_ID_BAR)) > 0) {
-                build.close();
-                requireActivity().runOnUiThread(() -> {
-                    InventoryItems.this.tagList.clear();
-                    InventoryItems.this.tagSearchList.clear();
-                    InventoryItems.this.scannedItems = 0;
-                    InventoryItems.this.binding.tvCount.setText("0");
-                });
-                new Handler(Looper.getMainLooper()).post(this::doInBackgroundClearDataAsyncTask);
-            }
             return true;
         }
 
@@ -754,11 +735,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            if (PreferenceManager.getStringValue(Constants.CUR_SC_TYPE).equals("Rfid")) {
-                InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
-            } else {
-                InventoryItems.this.mContext.setInventoryItemBarCount(InventoryItems.this.mContext.getItemBarCount());
-            }
+            InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
             InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
             InventoryItems.this.clearDataAsyncTask = null;
         }
