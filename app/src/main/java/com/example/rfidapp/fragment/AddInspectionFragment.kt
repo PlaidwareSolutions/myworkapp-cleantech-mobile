@@ -45,9 +45,13 @@ class AddInspectionFragment : BottomSheetDialogFragment(R.layout.fragment_add_in
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentAddInspectionBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupObservers()
-        return binding.root
     }
 
     private fun setupUI() {

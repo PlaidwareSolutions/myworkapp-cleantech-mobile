@@ -42,11 +42,15 @@ class InspectionHistoryFragment : MaxHeightBottomSheet(R.layout.fragment_inspect
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        dialog?.setCancelable(false)
         binding = FragmentInspectionHistoryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dialog?.setCancelable(false)
         setupUI()
         setUpObserver()
-        return binding.root
     }
 
     private fun setUpObserver() {
