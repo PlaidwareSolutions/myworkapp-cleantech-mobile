@@ -212,63 +212,57 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
 
         binding.save.setOnClickListener(view -> {
-            if (this.mContext.isBTDevice) {
-                if (InventoryItemsActivity.mBtReader.isWorking()) {
-                    this.mContext.highlightToast("Kindly Stop Reading First..", 2);
+            if (orderDetail != null) {
+                //Create Shipment Flow
+                CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
+                ArrayList<InputBol> bills = new ArrayList<>();
+                List<String> tagsList = tagList.stream()
+                        .map(map -> map.get(InventoryItems.TAG_EPC))
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+                bills.add(new InputBol(orderDetail.getId(), tagsList));
+
+                createShipmentRequest.setBols(bills);
+                createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+                Date date = new Date();
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+                String formattedDate = formatter.format(date);
+                createShipmentRequest.setShipmentDate(formattedDate);
+                createShipmentRequest.setDriver(new Driver("", ""));
+                ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
+                OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
+                if (orderShipmentData == null) {
+                    orderShipmentData = new OrderShipmentData(
+                            orderDetail.getId(),
+                            orderDetail.getReferenceId(),
+                            orderDetail.getTotalCount(),
+                            tagsList.size(),
+                            (ArrayList<String>) tagsList
+                    );
                 } else {
-                    if (orderDetail != null) {
-                        //Create Shipment Flow
-                        CreateShipmentRequest createShipmentRequest = new CreateShipmentRequest();
-                        ArrayList<InputBol> bills = new ArrayList<>();
-                        List<String> tagsList = tagList.stream()
-                                .map(map -> map.get(InventoryItems.TAG_EPC))
-                                .filter(Objects::nonNull)
-                                .collect(Collectors.toList());
-                        bills.add(new InputBol(orderDetail.getId(), tagsList));
-
-                        createShipmentRequest.setBols(bills);
-                        createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
-                        Date date = new Date();
-                        @SuppressLint("SimpleDateFormat")
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-                        String formattedDate = formatter.format(date);
-                        createShipmentRequest.setShipmentDate(formattedDate);
-                        createShipmentRequest.setDriver(new Driver("", ""));
-                        ShipmentUtil.INSTANCE.setCreateShipment(createShipmentRequest);
-                        OrderShipmentData orderShipmentData = ShipmentUtil.INSTANCE.getOrderToShipmentById(orderDetail.getId());
-                        if (orderShipmentData == null) {
-                            orderShipmentData = new OrderShipmentData(
-                                    orderDetail.getId(),
-                                    orderDetail.getReferenceId(),
-                                    orderDetail.getTotalCount(),
-                                    tagsList.size(),
-                                    (ArrayList<String>) tagsList
-                            );
-                        } else {
-                            //todo:update logic here
-                            ArrayList<String> tags = orderShipmentData.getTags();
-                            tags.addAll(tagsList);
-                            tags.stream().distinct();
-                            orderShipmentData.setTags(tags);
-                        }
-                        ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
-                        if (orderDetail != null) {
-                            Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
-                            startActivity(intent);
-                        }
-                    } else if (shipment != null) {
-                        List<String> tagsList = tagList.stream()
-                                .map(map -> map.get(InventoryItems.TAG_EPC))
-                                .filter(Objects::nonNull)
-                                .collect(Collectors.toList());
-
-                        Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
-                        intent.putExtra("tags", new Gson().toJson(tagsList));
-                        intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
-                        startActivity(intent);
-                    } else {
-                    }
+                    //todo:update logic here
+                    ArrayList<String> tags = orderShipmentData.getTags();
+                    tags.addAll(tagsList);
+                    tags.stream().distinct();
+                    orderShipmentData.setTags(tags);
                 }
+                ShipmentUtil.INSTANCE.addOrUpdateOrderToShipment(orderShipmentData);
+                if (orderDetail != null) {
+                    Intent intent = new Intent(requireActivity(), PrepareShipment1Activity.class);
+                    startActivity(intent);
+                }
+            } else if (shipment != null) {
+                List<String> tagsList = tagList.stream()
+                        .map(map -> map.get(InventoryItems.TAG_EPC))
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+
+                Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
+                intent.putExtra("tags", new Gson().toJson(tagsList));
+                intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
+                startActivity(intent);
+            } else {
             }
         });
     }
