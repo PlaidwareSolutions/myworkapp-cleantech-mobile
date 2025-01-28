@@ -2,11 +2,11 @@
 <resources>
 
     <color name="divider_color">#8d9193</color>
-    <color name="app_color">#003366</color>
-    <color name="colorPrimary">#003366</color>
+    <color name="app_color">#667DBE</color>
+    <color name="colorPrimary">#667DBE</color>
 
     <!--    primary button colors-->
-    <color name="primary_button_border_color">#003366</color>
+    <color name="primary_button_border_color">#667DBE</color>
     <color name="primary_button_enabled_color">@color/colorPrimary</color>
     <color name="primary_button_disabled_color">#E8E8EC</color>
     <color name="primary_button_enabled_text_color">@color/white</color>

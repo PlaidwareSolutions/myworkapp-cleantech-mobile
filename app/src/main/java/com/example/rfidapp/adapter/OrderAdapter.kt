@@ -30,7 +30,7 @@ class OrderAdapter(
                     reqBy.text = customer?.name ?: ""
                     reqDate.text = requiredDate?.toFormattedDate()
                     txtStatus.text = status?:""
-                    val totalRequiredQuantity = items.sumOf { it.requiredQuantity ?: 0 }
+                    val totalRequiredQuantity = items?.sumOf { it.requiredQuantity ?: 0 }
                     txtRequiredQuantity.text = "" + totalRequiredQuantity
 
                     if(status?.equals("INITIATED",ignoreCase = true) == true){

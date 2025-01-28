@@ -51,17 +51,15 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
 
     override fun bindMethods() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
-        val alreadyShippedItemCount = intent.getIntExtra("shippedCount", 0)
         val inventoryItems = InventoryItems.newInstance(
             intent.getStringExtra("orderDetail"),
-            intent.getStringExtra("SHIPMENT"),
-            alreadyShippedItemCount
+            intent.getStringExtra("SHIPMENT")
         )
         inventoryItems.setCallback { data ->
             //Item click
             if(isInspection){
                 val data: Data? = Gson().fromJson(json = data)
-                val tagId = data?.tagEpc?:""
+                val tagId = data?.tagEpc ?: ""
                 val inspectionFragment: InspectionFragment = InspectionFragment.newInstance(tagId)
                 inspectionFragment.show(
                     supportFragmentManager,
