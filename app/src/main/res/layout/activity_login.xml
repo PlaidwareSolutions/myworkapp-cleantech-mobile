@@ -89,8 +89,7 @@
                 android:textColor="@drawable/button_text_color"
                 android:padding="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_24sdp"
-                android:layout_marginVertical="@dimen/_12sdp"
-                android:textStyle="bold" />
+                android:layout_marginVertical="@dimen/_12sdp" />
 
             <!-- Forgot Password Link -->
             <TextView

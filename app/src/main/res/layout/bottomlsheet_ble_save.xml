@@ -33,8 +33,7 @@
                     android:drawablePadding="8dp"
                     android:text="Save List"
                     android:textColor="@color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/tv_close"

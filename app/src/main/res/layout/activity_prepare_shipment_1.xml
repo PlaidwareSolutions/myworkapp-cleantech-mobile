@@ -214,13 +214,12 @@
                     android:layout_marginHorizontal="@dimen/padding_inside_table_field"
                     android:layout_marginVertical="@dimen/padding_inside_table_field"
                     android:fontFamily="@font/inter_regular"
-                    android:textStyle="bold"
                     android:maxLines="1"
                     android:maxEms="2"
                     android:gravity="center"
                     android:text="  # "
                     android:textAllCaps="true"
-                    android:textColor="@color/color_181818" />
+                    android:textColor="@color/black" />
 
                 <!-- Divider -->
                 <View
@@ -236,11 +235,10 @@
                     android:layout_marginVertical="@dimen/padding_inside_table_field"
                     android:fontFamily="@font/inter_regular"
                     android:gravity="center"
-                    android:textStyle="bold"
                     android:letterSpacing="-0.01"
                     android:text="@string/item_name_type"
                     android:textAppearance="@style/inter_400_10_16"
-                    android:textColor="@color/color_181818" />
+                    android:textColor="@color/black" />
 
                 <!-- Divider -->
                 <View
@@ -266,10 +264,9 @@
                         android:gravity="center"
                         android:letterSpacing="-0.01"
                         android:text="TOT"
-                        android:textStyle="bold"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/color_181818" />
+                        android:textColor="@color/black" />
 
                     <View
                         android:visibility="invisible"
@@ -286,10 +283,9 @@
                         android:gravity="center"
                         android:letterSpacing="-0.01"
                         android:text="SHPD"
-                        android:textStyle="bold"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/color_181818" />
+                        android:textColor="@color/black" />
 
                     <View
                         android:visibility="invisible"
@@ -306,10 +302,9 @@
                         android:gravity="center"
                         android:letterSpacing="-0.01"
                         android:text="ADD"
-                        android:textStyle="bold"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/color_181818" />
+                        android:textColor="@color/black" />
 
                     <View
                         android:visibility="invisible"
@@ -326,10 +321,9 @@
                         android:gravity="center"
                         android:letterSpacing="-0.01"
                         android:text="BAL"
-                        android:textStyle="bold"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/color_181818" />
+                        android:textColor="@color/black" />
 
                 </LinearLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>

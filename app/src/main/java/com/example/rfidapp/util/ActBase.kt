@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.room.Room.databaseBuilder
@@ -29,6 +30,13 @@ abstract class ActBase<actBinding : ViewBinding> : ReaderClass() {
         bindListeners()
         bindMethods()
         onCreateD(savedInstanceState)
+        setProfiePicture()
+    }
+
+    private fun setProfiePicture() {
+        SharedPrefs.getContact()?.name?.firstOrNull()?.let {
+            binding.root.findViewById<TextView?>(R.id.name1stChar)?.text = it.toString()
+        }
     }
 
     abstract fun setViewBinding(): actBinding

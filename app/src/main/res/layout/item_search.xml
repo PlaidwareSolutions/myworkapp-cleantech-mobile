@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Order:"
-                    android:textColor="@color/secondary_text_color" />
+                    android:textColor="@color/black" />
 
 
                 <TextView
@@ -42,14 +42,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:textStyle="bold"
-                    android:textColor="@color/secondary_dark_text_color"
+                    android:textColor="@color/black"
                     tools:text="I23246T5" />
 
             </LinearLayout>
 
             <TextView
-                android:textSize="@dimen/_11ssp"
                 android:id="@+id/txtStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,11 +55,12 @@
                 android:background="@drawable/bg_order_details"
                 android:backgroundTint="@color/color_bg_status_initiated"
                 android:gravity="end"
-                android:paddingHorizontal="4dp"
+                android:paddingHorizontal="6dp"
                 android:paddingVertical="4dp"
+                android:textSize="10dp"
                 android:textAppearance="@style/inter_400_10_10"
                 android:textColor="@color/color_text_status_initiated"
-                tools:text="pending" />
+                tools:text="SHIPPED_PARTIAL" />
 
         </LinearLayout>
 
@@ -85,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Req by:"
-                    android:textColor="@color/secondary_text_color" />
+                    android:textColor="@color/black" />
 
 
                 <TextView
@@ -94,8 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:textStyle="bold"
-                    android:textColor="@color/secondary_dark_text_color"
+                    android:textColor="@color/black"
                     tools:text="Tony Blair-Texas Grains" />
 
             </LinearLayout>
@@ -116,11 +114,10 @@
                     <TextView
                         android:textSize="@dimen/_11ssp"
                         android:id="@+id/reqDate"
-                        android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
-                        android:textColor="@color/secondary_dark_text_color"
+                        android:textColor="@color/black"
                         tools:text="11/11/11" />
 
                 </LinearLayout>
@@ -150,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Carrier:"
-                    android:textColor="@color/secondary_text_color" />
+                    android:textColor="@color/black" />
 
 
                 <TextView
@@ -159,9 +156,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:textStyle="bold"
                     android:text="Cleantec Logistics"
-                    android:textColor="@color/secondary_dark_text_color" />
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -183,7 +179,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Qty:"
-                        android:textColor="@color/secondary_text_color" />
+                        android:textColor="@color/black" />
 
 
                     <TextView
@@ -192,8 +188,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
-                        android:textStyle="bold"
-                        android:textColor="@color/secondary_dark_text_color"
+                        android:textColor="@color/black"
                         tools:text="200" />
 
                 </LinearLayout>

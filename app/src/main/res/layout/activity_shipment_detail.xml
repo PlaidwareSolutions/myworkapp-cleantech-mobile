@@ -260,7 +260,6 @@
                 android:layout_marginHorizontal="@dimen/padding_inside_table_field"
                 android:layout_marginVertical="@dimen/padding_inside_table_field"
                 android:fontFamily="@font/inter_regular"
-                android:textStyle="bold"
                 android:maxLines="1"
                 android:maxEms="2"
                 android:gravity="center"
@@ -282,7 +281,6 @@
                 android:layout_marginVertical="@dimen/padding_inside_table_field"
                 android:fontFamily="@font/inter_regular"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:letterSpacing="-0.01"
                 android:text="@string/item_name_type"
                 android:textAppearance="@style/inter_400_10_16"
@@ -313,7 +311,6 @@
                     android:gravity="center"
                     android:letterSpacing="-0.01"
                     android:text="REQ"
-                    android:textStyle="bold"
                     android:textAllCaps="true"
                     android:textAppearance="@style/inter_400_10_16"
                     android:textColor="@color/color_181818" />
@@ -333,7 +330,6 @@
                     android:gravity="center"
                     android:letterSpacing="-0.01"
                     android:text="FOUND"
-                    android:textStyle="bold"
                     android:textAllCaps="true"
                     android:textAppearance="@style/inter_400_10_16"
                     android:textColor="@color/color_181818" />

@@ -102,8 +102,7 @@
                 android:layout_marginVertical="@dimen/_12sdp"
                 android:text="Order Search"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_16ssp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_14ssp" />
 
             <FrameLayout
                 android:id="@+id/dataLayout"
@@ -118,7 +117,6 @@
                         android:id="@+id/rcvOrders"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_above="@+id/receiveShipmentButton"
                         tools:itemCount="4"
                         tools:listitem="@layout/item_search"
                         tools:visibility="visible" />
@@ -144,8 +142,7 @@
                         android:padding="@dimen/_8sdp"
                         android:text="@string/view_order_details"
                         android:textAllCaps="false"
-                        android:textColor="@drawable/button_text_color"
-                        android:textStyle="bold" />
+                        android:textColor="@drawable/button_text_color" />
 
                     <FrameLayout
                         android:id="@+id/noDataLayout"
