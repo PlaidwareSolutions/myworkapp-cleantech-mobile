@@ -26,6 +26,7 @@ class OrderAdapter(
             binding.apply {
                 with(orderList[pos]) {
                     orderId.text = referenceId
+                    poNumberText.text = poNumber
                     carrierName.text = carrier?.name ?: ""
                     reqBy.text = customer?.name ?: ""
                     reqDate.text = requiredDate?.toFormattedDate()

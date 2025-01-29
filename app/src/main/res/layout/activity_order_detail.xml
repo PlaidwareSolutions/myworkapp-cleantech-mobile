@@ -197,12 +197,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/inter_regular"
-                        android:text="Driver Name:"
+                        android:text="PO Number:"
                         android:textColor="@color/secondary_text_color" />
 
 
                     <TextView
-                        android:id="@+id/driverName"
+                        android:id="@+id/poNumberText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"

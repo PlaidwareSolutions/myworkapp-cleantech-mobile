@@ -15,7 +15,8 @@ class OrderDetailAdapter(
     val activity: Activity,
     private val orderList: List<Item>,
     private val onItemClick: (Item) -> Unit,
-    private val shippedQuantity: Int
+    private val shippedQuantity: Int,
+    private val balanceQuantity: Int
 ) : RecyclerView.Adapter<OrderDetailAdapter.MyViewHolder>() {
 
 
@@ -27,6 +28,7 @@ class OrderDetailAdapter(
                     srNo.text = pos.toString()
                     txtQty.text = (requiredQuantity ?: 0).toString()
                     txtShipped.text = shippedQuantity.toString()
+                    txtBalance.text = balanceQuantity.toString()
                     ShipmentUtil.orderShipments.value.firstOrNull { it.orderId == orderId }
                         ?.let { orderShipmentData ->
                             txtShipped.text = orderShipmentData.shippedQuantity.toString()

@@ -25,7 +25,7 @@ class ShipmentOrderAdapter(
                     txtShipped.text = (orderDetail?.totalShippedQuantity ?: 0).toString()
                     txtAdd.text = shippedQuantity.toString()
                     txtBalance.text = ((orderDetail?.totalRequiredQuantity ?: 0)
-                            - (orderDetail?.totalRequiredQuantity ?: 0)
+                            - (orderDetail?.totalShippedQuantity ?: 0)
                             - (shippedQuantity)).toString()
 
                     views.isVisible = position != orderList.size - 1
