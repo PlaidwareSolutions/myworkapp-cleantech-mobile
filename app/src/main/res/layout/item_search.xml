@@ -67,6 +67,31 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="PO Number:"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/_11ssp" />
+
+            <TextView
+                android:id="@+id/poNumberText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:textColor="@color/secondary_dark_text_color"
+                android:textSize="@dimen/_11ssp"
+                android:textStyle="bold"
+                tools:text="Tony Blair-Texas Grains" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginTop="2dp"
@@ -86,7 +111,6 @@
                     android:layout_gravity="center"
                     android:text="Req by:"
                     android:textColor="@color/secondary_text_color" />
-
 
                 <TextView
                     android:textSize="@dimen/_11ssp"

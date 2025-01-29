@@ -45,6 +45,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         binding.orderId.text = orderDetail.referenceId
         binding.carrierName.text = orderDetail.carrier?.name
         binding.customerName.text = orderDetail.customer?.name
+        binding.poNumberText.text = orderDetail.poNumber
         binding.pickupDate.text = orderDetail.requiredDate?.toFormattedDate()
         binding.orderDate.text = orderDetail.createdAt?.toFormattedDate()
         if (orderDetail.items?.isEmpty()?.not() == true) {
@@ -136,6 +137,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
             activity = this,
             orderList = items,
             shippedQuantity = orderDetail?.shippingDetails?.size ?: 0,
+            balanceQuantity = (orderDetail?.totalRequiredQuantity ?: 0) - (orderDetail?.totalShippedQuantity ?: 0),
             onItemClick = {
                 showAddItemQuantityDialog()
             }
