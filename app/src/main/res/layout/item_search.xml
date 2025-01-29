@@ -65,6 +65,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -74,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="PO Number:"
-                android:textColor="@color/secondary_text_color"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp" />
 
             <TextView
@@ -82,9 +83,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
-                android:textColor="@color/secondary_dark_text_color"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp"
-                android:textStyle="bold"
                 tools:text="Tony Blair-Texas Grains" />
 
         </LinearLayout>
@@ -104,12 +104,12 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textSize="@dimen/_11ssp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:text="Req by:"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp" />
 
                 <TextView
                     android:textSize="@dimen/_11ssp"
@@ -155,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:gravity="center"
             android:orientation="horizontal">
 
