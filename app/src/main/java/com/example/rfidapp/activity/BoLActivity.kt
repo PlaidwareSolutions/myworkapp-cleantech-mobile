@@ -14,8 +14,11 @@ import com.example.rfidapp.model.network.Bol
 import com.example.rfidapp.model.network.BolX
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
+import com.example.rfidapp.util.openPdf
 import com.example.rfidapp.viewmodel.BolViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -98,7 +101,17 @@ class BoLActivity : ActBase<ActivityBolBinding>() {
             activity = this,
             bolList = bolList,
             onItemClick = {
-
+                CoroutineScope(Dispatchers.IO).launch {
+                    runOnUiThread {
+                        binding.progressBar.isVisible = true
+                    }
+                    bolViewModel.fetchOrderPdf(it.id ?: "").collectLatest {
+                        runOnUiThread {
+                            binding.progressBar.isVisible = false
+                            it.data?.url?.let { it1 -> openPdf(it1) }
+                        }
+                    }
+                }
             }
         )
         binding.rcvBol.layoutManager =

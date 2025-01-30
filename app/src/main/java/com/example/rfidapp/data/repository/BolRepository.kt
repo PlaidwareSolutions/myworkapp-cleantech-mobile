@@ -3,6 +3,7 @@ package com.example.rfidapp.data.repository
 import com.example.rfidapp.data.network.BolApi
 import com.example.rfidapp.model.network.ApiResponse
 import com.example.rfidapp.model.network.BolX
+import com.example.rfidapp.model.network.PdfData
 import javax.inject.Inject
 
 class BolRepository @Inject constructor(private val bolApi: BolApi) {
@@ -25,5 +26,8 @@ class BolRepository @Inject constructor(private val bolApi: BolApi) {
         )
     }
 
+    suspend fun getBolPdf(orderId: String, token: String): ApiResponse<PdfData> {
+        return bolApi.getBolPdf(orderId, token)
+    }
 
 }
