@@ -3,6 +3,7 @@ package com.example.rfidapp.activity
 import androidx.room.Room.databaseBuilder
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
+import com.example.rfidapp.fragment.AddInspectionFragment
 import com.example.rfidapp.fragment.InspectionFragment
 import com.example.rfidapp.fragment.InventoryItems
 import com.example.rfidapp.model.Data
@@ -43,9 +44,25 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
             toolbar.apply {
                 toolbarTitle.text = "Scan Item"
                 btnBack.setOnClickListener {
-                    finish()
+                   /* finish()*/
+                    val tagId = "2018030712774A021A90001D"
+                    val inspectionFragment: AddInspectionFragment = AddInspectionFragment.newInstance(tagId,{
+
+                    })
+                    inspectionFragment.show(
+                        supportFragmentManager,
+                        inspectionFragment.tag
+                    )
                 }
             }
+        }
+    }
+
+
+
+    val onDismissListner:(Boolean)->Unit = {
+        if(it){
+
         }
     }
 
@@ -57,10 +74,15 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
         )
         inventoryItems.setCallback { data ->
             //Item click
-            if(isInspection){
+            if (isInspection) {
                 val data: Data? = Gson().fromJson(json = data)
                 val tagId = data?.tagEpc ?: ""
-                val inspectionFragment: InspectionFragment = InspectionFragment.newInstance(tagId)
+                val inspectionFragment: AddInspectionFragment =
+                    AddInspectionFragment.newInstance(tagId, {
+                        if (it) {
+                            inventoryItems.clearDataAsyncTask.execute()
+                        }
+                    })
                 inspectionFragment.show(
                     supportFragmentManager,
                     inspectionFragment.tag

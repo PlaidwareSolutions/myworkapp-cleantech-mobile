@@ -3,6 +3,7 @@ package com.example.rfidapp.adapter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rfidapp.databinding.ItemTagHistoryBinding
 import com.example.rfidapp.model.OrderShipmentData
@@ -29,9 +30,10 @@ class TagHistoryAdapter(
                     val formattedDate = date?.let { outputFormat.format(it) }
 
                     textViewTimeStamp.text = formattedDate
-                    textViewDescription.text = "Lorem ipsum dolor sit amet"
+                    textViewDescription.text = comment
                     txtName.text = name
                     txtState.text = state
+                    txtState.isVisible = state.isNullOrEmpty().not()
                 }
 
                 root.setOnClickListener {

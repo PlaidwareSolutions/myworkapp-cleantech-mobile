@@ -24,18 +24,18 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddInspectionFragment(var onDismissListner:()->Unit) : BottomSheetDialogFragment(R.layout.fragment_add_inspection) {
+class AddInspectionFragment(var onDismissListner:(Boolean)->Unit) : BottomSheetDialogFragment(R.layout.fragment_add_inspection) {
 
     lateinit var binding: FragmentAddInspectionBinding
     private val assetViewModel: AssetViewModel by viewModels()
     private var state: String = "GOOD"
     var tagID: String = ""
-
+    var isInspected:Boolean = false
     companion object {
         @JvmStatic
         fun newInstance(
             tagID: String,
-            onDismissListner:()->Unit
+            onDismissListner:(Boolean)->Unit
         ) = AddInspectionFragment(onDismissListner).apply {
             this.tagID = tagID
         }
@@ -59,31 +59,41 @@ class AddInspectionFragment(var onDismissListner:()->Unit) : BottomSheetDialogFr
     private fun setupUI() {
         binding.apply {
             editTextAlbumDesc.doOnTextChanged { text, _, _, _ ->
-                if (text.toString().trim().isEmpty().not()) {
-                    save.isEnabled = true
-                    save.isClickable = true
-                } else {
-                    save.isEnabled = false
-                    save.isClickable = false
-                }
+                checkValidation()
             }
 
-            radioGroupObservationType.setOnCheckedChangeListener { _, checkedId ->
-                when (checkedId) {
-                    R.id.good -> {
-                        state = "CLEANED"
-                    }
-                    R.id.damaged -> {
-                        state = "DAMAGED"
-                    }
-                    R.id.repaired -> {
-                        state = "FIXED"
-                    }
-                    R.id.scraped -> {
-                        state = "DECOMMISSIONED"
-                    }
-                }
+            good.setOnClickListener {
+                resetRadioButtons()
+                good.isChecked = true
+                state = "CLEANED"
+                editTextAlbumDesc.isEnabled = false
+                checkValidation()
             }
+
+            damaged.setOnClickListener {
+                resetRadioButtons()
+                damaged.isChecked = true
+                state = "DAMAGED"
+                editTextAlbumDesc.isEnabled = true
+                checkValidation()
+            }
+
+            repaired.setOnClickListener {
+                resetRadioButtons()
+                repaired.isChecked = true
+                state = "FIXED"
+                editTextAlbumDesc.isEnabled = true
+                checkValidation()
+            }
+
+            scraped.setOnClickListener {
+                resetRadioButtons()
+                scraped.isChecked = true
+                state = "DECOMMISSIONED"
+                editTextAlbumDesc.isEnabled = true
+                checkValidation()
+            }
+
 
             save.setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch {
@@ -105,6 +115,26 @@ class AddInspectionFragment(var onDismissListner:()->Unit) : BottomSheetDialogFr
 
             }
 
+            inspectionHistory.setOnClickListener{
+                val inspectionHistoryFragment = InspectionHistoryFragment.newInstance(tagID,{
+
+                })
+                inspectionHistoryFragment.show(
+                    childFragmentManager,
+                    inspectionHistoryFragment.tag
+                )
+            }
+
+        }
+    }
+
+    private fun resetRadioButtons() {
+        binding.apply {
+            good.isChecked = false
+            damaged.isChecked = false
+            repaired.isChecked = false
+            scraped.isChecked = false
+            editTextAlbumDesc.text.clear()
         }
     }
 
@@ -128,8 +158,8 @@ class AddInspectionFragment(var onDismissListner:()->Unit) : BottomSheetDialogFr
                                     "Item inspected successfully",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                isInspected = true
                                 this@AddInspectionFragment.dismiss()
-
                             }
                         }
 
@@ -148,7 +178,19 @@ class AddInspectionFragment(var onDismissListner:()->Unit) : BottomSheetDialogFr
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        onDismissListner.invoke()
+        onDismissListner.invoke(isInspected)
         super.onDismiss(dialog)
+    }
+
+    private fun checkValidation(){
+        binding.apply {
+            if (editTextAlbumDesc.text.trim().isEmpty().not() || state == "CLEANED") {
+                save.isEnabled = true
+                save.isClickable = true
+            } else {
+                save.isEnabled = false
+                save.isClickable = false
+            }
+        }
     }
 }
