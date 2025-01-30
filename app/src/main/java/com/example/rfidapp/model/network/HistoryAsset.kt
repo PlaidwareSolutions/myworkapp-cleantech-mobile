@@ -18,5 +18,9 @@ data class HistoryAsset(
     @SerializedName("state")
     val state: String? = null,
     @SerializedName("updatedAt")
-    val updatedAt: String? = null
+    val updatedAt: String? = null,
+    @SerializedName("comment")
+    val comment: String? = null,
+    @SerializedName("outboundOrder")
+    val outboundOrder: String? = null
 )

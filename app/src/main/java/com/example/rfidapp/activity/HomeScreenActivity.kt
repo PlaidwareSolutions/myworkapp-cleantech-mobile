@@ -61,7 +61,7 @@ class HomeScreenActivity :  ActBase<ActivityHomeScreenBinding>() {
             }
 
             inventory.setOnClickListener {
-                startActivity(Intent(this@HomeScreenActivity, InventoryActivity::class.java))
+                startActivity(Intent(this@HomeScreenActivity, InventoryItemsActivity::class.java).putExtra("isInspection",true))
             }
             settings.setOnClickListener {
                 startActivity(Intent(this@HomeScreenActivity, SettingsActivity::class.java))

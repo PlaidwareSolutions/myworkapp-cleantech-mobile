@@ -233,7 +233,7 @@
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/inter_medium"
                     android:gravity="center_vertical"
-                    android:text="@string/inventory"
+                    android:text="@string/inspection"
                     android:textAppearance="@style/inter_400_18_12"
                     android:textColor="@color/colorPrimary" />
 

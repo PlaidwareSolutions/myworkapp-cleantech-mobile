@@ -84,7 +84,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     public static final String TAG_RSSI_NUMBER = "tagRssiNumber";
     MyAdapter adapter;
     FragmentInventoryItemsBinding binding;
-    public ClearDataAsyncTask clearDataAsyncTask;
+    public ClearDataAsyncTask clearDataAsyncTask = new ClearDataAsyncTask();
     InvItemsViewModel invItemsViewModel;
     InvListViewModel invListViewModel;
     List<EpcModel> inv_epc;
@@ -654,7 +654,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     private void clearDialog() {
         new AlertDialog.Builder(getContext()).setIcon(R.drawable.delete_24).setTitle("Clear Data").setMessage("Do you want to clear all data?").setPositiveButton("Yes", (dialogInterface, i) -> {
 
-            InventoryItems.this.clearDataAsyncTask = new ClearDataAsyncTask();
             InventoryItems.this.clearDataAsyncTask.execute();
             dialogInterface.dismiss();
         }).setNegativeButton("No", null).show();

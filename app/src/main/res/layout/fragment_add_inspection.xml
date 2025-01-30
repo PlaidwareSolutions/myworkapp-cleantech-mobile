@@ -49,6 +49,18 @@
                 android:alpha="0.2"
                 android:background="@color/placeholderTextColor" />
 
+            <ImageButton
+                android:id="@+id/inspectionHistory"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/baseline_history_24"
+                tools:ignore="ContentDescription" />
+
         </RelativeLayout>
 
     </RelativeLayout>
@@ -88,88 +100,81 @@
                         android:letterSpacing="-0.02"
                         android:textColor="@color/color_121212" />
 
-                    <RadioGroup
-                        android:id="@+id/radioGroupObservationType"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/good"
+                                style="@style/inter_600_14_18"
+                                android:layout_width="200dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@android:color/transparent"
+                                android:gravity="center"
+                                android:text="Good"
+                                android:textColor="@drawable/radio_button_text_selector"
+                                tools:checked="true"
+                                tools:visibility="visible" />
 
-                                <RadioButton
-                                    android:id="@+id/good"
-                                    android:layout_weight="1"
-                                    style="@style/inter_600_14_18"
-                                    android:layout_width="200dp"
-                                    android:layout_height="40dp"
-                                    android:background="@drawable/radio_button_selector"
-                                    android:button="@android:color/transparent"
-                                    android:gravity="center"
-                                    android:text="Good"
-                                    android:textColor="@drawable/radio_button_text_selector"
-                                    tools:checked="true"
-                                    tools:visibility="visible" />
-
-                                <RadioButton
-                                    android:id="@+id/damaged"
-                                    android:layout_weight="1"
-                                    style="@style/inter_600_14_18"
-                                    android:layout_width="200dp"
-                                    android:layout_height="40dp"
-                                    android:background="@drawable/radio_button_selector"
-                                    android:button="@android:color/transparent"
-                                    android:gravity="center"
-                                    android:text="Damaged"
-                                    android:textColor="@drawable/radio_button_text_selector"
-                                    tools:visibility="visible" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <RadioButton
-                                    android:id="@+id/repaired"
-                                    android:layout_weight="1"
-                                    style="@style/inter_600_14_18"
-                                    android:layout_width="200dp"
-                                    android:layout_height="40dp"
-                                    android:background="@drawable/radio_button_selector"
-                                    android:button="@android:color/transparent"
-                                    android:gravity="center"
-                                    android:text="Repaired"
-                                    android:textColor="@drawable/radio_button_text_selector"
-                                    tools:visibility="visible" />
-
-                                <RadioButton
-                                    android:id="@+id/scraped"
-                                    android:layout_weight="1"
-                                    style="@style/inter_600_14_18"
-                                    android:layout_width="200dp"
-                                    android:layout_height="40dp"
-                                    android:background="@drawable/radio_button_selector"
-                                    android:button="@android:color/transparent"
-                                    android:gravity="center"
-                                    android:text=" Scraped"
-                                    android:textColor="@drawable/radio_button_text_selector"
-                                    tools:visibility="visible" />
-
-                            </LinearLayout>
+                            <RadioButton
+                                android:id="@+id/damaged"
+                                style="@style/inter_600_14_18"
+                                android:layout_width="200dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@android:color/transparent"
+                                android:gravity="center"
+                                android:text="Damaged"
+                                android:textColor="@drawable/radio_button_text_selector"
+                                tools:visibility="visible" />
 
                         </LinearLayout>
 
-                    </RadioGroup>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/repaired"
+                                style="@style/inter_600_14_18"
+                                android:layout_width="200dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@android:color/transparent"
+                                android:gravity="center"
+                                android:text="Repaired"
+                                android:textColor="@drawable/radio_button_text_selector"
+                                tools:visibility="visible" />
+
+                            <RadioButton
+                                android:id="@+id/scraped"
+                                style="@style/inter_600_14_18"
+                                android:layout_width="200dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/radio_button_selector"
+                                android:button="@android:color/transparent"
+                                android:gravity="center"
+                                android:text=" Scraped"
+                                android:textColor="@drawable/radio_button_text_selector"
+                                tools:visibility="visible" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
