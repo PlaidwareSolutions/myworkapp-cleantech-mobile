@@ -44,27 +44,12 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
             toolbar.apply {
                 toolbarTitle.text = "Scan Item"
                 btnBack.setOnClickListener {
-                   /* finish()*/
-                    val tagId = "2018030712774A021A90001D"
-                    val inspectionFragment: AddInspectionFragment = AddInspectionFragment.newInstance(tagId,{
-
-                    })
-                    inspectionFragment.show(
-                        supportFragmentManager,
-                        inspectionFragment.tag
-                    )
+                    finish()
                 }
             }
         }
     }
 
-
-
-    val onDismissListner:(Boolean)->Unit = {
-        if(it){
-
-        }
-    }
 
     override fun bindMethods() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
