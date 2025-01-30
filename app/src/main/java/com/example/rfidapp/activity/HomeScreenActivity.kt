@@ -7,17 +7,20 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.rfidapp.databinding.ActivityHomeScreenBinding
+import com.example.rfidapp.databinding.ActivityInspectionProcessBinding
+import com.example.rfidapp.util.ActBase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeScreenActivity : AppCompatActivity() {
+class HomeScreenActivity :  ActBase<ActivityHomeScreenBinding>() {
 
-    lateinit var binding: ActivityHomeScreenBinding
+    override fun setViewBinding() = ActivityHomeScreenBinding.inflate(layoutInflater)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityHomeScreenBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun bindObjects() {}
+
+    override fun bindListeners() {}
+
+    override fun bindMethods() {
         setupUI()
     }
 
@@ -27,7 +30,6 @@ class HomeScreenActivity : AppCompatActivity() {
             toolbar.apply {
                 btnBack.isVisible = false
                 toolbarTitle.text = "MyWorkApp"
-                toolbar.txtMyWorkApp.visibility = View.INVISIBLE
             }
 
             orders.setOnClickListener {
@@ -59,7 +61,7 @@ class HomeScreenActivity : AppCompatActivity() {
             }
 
             inventory.setOnClickListener {
-                startActivity(Intent(this@HomeScreenActivity, InventoryActivity::class.java))
+                startActivity(Intent(this@HomeScreenActivity, InventoryItemsActivity::class.java).putExtra("isInspection",true))
             }
             settings.setOnClickListener {
                 startActivity(Intent(this@HomeScreenActivity, SettingsActivity::class.java))

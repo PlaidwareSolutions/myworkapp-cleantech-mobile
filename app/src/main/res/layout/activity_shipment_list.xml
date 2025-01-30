@@ -102,8 +102,7 @@
                 android:layout_marginVertical="@dimen/_12sdp"
                 android:text="Shipment Search"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_16ssp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_14ssp" />
 
             <FrameLayout
                 android:id="@+id/dataLayout"
@@ -144,8 +143,7 @@
                         android:padding="@dimen/_12sdp"
                         android:text="@string/receive_shipment"
                         android:textAllCaps="false"
-                        android:textColor="@drawable/button_text_color"
-                        android:textStyle="bold" />
+                        android:textColor="@drawable/button_text_color" />
 
                     <FrameLayout
                         android:id="@+id/noDataLayout"

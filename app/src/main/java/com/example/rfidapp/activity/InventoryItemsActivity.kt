@@ -3,6 +3,7 @@ package com.example.rfidapp.activity
 import androidx.room.Room.databaseBuilder
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
+import com.example.rfidapp.fragment.AddInspectionFragment
 import com.example.rfidapp.fragment.InspectionFragment
 import com.example.rfidapp.fragment.InventoryItems
 import com.example.rfidapp.model.Data
@@ -49,6 +50,7 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
         }
     }
 
+
     override fun bindMethods() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
         val inventoryItems = InventoryItems.newInstance(
@@ -57,10 +59,15 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
         )
         inventoryItems.setCallback { data ->
             //Item click
-            if(isInspection){
+            if (isInspection) {
                 val data: Data? = Gson().fromJson(json = data)
                 val tagId = data?.tagEpc ?: ""
-                val inspectionFragment: InspectionFragment = InspectionFragment.newInstance(tagId)
+                val inspectionFragment: AddInspectionFragment =
+                    AddInspectionFragment.newInstance(tagId, {
+                        if (it) {
+                            inventoryItems.clearDataAsyncTask.execute()
+                        }
+                    })
                 inspectionFragment.show(
                     supportFragmentManager,
                     inspectionFragment.tag

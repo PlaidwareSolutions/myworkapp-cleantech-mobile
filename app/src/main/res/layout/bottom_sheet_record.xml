@@ -46,8 +46,7 @@
                     android:drawablePadding="8dp"
                     android:text="Add Record"
                     android:textColor="@color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textSize="22sp" />
 
                 <LinearLayout
                     android:id="@+id/tv_add"

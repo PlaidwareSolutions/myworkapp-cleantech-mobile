@@ -112,4 +112,11 @@
         <item name="lineHeight">14sp</item>
     </style>
 
+    <style name="inter_500_24_30">
+        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">24sp</item>
+        <item name="lineHeight">30sp</item>
+    </style>
+
 </resources>

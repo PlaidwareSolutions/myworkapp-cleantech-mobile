@@ -149,8 +149,7 @@
                 android:padding="@dimen/_8sdp"
                 android:text="@string/cancel"
                 android:textAllCaps="false"
-                android:textColor="@drawable/button_text_color"
-                android:textStyle="bold" />
+                android:textColor="@drawable/button_text_color" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

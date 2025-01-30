@@ -147,8 +147,7 @@
                             android:drawablePadding="10dp"
                             android:drawableTint="@color/app_color"
                             android:text="Set Power"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:textSize="20dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -204,8 +203,7 @@
                             android:padding="10dp"
                             android:text="Set Power"
                             android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -235,8 +233,7 @@
                             android:drawablePadding="10dp"
                             android:drawableTint="@color/app_color"
                             android:text="Set Volume"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:textSize="20dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -291,8 +288,7 @@
                             android:padding="10dp"
                             android:text="Set Volume"
                             android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
