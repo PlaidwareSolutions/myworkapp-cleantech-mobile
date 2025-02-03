@@ -106,7 +106,9 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
                         Intent(
                             this@OrderDetailActivity,
                             InventoryItemsActivity::class.java
-                        ).putExtra("orderDetail", Gson().toJson(orderDetail))
+                        )
+                            .putExtra("orderDetail", Gson().toJson(orderDetail))
+                            .putExtra("maxQuantity", (orderDetail?.totalRequiredQuantity ?: 0) - (orderDetail?.totalShippedQuantity ?: 0))
                     )
 //                    finish()
                 }

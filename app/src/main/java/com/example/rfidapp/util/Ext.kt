@@ -23,7 +23,7 @@ fun String.toFormattedDate(): String {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     inputFormat.timeZone = TimeZone.getTimeZone("UTC")
     val date = inputFormat.parse(this)
-    val outputFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault())
     return outputFormat.format(date ?: Date())
 }
 

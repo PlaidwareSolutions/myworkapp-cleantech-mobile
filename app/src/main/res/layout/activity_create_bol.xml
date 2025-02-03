@@ -42,7 +42,7 @@
                 android:layout_marginBottom="16dp"
                 android:textColorHint="@color/gray"
                 android:background="@drawable/bg_edit_text"
-                android:hint="ORD-2025-1-192E90"
+                android:hint="Search by ORD-2025-1-192E90"
                 android:padding="@dimen/_10sdp"
                 android:textAppearance="@style/inter_400_10_10" />
 
@@ -62,7 +62,7 @@
                 android:layout_marginBottom="16dp"
                 android:textColorHint="@color/gray"
                 android:background="@drawable/bg_edit_text"
-                android:hint="BOL-2025-1-51E73D"
+                android:hint="Search by BOL-2025-1-51E73D"
                 android:padding="@dimen/_10sdp"
                 android:textAppearance="@style/inter_400_10_10" />
 
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_edit_text"
-                android:hint="SHP-2025-1-192E90"
+                android:hint="Search by SHP-2025-1-192E90"
                 android:textColorHint="@color/gray"
                 android:padding="@dimen/_10sdp"
                 android:textAppearance="@style/inter_400_10_10" />
@@ -100,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_edit_text"
-                android:hint="John Smith"
+                android:hint="Search by John Smith"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="14dp"
                 android:singleLine="true"
@@ -124,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_edit_text"
-                android:hint="John Smith"
+                android:hint="Search by John Smith"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="14dp"
                 android:textColorHint="@color/gray"

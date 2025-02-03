@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.R
 import com.example.rfidapp.adapter.BolAdapter
 import com.example.rfidapp.databinding.ActivityBolBinding
-import com.example.rfidapp.model.network.Bol
 import com.example.rfidapp.model.network.BolX
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
