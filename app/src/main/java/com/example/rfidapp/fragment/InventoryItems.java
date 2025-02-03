@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 
@@ -77,6 +78,7 @@ import io.reactivex.schedulers.Schedulers;
 public class InventoryItems extends KeyDownFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
     public static final String TAG_COUNT = "tagCount";
     public static final String TAG_EPC = "tagEPC";
     public static final String TAG_EPC_TID = "tagEpcTID";
@@ -104,6 +106,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     Util utils;
     OrderDetail orderDetail;
     Shipment shipment;
+    int maxQuantity;
 
     public interface ClickListner {
         void onClickListener(String data);
@@ -165,11 +168,12 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return true;
     }
 
-    public static InventoryItems newInstance(String orderDetailString, String shipmentString) {
+    public static InventoryItems newInstance(String orderDetailString, String shipmentString, int maxQuantity) {
         InventoryItems inventoryItems = new InventoryItems();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_PARAM1, orderDetailString);
         bundle.putString(ARG_PARAM2, shipmentString);
+        bundle.putInt(ARG_PARAM3, maxQuantity);
         inventoryItems.setArguments(bundle);
         return inventoryItems;
     }
@@ -179,8 +183,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         if (getArguments() != null) {
             String mParam1 = getArguments().getString(ARG_PARAM1);
             String mParam2 = getArguments().getString(ARG_PARAM2);
+            int mParam3 = getArguments().getInt(ARG_PARAM3);
             orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
             shipment = new Gson().fromJson(mParam2, Shipment.class);
+            maxQuantity = mParam3;
             Log.e("TAG243", "onCreate: " + orderDetail);
         }
     }
@@ -226,6 +232,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                             .filter(Objects::nonNull)
                             .collect(Collectors.toList());
                     bills.add(new InputBol(orderDetail.getId(), tagsList));
+                    if (tagsList.size() > maxQuantity) {
+                        confirmationDialog();
+                        return;
+                    }
 
                     createShipmentRequest.setBols(bills);
                     createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
@@ -267,7 +277,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                             .map(map -> map.get(InventoryItems.TAG_EPC))
                             .filter(Objects::nonNull)
                             .collect(Collectors.toList());
-
+                    if (tagsList.size() > maxQuantity) {
+                        confirmationDialog();
+                        return;
+                    }
                     Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
                     intent.putExtra("tags", new Gson().toJson(tagsList));
                     intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
@@ -278,6 +291,24 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
         });
     }
+
+    private void confirmationDialog() {
+        if (mContext.isFinishing() || mContext.isDestroyed()) return; // Prevents leak
+
+        AlertDialog alertDialog = new AlertDialog.Builder(mContext)
+                .setIcon(R.drawable.ic_logo)
+                .setMessage("You can ship maximum " + maxQuantity + " items.")
+                .setPositiveButton("Ok", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                })
+                .show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(mContext, R.color.app_color_red));
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(mContext, R.color.rs_green));
+    }
+
 
     @Override
     public void onActivityCreated(Bundle bundle) {
