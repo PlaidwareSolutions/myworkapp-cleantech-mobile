@@ -20,6 +20,7 @@
             android:letterSpacing="-0.01"
             tools:text="2"
             android:maxLines="1"
+            android:textSize="@dimen/_11ssp"
             android:maxEms="2"
             android:singleLine="true"
             android:ellipsize="end"
@@ -37,6 +38,7 @@
 
         <!-- Column ITEM NAME - TYPE -->
         <TextView
+                        android:textSize="@dimen/_11ssp"
             android:id="@+id/itemName"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="wrap_content"
@@ -64,6 +66,7 @@
             android:orientation="horizontal">
 
             <TextView
+                        android:textSize="@dimen/_11ssp"
                 android:id="@+id/txtQty"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -84,6 +87,7 @@
                 android:background="@color/bg_stroke_color" />
 
             <TextView
+                        android:textSize="@dimen/_11ssp"
                 android:id="@+id/txtShipped"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -104,6 +108,7 @@
                 android:background="@color/bg_stroke_color" />
 
             <TextView
+                        android:textSize="@dimen/_11ssp"
                 android:id="@+id/txtAdd"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -124,6 +129,7 @@
                 android:background="@color/bg_stroke_color" />
 
             <TextView
+                        android:textSize="@dimen/_11ssp"
                 android:id="@+id/txtBalance"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
