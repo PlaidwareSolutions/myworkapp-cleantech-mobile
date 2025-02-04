@@ -174,7 +174,7 @@
         android:layout_marginVertical="@dimen/_12sdp"
         android:background="@drawable/button_background"
         android:padding="@dimen/_8sdp"
-        android:text="Done"
+        android:text="Search"
         android:textAllCaps="false"
         android:textColor="@drawable/button_text_color" />
 

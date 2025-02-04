@@ -219,7 +219,7 @@
                     android:gravity="center"
                     android:text="  # "
                     android:textAllCaps="true"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/secondary_text_color" />
 
                 <!-- Divider -->
                 <View
@@ -238,7 +238,7 @@
                     android:letterSpacing="-0.01"
                     android:text="@string/item_name_type"
                     android:textAppearance="@style/inter_400_10_16"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/secondary_text_color" />
 
                 <!-- Divider -->
                 <View
@@ -266,7 +266,7 @@
                         android:text="TOT"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/secondary_text_color" />
 
                     <View
                         android:visibility="invisible"
@@ -285,7 +285,7 @@
                         android:text="SHPD"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/secondary_text_color" />
 
                     <View
                         android:visibility="invisible"
@@ -304,7 +304,7 @@
                         android:text="ADD"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/secondary_text_color" />
 
                     <View
                         android:visibility="invisible"
@@ -323,7 +323,7 @@
                         android:text="BAL"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/secondary_text_color" />
 
                 </LinearLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
