@@ -775,7 +775,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
             InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
             InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
-            InventoryItems.this.clearDataAsyncTask = null;
+            InventoryItems.this.clearDataAsyncTask = new ClearDataAsyncTask();
         }
     }
 
