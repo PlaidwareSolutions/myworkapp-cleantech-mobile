@@ -306,6 +306,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         });
 
         binding.checkStatus.setOnClickListener(view -> {
+            binding.txtError.setVisibility(View.GONE);
             List<String> tagsList = tagList.stream()
                     .map(map -> map.get(InventoryItems.TAG_EPC))
                     .filter(Objects::nonNull)
@@ -600,6 +601,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 if (this.binding.tvCount.getText().toString().equals("0")) {
                     binding.save.setVisibility(View.GONE);
                     isCheckedStatus = false;
+                    binding.txtError.setVisibility(View.GONE);
                     binding.checkStatus.setVisibility(View.VISIBLE);
                     btCancel("grey");
                 } else {
@@ -719,6 +721,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 if (getCount() == 0) {
                     binding.save.setVisibility(View.GONE);
                     isCheckedStatus = false;
+                    binding.txtError.setVisibility(View.GONE);
                     binding.checkStatus.setVisibility(View.VISIBLE);
                 } else {
                     if (!isCheckedStatus) {
@@ -805,6 +808,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         InventoryItems.this.tagSearchList.clear();
                         InventoryItems.this.scannedItems = 0;
                         isCheckedStatus = false;
+                        binding.txtError.setVisibility(View.GONE);
                         InventoryItems.this.binding.tvCount.setText("0");
                         InventoryItems.this.binding.save.setVisibility(View.GONE);
                         InventoryItems.this.binding.checkStatus.setVisibility(View.VISIBLE);
@@ -891,6 +895,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         if (!"CLEANED".equals(status)) {
                             isCheckedStatus = false;
                         }
+                    }
+                    if(isCheckedStatus){
+                        binding.txtError.setVisibility(View.GONE);
+                    }else{
+                        binding.txtError.setVisibility(View.VISIBLE);
                     }
                     InventoryItems.this.adapter.notifyDataSetChanged();
                 }
