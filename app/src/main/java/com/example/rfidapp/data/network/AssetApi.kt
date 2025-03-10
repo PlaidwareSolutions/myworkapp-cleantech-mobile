@@ -40,10 +40,10 @@ interface AssetApi {
         @Path("assetId") assetId: String
     ): ApiResponse<AssetListResponse>
 
-    @GET("v1/asset/tag/{tagId}")
+    @POST("v1/asset/tag")
     suspend fun getAssetsByTagID(
         @Header("authorization") token: String,
-        @Path("tagId") tagId: String
+        @Body tagIds: com.google.gson.JsonArray
     ): ApiResponse<List<Asset>>
 
     @POST("v1/asset/inspect")

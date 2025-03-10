@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonArray
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,14 +49,14 @@ class AssetViewModel @Inject constructor(private val assetRepository: AssetRepos
         }
     }
 
-    fun getAssetByTagID(tagId: String) {
+    fun getAssetByTagID(tagIds: com.google.gson.JsonArray) {
         viewModelScope.launch {
             _assetHistory.value = ScreenState.Loading
             SharedPrefs.accessToken?.let { token ->
                 try {
                     val response = assetRepository.getAssetByTagID(
                         token,
-                        tagId = tagId
+                        tagIds = tagIds
                     )
                     if (response.isSuccess()) {
                         _assetHistory.value =

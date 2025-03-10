@@ -197,6 +197,8 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvOrders.adapter = adapter
+        val hasShippedItems = items.any { it.shippedQuantity > 0 }
+        binding.filledButton.isVisible = hasShippedItems
     }
 
     /*private fun updateOrderDetail(orderDetail: OrderDetail) {
@@ -231,7 +233,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                 val desiredFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
                 val formattedDate = desiredFormat.format(date)
                 shipmentDate.text = formattedDate
-                carrierName.text = it.carrier ?: ""
+                carrierName.text = it.carrierName ?: ""
                 driverName.setText(it.driver?.name ?: "")
             }
         }

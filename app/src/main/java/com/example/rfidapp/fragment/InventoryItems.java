@@ -239,6 +239,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
                     createShipmentRequest.setBols(bills);
                     createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+                    createShipmentRequest.setCarrierName(orderDetail.getCarrier().getName());
                     Date date = new Date();
                     @SuppressLint("SimpleDateFormat")
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
@@ -570,13 +571,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 this.isAleart = false;
                 this.tagList.add(hashMap);
                 this.tempData.add(str);
+                binding.save.setVisibility(View.VISIBLE);
                 this.binding.tvCount.setText(String.valueOf(this.adapter.getCount()));
                 if (z) {
                     insertValues(setItemsDetail(str));
                 }
                 if (this.binding.tvCount.getText().toString().equals("0")) {
+                    binding.save.setVisibility(View.GONE);
                     btCancel("grey");
                 } else {
+                    binding.save.setVisibility(View.VISIBLE);
                     btCancel("appColor");
                 }
             } else if (!this.isAleart) {
@@ -676,6 +680,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             viewHolder.ivDelete.setOnClickListener(view3 -> {
                 InventoryItems.this.tagList.remove(i);
                 binding.tvCount.setText(String.valueOf(getCount()));
+                if(getCount() == 0){
+                    binding.save.setVisibility(View.GONE);
+                }else{
+                    binding.save.setVisibility(View.VISIBLE);
+                }
                 notifyDataSetChanged();
             });
             return view2;
@@ -747,6 +756,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         InventoryItems.this.tagSearchList.clear();
                         InventoryItems.this.scannedItems = 0;
                         InventoryItems.this.binding.tvCount.setText("0");
+                        InventoryItems.this.binding.save.setVisibility(View.GONE);
                     });
                     new Handler(Looper.getMainLooper()).post(this::doInBackgroundClearDataAsyncTask);
                 }
