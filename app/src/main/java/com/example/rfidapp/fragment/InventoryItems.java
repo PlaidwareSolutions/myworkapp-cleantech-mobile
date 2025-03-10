@@ -900,6 +900,13 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         InventoryItems.this.adapter.notifyDataSetChanged();
                         if (isCheckedStatus) {
                             binding.txtError.setVisibility(View.GONE);
+                            if (orderDetail == null && shipment == null) {
+                                binding.save.setVisibility(View.GONE);
+                                binding.checkStatus.setVisibility(View.VISIBLE);
+                            } else {
+                                binding.save.setVisibility(View.VISIBLE);
+                                binding.checkStatus.setVisibility(View.GONE);
+                            }
                         } else {
                             binding.txtError.setVisibility(View.VISIBLE);
                         }
