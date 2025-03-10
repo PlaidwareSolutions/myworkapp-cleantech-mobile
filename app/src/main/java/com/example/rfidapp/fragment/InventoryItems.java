@@ -881,19 +881,37 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 if (response != null && !response.isEmpty()) {
                     if (tagsList.size() == response.size()) {
                         isCheckedStatus = true;
-                        for (int i = 0; i < response.size(); i++) {
-                            Asset asset = response.get(i);
+                        for (Asset asset : response) {
+                            String tagId = asset.getTag();
                             String status;
+
                             if (asset.getHistory() != null && !asset.getHistory().isEmpty()) {
                                 status = asset.getHistory().get(0).getState();
-                                tagList.get(i).put("status", status);
                             } else {
-                                HashMap<String, String> emptyMap = new HashMap<>();
                                 status = "unknown";
-                                tagList.get(i).put("status", status);
-                                tagList.add(emptyMap);
                             }
-                            if (!"CLEANED".equals(status)) {
+
+                            boolean found = false;
+
+                            // Find the matching tagId in tagList and update its status
+                            for (HashMap<String, String> tag : tagList) {
+                                if (tagId.equals(tag.get(InventoryItems.TAG_EPC))) {
+                                    tag.put("status", status);
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            // If tagId not found in tagList, add a new entry
+                            if (!found) {
+                                HashMap<String, String> newTag = new HashMap<>();
+                                newTag.put(InventoryItems.TAG_EPC, tagId);
+                                newTag.put("status", status);
+                                tagList.add(newTag);
+                            }
+
+                            // If any status is not "Cleaned", set isChecked to false
+                            if (!"Cleaned".equals(status)) {
                                 isCheckedStatus = false;
                             }
                         }
