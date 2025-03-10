@@ -879,29 +879,31 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 binding.progressBar.setVisibility(View.GONE);
                 List<Asset> response = ((ScreenState.Success<List<Asset>>) it).getResponse();
                 if (response != null && !response.isEmpty()) {
-                    isCheckedStatus = true;
-                    for (int i = 0; i < response.size(); i++) {
-                        Asset asset = response.get(i);
-                        String status;
-                        if (asset.getHistory() != null && !asset.getHistory().isEmpty()) {
-                            status = asset.getHistory().get(0).getState();
-                            tagList.get(i).put("status", status);
+                    if (tagsList.size() == response.size()) {
+                        isCheckedStatus = true;
+                        for (int i = 0; i < response.size(); i++) {
+                            Asset asset = response.get(i);
+                            String status;
+                            if (asset.getHistory() != null && !asset.getHistory().isEmpty()) {
+                                status = asset.getHistory().get(0).getState();
+                                tagList.get(i).put("status", status);
+                            } else {
+                                HashMap<String, String> emptyMap = new HashMap<>();
+                                status = "unknown";
+                                tagList.get(i).put("status", status);
+                                tagList.add(emptyMap);
+                            }
+                            if (!"CLEANED".equals(status)) {
+                                isCheckedStatus = false;
+                            }
+                        }
+                        InventoryItems.this.adapter.notifyDataSetChanged();
+                        if (isCheckedStatus) {
+                            binding.txtError.setVisibility(View.GONE);
                         } else {
-                            HashMap<String, String> emptyMap = new HashMap<>();
-                            status = "unknown";
-                            tagList.get(i).put("status", status);
-                            tagList.add(emptyMap);
-                        }
-                        if (!"CLEANED".equals(status)) {
-                            isCheckedStatus = false;
+                            binding.txtError.setVisibility(View.VISIBLE);
                         }
                     }
-                    if(isCheckedStatus){
-                        binding.txtError.setVisibility(View.GONE);
-                    }else{
-                        binding.txtError.setVisibility(View.VISIBLE);
-                    }
-                    InventoryItems.this.adapter.notifyDataSetChanged();
                 }
             } else if (it instanceof ScreenState.Error) {
                 binding.progressBar.setVisibility(View.GONE);
