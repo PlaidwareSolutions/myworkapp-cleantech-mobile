@@ -113,6 +113,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     Shipment shipment;
     int maxQuantity;
     private AssetViewModel assetViewModel;
+    Boolean isCheckedStatus = false;
+
     public interface ClickListner {
         void onClickListener(String data);
     }
@@ -223,7 +225,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
         if (orderDetail == null && shipment == null) {
             binding.save.setVisibility(View.GONE);
-            binding.checkStatus.setVisibility(View.VISIBLE);
+            if (!isCheckedStatus) {
+                binding.checkStatus.setVisibility(View.VISIBLE);
+            }else{
+                binding.checkStatus.setVisibility(View.GONE);
+            }
         }
 
         binding.save.setOnClickListener(view -> {
@@ -593,11 +599,22 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 }
                 if (this.binding.tvCount.getText().toString().equals("0")) {
                     binding.save.setVisibility(View.GONE);
+                    isCheckedStatus = false;
                     binding.checkStatus.setVisibility(View.VISIBLE);
                     btCancel("grey");
                 } else {
-                    binding.save.setVisibility(View.VISIBLE);
-                    binding.checkStatus.setVisibility(View.GONE);
+                    if (!isCheckedStatus) {
+                        binding.checkStatus.setVisibility(View.VISIBLE);
+                        binding.save.setVisibility(View.GONE);
+                    } else {
+                        if (orderDetail == null && shipment == null) {
+                            binding.save.setVisibility(View.GONE);
+                            binding.checkStatus.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.save.setVisibility(View.VISIBLE);
+                            binding.checkStatus.setVisibility(View.GONE);
+                        }
+                    }
                     btCancel("appColor");
                 }
             } else if (!this.isAleart) {
@@ -627,6 +644,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public TextView tvEPCTID;
         public TextView tvTagCount;
         public TextView tvTagRssi;
+        public TextView txtUnknown;
         public ImageView ivDelete;
 
         public ViewHolder() {
@@ -666,6 +684,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 viewHolder.tvTagRssi = view2.findViewById(R.id.TvTagRssi);
                 viewHolder.llList = view2.findViewById(R.id.ll_list);
                 viewHolder.ivDelete = view2.findViewById(R.id.btnDelete);
+                viewHolder.txtUnknown = view2.findViewById(R.id.txtUnknown);
                 view2.setTag(viewHolder);
             } else {
                 view2 = view;
@@ -673,8 +692,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
             viewHolder.tvEPCTID.setText("EPC [Hex]: " + InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
             viewHolder.tvTagCount.setText("Read Count: " + InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
-//            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
             viewHolder.tvTagRssi.setText("RSSI: " + InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI_NUMBER));
+            viewHolder.txtUnknown.setText(InventoryItems.this.tagList.get(i).get("status"));
             viewHolder.llList.setOnClickListener(view1 -> {
                 HashMap<String, String> stringStringHashMap = InventoryItems.this.tagList.get(i);
                 Data data = new Data(
@@ -697,12 +716,23 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             viewHolder.ivDelete.setOnClickListener(view3 -> {
                 InventoryItems.this.tagList.remove(i);
                 binding.tvCount.setText(String.valueOf(getCount()));
-                if(getCount() == 0){
+                if (getCount() == 0) {
                     binding.save.setVisibility(View.GONE);
+                    isCheckedStatus = false;
                     binding.checkStatus.setVisibility(View.VISIBLE);
-                }else{
-                    binding.save.setVisibility(View.VISIBLE);
-                    binding.checkStatus.setVisibility(View.GONE);
+                } else {
+                    if (!isCheckedStatus) {
+                        binding.checkStatus.setVisibility(View.VISIBLE);
+                        binding.save.setVisibility(View.GONE);
+                    } else {
+                        if (orderDetail == null && shipment == null) {
+                            binding.save.setVisibility(View.GONE);
+                            binding.checkStatus.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.save.setVisibility(View.VISIBLE);
+                            binding.checkStatus.setVisibility(View.GONE);
+                        }
+                    }
                 }
                 notifyDataSetChanged();
             });
@@ -774,6 +804,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         InventoryItems.this.tagList.clear();
                         InventoryItems.this.tagSearchList.clear();
                         InventoryItems.this.scannedItems = 0;
+                        isCheckedStatus = false;
                         InventoryItems.this.binding.tvCount.setText("0");
                         InventoryItems.this.binding.save.setVisibility(View.GONE);
                         InventoryItems.this.binding.checkStatus.setVisibility(View.VISIBLE);
@@ -844,14 +875,21 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 binding.progressBar.setVisibility(View.GONE);
                 List<Asset> response = ((ScreenState.Success<List<Asset>>) it).getResponse();
                 if (response != null && !response.isEmpty()) {
+                    isCheckedStatus = true;
                     for (int i = 0; i < response.size(); i++) {
                         Asset asset = response.get(i);
+                        String status;
                         if (asset.getHistory() != null && !asset.getHistory().isEmpty()) {
-                            tagList.get(i).put("status", asset.getHistory().get(0).getState());
+                            status = asset.getHistory().get(0).getState();
+                            tagList.get(i).put("status", status);
                         } else {
                             HashMap<String, String> emptyMap = new HashMap<>();
-                            tagList.get(i).put("status", "unknown");
+                            status = "unknown";
+                            tagList.get(i).put("status", status);
                             tagList.add(emptyMap);
+                        }
+                        if (!"CLEANED".equals(status)) {
+                            isCheckedStatus = false;
                         }
                     }
                     InventoryItems.this.adapter.notifyDataSetChanged();
