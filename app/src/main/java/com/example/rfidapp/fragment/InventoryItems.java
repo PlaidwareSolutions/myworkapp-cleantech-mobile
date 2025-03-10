@@ -40,21 +40,26 @@ import com.example.rfidapp.entity.InventoryListEntity;
 import com.example.rfidapp.model.Data;
 import com.example.rfidapp.model.EpcModel;
 import com.example.rfidapp.model.OrderShipmentData;
+import com.example.rfidapp.model.network.Asset;
 import com.example.rfidapp.model.network.CreateShipmentRequest;
 import com.example.rfidapp.model.network.Driver;
 import com.example.rfidapp.model.network.InputBol;
 import com.example.rfidapp.model.network.Shipment;
 import com.example.rfidapp.model.network.orderdetail.OrderDetail;
 import com.example.rfidapp.util.PreferenceManager;
+import com.example.rfidapp.util.ScreenState;
 import com.example.rfidapp.util.Util;
 import com.example.rfidapp.util.constants.Constants;
 import com.example.rfidapp.util.core.ShipmentUtil;
 import com.example.rfidapp.util.tool.StringUtils;
 import com.example.rfidapp.util.tool.UIHelper;
+import com.example.rfidapp.viewmodel.AssetViewModel;
 import com.example.rfidapp.viewmodel.InvItemsViewModel;
 import com.example.rfidapp.viewmodel.InvListViewModel;
 import com.example.rfidapp.views.UhfInfo;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonPrimitive;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
 
 import java.text.SimpleDateFormat;
@@ -107,7 +112,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     OrderDetail orderDetail;
     Shipment shipment;
     int maxQuantity;
-
+    private AssetViewModel assetViewModel;
     public interface ClickListner {
         void onClickListener(String data);
     }
@@ -196,6 +201,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.binding = FragmentInventoryItemsBinding.inflate(layoutInflater, viewGroup, false);
         this.invItemsViewModel = new ViewModelProvider(this).get(InvItemsViewModel.class);
         this.invListViewModel = new ViewModelProvider(this).get(InvListViewModel.class);
+        this.assetViewModel = new ViewModelProvider(this).get(AssetViewModel.class);
         setupUI();
         return this.binding.getRoot();
     }
@@ -217,6 +223,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
         if (orderDetail == null && shipment == null) {
             binding.save.setVisibility(View.GONE);
+            binding.checkStatus.setVisibility(View.VISIBLE);
         }
 
         binding.save.setOnClickListener(view -> {
@@ -290,6 +297,15 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 } else {
                 }
             }
+        });
+
+        binding.checkStatus.setOnClickListener(view -> {
+            List<String> tagsList = tagList.stream()
+                    .map(map -> map.get(InventoryItems.TAG_EPC))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+            setUpCheckStatus(tagsList);
         });
     }
 
@@ -571,16 +587,17 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 this.isAleart = false;
                 this.tagList.add(hashMap);
                 this.tempData.add(str);
-                binding.save.setVisibility(View.VISIBLE);
                 this.binding.tvCount.setText(String.valueOf(this.adapter.getCount()));
                 if (z) {
                     insertValues(setItemsDetail(str));
                 }
                 if (this.binding.tvCount.getText().toString().equals("0")) {
                     binding.save.setVisibility(View.GONE);
+                    binding.checkStatus.setVisibility(View.VISIBLE);
                     btCancel("grey");
                 } else {
                     binding.save.setVisibility(View.VISIBLE);
+                    binding.checkStatus.setVisibility(View.GONE);
                     btCancel("appColor");
                 }
             } else if (!this.isAleart) {
@@ -682,8 +699,10 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 binding.tvCount.setText(String.valueOf(getCount()));
                 if(getCount() == 0){
                     binding.save.setVisibility(View.GONE);
+                    binding.checkStatus.setVisibility(View.VISIBLE);
                 }else{
                     binding.save.setVisibility(View.VISIBLE);
+                    binding.checkStatus.setVisibility(View.GONE);
                 }
                 notifyDataSetChanged();
             });
@@ -757,6 +776,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         InventoryItems.this.scannedItems = 0;
                         InventoryItems.this.binding.tvCount.setText("0");
                         InventoryItems.this.binding.save.setVisibility(View.GONE);
+                        InventoryItems.this.binding.checkStatus.setVisibility(View.VISIBLE);
                     });
                     new Handler(Looper.getMainLooper()).post(this::doInBackgroundClearDataAsyncTask);
                 }
@@ -814,4 +834,45 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             super.onPostExecute(bool);
         }
     }
+
+    private void setUpCheckStatus(List<String> tagsList) {
+        JsonArray jsonArray = convertListToJsonArray(tagsList);
+        assetViewModel.getAssetHistoryLiveData().observe(getViewLifecycleOwner(), it -> {
+            if (it instanceof ScreenState.Loading) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+            } else if (it instanceof ScreenState.Success) {
+                binding.progressBar.setVisibility(View.GONE);
+                List<Asset> response = ((ScreenState.Success<List<Asset>>) it).getResponse();
+                if (response != null && !response.isEmpty()) {
+                    for (int i = 0; i < response.size(); i++) {
+                        Asset asset = response.get(i);
+                        if (asset.getHistory() != null && !asset.getHistory().isEmpty()) {
+                            tagList.get(i).put("status", asset.getHistory().get(0).getState());
+                        } else {
+                            HashMap<String, String> emptyMap = new HashMap<>();
+                            tagList.get(i).put("status", "unknown");
+                            tagList.add(emptyMap);
+                        }
+                    }
+                    InventoryItems.this.adapter.notifyDataSetChanged();
+                }
+            } else if (it instanceof ScreenState.Error) {
+                binding.progressBar.setVisibility(View.GONE);
+                if (isAdded()) {
+                    Toast.makeText(requireActivity(), ((ScreenState.Error) it).getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        assetViewModel.getAssetByTagID(jsonArray);
+    }
+
+    public JsonArray convertListToJsonArray(List<String> tagsList) {
+        JsonArray jsonArray = new JsonArray();
+        for (String tag : tagsList) {
+            jsonArray.add(new JsonPrimitive(tag));
+        }
+        return jsonArray;
+    }
+
+
 }

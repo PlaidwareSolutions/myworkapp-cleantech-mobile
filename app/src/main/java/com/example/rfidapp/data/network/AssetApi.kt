@@ -40,7 +40,7 @@ interface AssetApi {
         @Path("assetId") assetId: String
     ): ApiResponse<AssetListResponse>
 
-    @POST("v1/asset/tag")
+    @POST("v1/asset/tag/bulk")
     suspend fun getAssetsByTagID(
         @Header("authorization") token: String,
         @Body tagIds: com.google.gson.JsonArray
