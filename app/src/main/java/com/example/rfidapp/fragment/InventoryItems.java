@@ -911,7 +911,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                             }
 
                             // If any status is not "Cleaned", set isChecked to false
-                            if (!"Cleaned".equals(status)) {
+                            if (!"CLEANED".equalsIgnoreCase(status)) {
                                 isCheckedStatus = false;
                             }
                         }
