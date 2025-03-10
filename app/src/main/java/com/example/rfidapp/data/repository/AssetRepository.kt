@@ -11,6 +11,7 @@ import com.example.rfidapp.model.network.CreateTagRequest
 import com.example.rfidapp.model.network.CreateTagResponse
 import com.example.rfidapp.model.network.FetchTagsResponse
 import com.example.rfidapp.model.network.UpdateTagRequest
+import kotlinx.serialization.json.JsonArray
 import javax.inject.Inject
 
 class AssetRepository @Inject constructor(private val assetApi: AssetApi) {
@@ -24,9 +25,9 @@ class AssetRepository @Inject constructor(private val assetApi: AssetApi) {
 
     suspend fun getAssetByTagID(
         token: String,
-        tagId: String
+        tagIds: com.google.gson.JsonArray
     ): ApiResponse<List<Asset>> {
-        return assetApi.getAssetsByTagID(token, tagId)
+        return assetApi.getAssetsByTagID(token, tagIds)
     }
 
 }
