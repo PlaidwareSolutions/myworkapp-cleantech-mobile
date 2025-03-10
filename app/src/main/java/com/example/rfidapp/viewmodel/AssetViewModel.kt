@@ -1,6 +1,8 @@
 package com.example.rfidapp.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.rfidapp.data.repository.AssetRepository
 import com.example.rfidapp.model.network.Asset
@@ -27,6 +29,7 @@ class AssetViewModel @Inject constructor(private val assetRepository: AssetRepos
 
     private val _assetHistory = MutableStateFlow<ScreenState<List<Asset>>>(ScreenState.Idle)
     val assetHistory: StateFlow<ScreenState<List<Asset>>> = _assetHistory.asStateFlow()
+    val assetHistoryLiveData: LiveData<ScreenState<List<Asset>>> = _assetHistory.asLiveData()
 
     fun assetInspection(request: AssetInspectionRequest){
         viewModelScope.launch {
