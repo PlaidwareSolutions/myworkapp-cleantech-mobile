@@ -138,7 +138,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
             orderType = orderDetail?.type?:"",
             activity = this,
             orderList = items,
-            shippedQuantity = orderDetail?.shippingDetails?.size ?: 0,
+            shippedQuantity = orderDetail?.totalShippedQuantity ?: 0,
             balanceQuantity = (orderDetail?.totalRequiredQuantity ?: 0) - (orderDetail?.totalShippedQuantity ?: 0),
             onItemClick = {
                 showAddItemQuantityDialog()
