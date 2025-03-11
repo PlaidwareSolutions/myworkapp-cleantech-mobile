@@ -602,10 +602,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     binding.save.setVisibility(View.GONE);
                     isCheckedStatus = false;
                     binding.txtError.setVisibility(View.GONE);
-                    binding.checkStatus.setVisibility(View.VISIBLE);
+                    if (shipment == null) {
+                        binding.checkStatus.setVisibility(View.VISIBLE);
+                        binding.save.setVisibility(View.GONE);
+                    } else {
+                        binding.checkStatus.setVisibility(View.GONE);
+                        binding.save.setVisibility(View.VISIBLE);
+                    }
                     btCancel("grey");
                 } else {
-                    if (!isCheckedStatus) {
+                    if (!isCheckedStatus && shipment == null) {
                         binding.checkStatus.setVisibility(View.VISIBLE);
                         binding.save.setVisibility(View.GONE);
                     } else {
@@ -722,9 +728,15 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     binding.save.setVisibility(View.GONE);
                     isCheckedStatus = false;
                     binding.txtError.setVisibility(View.GONE);
-                    binding.checkStatus.setVisibility(View.VISIBLE);
+                    if (shipment == null) {
+                        binding.checkStatus.setVisibility(View.VISIBLE);
+                        binding.save.setVisibility(View.GONE);
+                    } else {
+                        binding.checkStatus.setVisibility(View.GONE);
+                        binding.save.setVisibility(View.VISIBLE);
+                    }
                 } else {
-                    if (!isCheckedStatus) {
+                    if (!isCheckedStatus && shipment == null) {
                         binding.checkStatus.setVisibility(View.VISIBLE);
                         binding.save.setVisibility(View.GONE);
                     } else {
@@ -810,8 +822,13 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         isCheckedStatus = false;
                         binding.txtError.setVisibility(View.GONE);
                         InventoryItems.this.binding.tvCount.setText("0");
-                        InventoryItems.this.binding.save.setVisibility(View.GONE);
-                        InventoryItems.this.binding.checkStatus.setVisibility(View.VISIBLE);
+                        if (shipment == null) {
+                            binding.checkStatus.setVisibility(View.VISIBLE);
+                            binding.save.setVisibility(View.GONE);
+                        } else {
+                            binding.checkStatus.setVisibility(View.GONE);
+                            binding.save.setVisibility(View.VISIBLE);
+                        }
                     });
                     new Handler(Looper.getMainLooper()).post(this::doInBackgroundClearDataAsyncTask);
                 }
