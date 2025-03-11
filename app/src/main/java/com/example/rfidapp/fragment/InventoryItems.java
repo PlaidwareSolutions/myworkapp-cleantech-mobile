@@ -883,13 +883,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         isCheckedStatus = true;
                         for (Asset asset : response) {
                             String tagId = asset.getTag();
-                            String status;
-
-                            if (asset.getHistory() != null && !asset.getHistory().isEmpty()) {
-                                status = asset.getHistory().get(0).getState();
-                            } else {
-                                status = "unknown";
-                            }
+                            String status = asset.getLastState();
 
                             boolean found = false;
 
