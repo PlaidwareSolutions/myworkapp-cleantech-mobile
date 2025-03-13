@@ -197,6 +197,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             shipment = new Gson().fromJson(mParam2, Shipment.class);
             maxQuantity = mParam3;
             isInbound = (orderDetail != null && orderDetail.isInbound()) || (shipment != null && shipment.isInbound());
+            if (isInbound){
+                binding.save.setVisibility(View.VISIBLE);
+            }else {
+                binding.checkStatus.setVisibility(View.VISIBLE);
+            }
             Log.e("TAG243", "onCreate: " + orderDetail);
         }
     }
