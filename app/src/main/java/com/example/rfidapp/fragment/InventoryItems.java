@@ -196,7 +196,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
             shipment = new Gson().fromJson(mParam2, Shipment.class);
             maxQuantity = mParam3;
-            isInbound = orderDetail.isInbound() || shipment.isInbound();
+            isInbound = (orderDetail != null && orderDetail.isInbound()) || (shipment != null && shipment.isInbound());
             Log.e("TAG243", "onCreate: " + orderDetail);
         }
     }
