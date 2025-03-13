@@ -175,6 +175,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return true;
     }
 
+    boolean isInbound = false;
+
     public static InventoryItems newInstance(String orderDetailString, String shipmentString, int maxQuantity) {
         InventoryItems inventoryItems = new InventoryItems();
         Bundle bundle = new Bundle();
@@ -194,6 +196,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
             shipment = new Gson().fromJson(mParam2, Shipment.class);
             maxQuantity = mParam3;
+            isInbound = orderDetail.isInbound() || shipment.isInbound();
             Log.e("TAG243", "onCreate: " + orderDetail);
         }
     }
@@ -332,7 +335,6 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 .setTextColor(ContextCompat.getColor(mContext, R.color.rs_green));
     }
-
 
     @Override
     public void onActivityCreated(Bundle bundle) {
@@ -897,7 +899,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 List<Asset> response = ((ScreenState.Success<List<Asset>>) it).getResponse();
                 if (response != null && !response.isEmpty()) {
                     if (tagsList.size() == response.size()) {
-                        isCheckedStatus = true;
+                        if (!isInbound) {
+                            isCheckedStatus = true;
+                        }
                         for (Asset asset : response) {
                             String tagId = asset.getTag();
                             String status = asset.getLastState();
