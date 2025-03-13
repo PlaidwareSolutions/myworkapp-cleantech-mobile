@@ -608,7 +608,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 }
                 if (this.binding.tvCount.getText().toString().equals("0")) {
                     binding.save.setVisibility(View.GONE);
-                    isCheckedStatus = false;
+                    if (!isInbound) {
+                        isCheckedStatus = false;
+                    }
                     binding.txtError.setVisibility(View.GONE);
                     if (shipment == null) {
                         binding.checkStatus.setVisibility(View.VISIBLE);
@@ -734,7 +736,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 binding.tvCount.setText(String.valueOf(getCount()));
                 if (getCount() == 0) {
                     binding.save.setVisibility(View.GONE);
-                    isCheckedStatus = false;
+                    if (!isInbound) {
+                        isCheckedStatus = false;
+                    }
                     binding.txtError.setVisibility(View.GONE);
                     if (shipment == null) {
                         binding.checkStatus.setVisibility(View.VISIBLE);
@@ -827,7 +831,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         InventoryItems.this.tagList.clear();
                         InventoryItems.this.tagSearchList.clear();
                         InventoryItems.this.scannedItems = 0;
-                        isCheckedStatus = false;
+                        if (!isInbound) {
+                            isCheckedStatus = false;
+                        }
                         binding.txtError.setVisibility(View.GONE);
                         InventoryItems.this.binding.tvCount.setText("0");
                         if (shipment == null) {
@@ -905,9 +911,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 List<Asset> response = ((ScreenState.Success<List<Asset>>) it).getResponse();
                 if (response != null && !response.isEmpty()) {
                     if (tagsList.size() == response.size()) {
-                        if (!isInbound) {
-                            isCheckedStatus = true;
-                        }
+                        isCheckedStatus = true;
                         for (Asset asset : response) {
                             String tagId = asset.getTag();
                             String status = asset.getLastState();
@@ -933,7 +937,9 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
 
                             // If any status is not "Cleaned", set isChecked to false
                             if (!"CLEANED".equalsIgnoreCase(status)) {
-                                isCheckedStatus = false;
+                                if (!isInbound) {
+                                    isCheckedStatus = false;
+                                }
                             }
                         }
                         InventoryItems.this.adapter.notifyDataSetChanged();
