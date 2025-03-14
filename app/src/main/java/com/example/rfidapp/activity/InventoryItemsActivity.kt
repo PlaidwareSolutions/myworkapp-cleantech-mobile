@@ -4,7 +4,6 @@ import androidx.room.Room.databaseBuilder
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
 import com.example.rfidapp.fragment.AddInspectionFragment
-import com.example.rfidapp.fragment.InspectionFragment
 import com.example.rfidapp.fragment.InventoryItems
 import com.example.rfidapp.model.Data
 import com.example.rfidapp.model.network.Shipment
@@ -60,13 +59,16 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
             intent.getStringExtra("SHIPMENT"),
             maxQuantity
         )
-        inventoryItems.setCallback { data ->
+        inventoryItems.setCallback { data, status ->
             //Item click
             if (isInspection) {
                 val data: Data? = Gson().fromJson(json = data)
                 val tagId = data?.tagEpc ?: ""
                 val inspectionFragment: AddInspectionFragment =
-                    AddInspectionFragment.newInstance(tagId, {
+                    AddInspectionFragment.newInstance(
+                        tagID = tagId,
+                        status = status,
+                        onDismissListner = {
                         if (it) {
                             inventoryItems.clearDataAsyncTask.execute()
                         }

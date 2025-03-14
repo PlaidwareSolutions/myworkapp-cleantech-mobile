@@ -43,10 +43,13 @@ class ShipmentDetailActivity : ActBase<ActivityShipmentDetailBinding>() {
         binding.customerName.text = shipment.createdBy?.name
 //        binding.pickupDate.text = shipment.?.toFormattedDate()
         binding.shipmentDate.text = shipment.shipmentDate?.toFormattedDate()
-        shipment.bols?.first()?.items?.let {
+        shipment.bols?.firstOrNull()?.items?.let {
             binding.rcvOrders.isVisible = true
             binding.lnrContent.isVisible = true
-            initView(it)
+            if (it.isNotEmpty()) {
+                binding.tvReq.isVisible = it.first().requiredQuantity != null && it.first().requiredQuantity != 0
+                initView(it)
+            }
         } ?: run {
             binding.rcvOrders.isVisible = false
             binding.lnrContent.isVisible = false
@@ -58,11 +61,13 @@ class ShipmentDetailActivity : ActBase<ActivityShipmentDetailBinding>() {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.receiveShipmentList.collectLatest {
                 if (it is ScreenState.Success) {
-                    Toast.makeText(
-                        this@ShipmentDetailActivity,
-                        "Received Successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@ShipmentDetailActivity,
+                            "Received Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
