@@ -58,11 +58,13 @@ class ShipmentDetailActivity : ActBase<ActivityShipmentDetailBinding>() {
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.receiveShipmentList.collectLatest {
                 if (it is ScreenState.Success) {
-                    Toast.makeText(
-                        this@ShipmentDetailActivity,
-                        "Received Successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@ShipmentDetailActivity,
+                            "Received Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }

@@ -116,7 +116,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     Boolean isCheckedStatus = false;
 
     public interface ClickListner {
-        void onClickListener(String data);
+        void onClickListener(String data, String status);
     }
 
     private ClickListner callback;
@@ -719,7 +719,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         stringStringHashMap.getOrDefault(InventoryItems.TAG_COUNT, ""),
                         stringStringHashMap.getOrDefault(InventoryItems.TAG_RSSI_NUMBER, "")
                 );
-                callback.onClickListener(new Gson().toJson(data));
+                callback.onClickListener(new Gson().toJson(data), InventoryItems.this.tagList.get(i).get("status"));
             });
             if (i == InventoryItems.this.selectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));
@@ -953,7 +953,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                                 binding.checkStatus.setVisibility(View.GONE);
                             }
                         } else {
-                            binding.txtError.setVisibility(View.VISIBLE);
+                            if (shipment == null && orderDetail == null) {
+                                binding.txtError.setVisibility(View.GONE);
+                            } else {
+                                binding.txtError.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 }

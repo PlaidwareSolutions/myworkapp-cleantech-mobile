@@ -199,7 +199,7 @@
                 android:gravity="center_vertical|center"
                 android:letterSpacing="-0.02"
                 android:paddingVertical="@dimen/_5sdp"
-                android:text="Add Orders To Shipment"
+                android:text="Add more orders to shipment"
                 android:textAppearance="@style/inter_400_12_16"
                 android:textColor="@color/white" />
 
