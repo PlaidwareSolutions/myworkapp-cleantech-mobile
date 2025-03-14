@@ -601,6 +601,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else if (this.tempData.size() < 200) {
                 this.isAleart = false;
                 this.tagList.add(hashMap);
+                updateValidation();
                 this.tempData.add(str);
                 this.binding.tvCount.setText(String.valueOf(this.adapter.getCount()));
                 if (z) {
@@ -647,6 +648,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             this.uhfInfo.setTagList(this.tagList);
             this.uhfInfo.setCount(this.total);
             this.uhfInfo.setTagNumber(this.adapter.getCount());
+        }
+    }
+
+    private void updateValidation() {
+        if (tagList.size() == 0) {
+            binding.save.setEnabled(false);
+            binding.checkStatus.setEnabled(false);
+        } else {
+            binding.save.setEnabled(true);
+            binding.checkStatus.setEnabled(true);
         }
     }
 
@@ -733,6 +744,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
             viewHolder.ivDelete.setOnClickListener(view3 -> {
                 InventoryItems.this.tagList.remove(i);
+                updateValidation();
                 binding.tvCount.setText(String.valueOf(getCount()));
                 if (getCount() == 0) {
                     binding.save.setVisibility(View.GONE);
@@ -829,6 +841,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     build.close();
                     requireActivity().runOnUiThread(() -> {
                         InventoryItems.this.tagList.clear();
+                        updateValidation();
                         InventoryItems.this.tagSearchList.clear();
                         InventoryItems.this.scannedItems = 0;
                         if (!isInbound) {
@@ -933,6 +946,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                                 newTag.put(InventoryItems.TAG_EPC, tagId);
                                 newTag.put("status", status);
                                 tagList.add(newTag);
+                                updateValidation();
                             }
 
                             // If any status is not "Cleaned", set isChecked to false
