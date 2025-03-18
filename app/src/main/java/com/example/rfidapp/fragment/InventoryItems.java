@@ -263,16 +263,20 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         requireActivity().finish();
                     }
                 } else if (shipment != null) {
-                    List<String> tagsList = tagList.stream()
-                            .map(map -> map.get(InventoryItems.TAG_EPC))
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
+                    if (this.binding.tvCount.getText().toString().equals("1")) {
+                        requireActivity().runOnUiThread(() -> Toast.makeText(requireActivity(), "Please scan the item", Toast.LENGTH_SHORT).show());
+                    } else {
+                        List<String> tagsList = tagList.stream()
+                                .map(map -> map.get(InventoryItems.TAG_EPC))
+                                .filter(Objects::nonNull)
+                                .collect(Collectors.toList());
 
-                    Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
-                    intent.putExtra("tags", new Gson().toJson(tagsList));
-                    intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
-                    startActivity(intent);
-                    requireActivity().finish();
+                        Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
+                        intent.putExtra("tags", new Gson().toJson(tagsList));
+                        intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
+                        startActivity(intent);
+                        requireActivity().finish();
+                    }
                 } else {
                 }
             }
