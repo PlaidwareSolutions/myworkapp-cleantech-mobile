@@ -74,7 +74,7 @@ class ShipmentDetailActivity : ActBase<ActivityShipmentDetailBinding>() {
                     runOnUiThread {
                         Toast.makeText(
                             this@ShipmentDetailActivity,
-                            "Shipment already received",
+                            it.message,
                             Toast.LENGTH_SHORT
                         ).show()
                     }

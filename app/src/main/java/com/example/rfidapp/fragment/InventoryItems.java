@@ -263,7 +263,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         requireActivity().finish();
                     }
                 } else if (shipment != null) {
-                    if (this.binding.tvCount.getText().toString().equals("1")) {
+                    if (this.binding.tvCount.getText().toString().equals("0")) {
                         requireActivity().runOnUiThread(() -> Toast.makeText(requireActivity(), "Please scan the item", Toast.LENGTH_SHORT).show());
                     } else {
                         List<String> tagsList = tagList.stream()
