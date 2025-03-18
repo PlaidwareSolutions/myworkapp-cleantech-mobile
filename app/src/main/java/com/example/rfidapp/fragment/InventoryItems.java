@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 
@@ -39,21 +40,26 @@ import com.example.rfidapp.entity.InventoryListEntity;
 import com.example.rfidapp.model.Data;
 import com.example.rfidapp.model.EpcModel;
 import com.example.rfidapp.model.OrderShipmentData;
+import com.example.rfidapp.model.network.Asset;
 import com.example.rfidapp.model.network.CreateShipmentRequest;
 import com.example.rfidapp.model.network.Driver;
 import com.example.rfidapp.model.network.InputBol;
 import com.example.rfidapp.model.network.Shipment;
 import com.example.rfidapp.model.network.orderdetail.OrderDetail;
 import com.example.rfidapp.util.PreferenceManager;
+import com.example.rfidapp.util.ScreenState;
 import com.example.rfidapp.util.Util;
 import com.example.rfidapp.util.constants.Constants;
 import com.example.rfidapp.util.core.ShipmentUtil;
 import com.example.rfidapp.util.tool.StringUtils;
 import com.example.rfidapp.util.tool.UIHelper;
+import com.example.rfidapp.viewmodel.AssetViewModel;
 import com.example.rfidapp.viewmodel.InvItemsViewModel;
 import com.example.rfidapp.viewmodel.InvListViewModel;
 import com.example.rfidapp.views.UhfInfo;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonPrimitive;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
 
 import java.text.SimpleDateFormat;
@@ -77,6 +83,7 @@ import io.reactivex.schedulers.Schedulers;
 public class InventoryItems extends KeyDownFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
     public static final String TAG_COUNT = "tagCount";
     public static final String TAG_EPC = "tagEPC";
     public static final String TAG_EPC_TID = "tagEpcTID";
@@ -104,9 +111,12 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
     Util utils;
     OrderDetail orderDetail;
     Shipment shipment;
+    int maxQuantity;
+    private AssetViewModel assetViewModel;
+    Boolean isCheckedStatus = false;
 
     public interface ClickListner {
-        void onClickListener(String data);
+        void onClickListener(String data, String status);
     }
 
     private ClickListner callback;
@@ -165,11 +175,14 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         return true;
     }
 
-    public static InventoryItems newInstance(String orderDetailString, String shipmentString) {
+    boolean isInbound = false;
+
+    public static InventoryItems newInstance(String orderDetailString, String shipmentString, int maxQuantity) {
         InventoryItems inventoryItems = new InventoryItems();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_PARAM1, orderDetailString);
         bundle.putString(ARG_PARAM2, shipmentString);
+        bundle.putInt(ARG_PARAM3, maxQuantity);
         inventoryItems.setArguments(bundle);
         return inventoryItems;
     }
@@ -179,8 +192,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         if (getArguments() != null) {
             String mParam1 = getArguments().getString(ARG_PARAM1);
             String mParam2 = getArguments().getString(ARG_PARAM2);
+            int mParam3 = getArguments().getInt(ARG_PARAM3);
             orderDetail = new Gson().fromJson(mParam1, OrderDetail.class);
             shipment = new Gson().fromJson(mParam2, Shipment.class);
+            maxQuantity = mParam3;
+            isInbound = (orderDetail != null && orderDetail.isInbound()) || (shipment != null && shipment.isInbound());
             Log.e("TAG243", "onCreate: " + orderDetail);
         }
     }
@@ -190,6 +206,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         this.binding = FragmentInventoryItemsBinding.inflate(layoutInflater, viewGroup, false);
         this.invItemsViewModel = new ViewModelProvider(this).get(InvItemsViewModel.class);
         this.invListViewModel = new ViewModelProvider(this).get(InvListViewModel.class);
+        this.assetViewModel = new ViewModelProvider(this).get(AssetViewModel.class);
         setupUI();
         return this.binding.getRoot();
     }
@@ -209,8 +226,19 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             binding.lnrItem.setVisibility(View.GONE);
         }
 
+        if (isInbound){
+            binding.save.setVisibility(View.VISIBLE);
+        }else {
+            binding.checkStatus.setVisibility(View.VISIBLE);
+        }
+
         if (orderDetail == null && shipment == null) {
             binding.save.setVisibility(View.GONE);
+            if (!isCheckedStatus) {
+                binding.checkStatus.setVisibility(View.VISIBLE);
+            } else {
+                binding.checkStatus.setVisibility(View.GONE);
+            }
         }
 
         binding.save.setOnClickListener(view -> {
@@ -226,9 +254,14 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                             .filter(Objects::nonNull)
                             .collect(Collectors.toList());
                     bills.add(new InputBol(orderDetail.getId(), tagsList));
+                    if (tagsList.size() > maxQuantity) {
+                        confirmationDialog();
+                        return;
+                    }
 
                     createShipmentRequest.setBols(bills);
                     createShipmentRequest.setCarrier(orderDetail.getCarrier().getId());
+                    createShipmentRequest.setCarrierName(orderDetail.getCarrier().getName());
                     Date date = new Date();
                     @SuppressLint("SimpleDateFormat")
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
@@ -266,21 +299,51 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     if (this.binding.tvCount.getText().toString().equals("0")) {
                         requireActivity().runOnUiThread(() -> Toast.makeText(requireActivity(), "Please scan the item", Toast.LENGTH_SHORT).show());
                     } else {
-                        List<String> tagsList = tagList.stream()
-                                .map(map -> map.get(InventoryItems.TAG_EPC))
-                                .filter(Objects::nonNull)
-                                .collect(Collectors.toList());
-
-                        Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
-                        intent.putExtra("tags", new Gson().toJson(tagsList));
-                        intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
-                        startActivity(intent);
-                        requireActivity().finish();
+                    List<String> tagsList = tagList.stream()
+                            .map(map -> map.get(InventoryItems.TAG_EPC))
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+                    if (tagsList.size() > maxQuantity) {
+                        confirmationDialog();
+                        return;
+                    }
+                    Intent intent = new Intent(requireActivity(), ShipmentDetailActivity.class);
+                    intent.putExtra("tags", new Gson().toJson(tagsList));
+                    intent.putExtra("SHIPMENT", new Gson().toJson(shipment));
+                    startActivity(intent);
+                    requireActivity().finish();
                     }
                 } else {
                 }
             }
         });
+
+        binding.checkStatus.setOnClickListener(view -> {
+            binding.txtError.setVisibility(View.GONE);
+            List<String> tagsList = tagList.stream()
+                    .map(map -> map.get(InventoryItems.TAG_EPC))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+            setUpCheckStatus(tagsList);
+        });
+    }
+
+    private void confirmationDialog() {
+        if (mContext.isFinishing() || mContext.isDestroyed()) return; // Prevents leak
+
+        AlertDialog alertDialog = new AlertDialog.Builder(mContext)
+                .setIcon(R.drawable.ic_logo)
+                .setMessage("You can ship maximum " + maxQuantity + " items.")
+                .setPositiveButton("Ok", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                })
+                .show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(mContext, R.color.app_color_red));
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(mContext, R.color.rs_green));
     }
 
     @Override
@@ -542,14 +605,39 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             } else if (this.tempData.size() < 200) {
                 this.isAleart = false;
                 this.tagList.add(hashMap);
+                updateValidation();
                 this.tempData.add(str);
                 this.binding.tvCount.setText(String.valueOf(this.adapter.getCount()));
                 if (z) {
                     insertValues(setItemsDetail(str));
                 }
                 if (this.binding.tvCount.getText().toString().equals("0")) {
+                    binding.save.setVisibility(View.GONE);
+                    if (!isInbound) {
+                        isCheckedStatus = false;
+                    }
+                    binding.txtError.setVisibility(View.GONE);
+                    if (shipment == null) {
+                        binding.checkStatus.setVisibility(View.VISIBLE);
+                        binding.save.setVisibility(View.GONE);
+                    } else {
+                        binding.checkStatus.setVisibility(View.GONE);
+                        binding.save.setVisibility(View.VISIBLE);
+                    }
                     btCancel("grey");
                 } else {
+                    if (!isCheckedStatus && shipment == null) {
+                        binding.checkStatus.setVisibility(View.VISIBLE);
+                        binding.save.setVisibility(View.GONE);
+                    } else {
+                        if (orderDetail == null && shipment == null) {
+                            binding.save.setVisibility(View.GONE);
+                            binding.checkStatus.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.save.setVisibility(View.VISIBLE);
+                            binding.checkStatus.setVisibility(View.GONE);
+                        }
+                    }
                     btCancel("appColor");
                 }
             } else if (!this.isAleart) {
@@ -567,6 +655,16 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         }
     }
 
+    private void updateValidation() {
+        if (tagList.size() == 0) {
+            binding.save.setEnabled(false);
+            binding.checkStatus.setEnabled(false);
+        } else {
+            binding.save.setEnabled(true);
+            binding.checkStatus.setEnabled(true);
+        }
+    }
+
     public int checkIsExist(String str) {
         if (StringUtils.isEmpty(str)) {
             return -1;
@@ -579,6 +677,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
         public TextView tvEPCTID;
         public TextView tvTagCount;
         public TextView tvTagRssi;
+        public TextView txtUnknown;
         public ImageView ivDelete;
 
         public ViewHolder() {
@@ -618,6 +717,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                 viewHolder.tvTagRssi = view2.findViewById(R.id.TvTagRssi);
                 viewHolder.llList = view2.findViewById(R.id.ll_list);
                 viewHolder.ivDelete = view2.findViewById(R.id.btnDelete);
+                viewHolder.txtUnknown = view2.findViewById(R.id.txtUnknown);
                 view2.setTag(viewHolder);
             } else {
                 view2 = view;
@@ -625,8 +725,8 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
             viewHolder.tvEPCTID.setText("EPC [Hex]: " + InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_EPC));
             viewHolder.tvTagCount.setText("Read Count: " + InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_COUNT));
-//            viewHolder.tvTagRssi.setText("RSSI: "+(CharSequence) InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI));
             viewHolder.tvTagRssi.setText("RSSI: " + InventoryItems.this.tagList.get(i).get(InventoryItems.TAG_RSSI_NUMBER));
+            viewHolder.txtUnknown.setText(InventoryItems.this.tagList.get(i).get("status"));
             viewHolder.llList.setOnClickListener(view1 -> {
                 HashMap<String, String> stringStringHashMap = InventoryItems.this.tagList.get(i);
                 Data data = new Data(
@@ -634,7 +734,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         stringStringHashMap.getOrDefault(InventoryItems.TAG_COUNT, ""),
                         stringStringHashMap.getOrDefault(InventoryItems.TAG_RSSI_NUMBER, "")
                 );
-                callback.onClickListener(new Gson().toJson(data));
+                callback.onClickListener(new Gson().toJson(data), InventoryItems.this.tagList.get(i).get("status"));
             });
             if (i == InventoryItems.this.selectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));
@@ -648,7 +748,35 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
             viewHolder.ivDelete.setOnClickListener(view3 -> {
                 InventoryItems.this.tagList.remove(i);
+                updateValidation();
                 binding.tvCount.setText(String.valueOf(getCount()));
+                if (getCount() == 0) {
+                    binding.save.setVisibility(View.GONE);
+                    if (!isInbound) {
+                        isCheckedStatus = false;
+                    }
+                    binding.txtError.setVisibility(View.GONE);
+                    if (shipment == null) {
+                        binding.checkStatus.setVisibility(View.VISIBLE);
+                        binding.save.setVisibility(View.GONE);
+                    } else {
+                        binding.checkStatus.setVisibility(View.GONE);
+                        binding.save.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (!isCheckedStatus && shipment == null) {
+                        binding.checkStatus.setVisibility(View.VISIBLE);
+                        binding.save.setVisibility(View.GONE);
+                    } else {
+                        if (orderDetail == null && shipment == null) {
+                            binding.save.setVisibility(View.GONE);
+                            binding.checkStatus.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.save.setVisibility(View.VISIBLE);
+                            binding.checkStatus.setVisibility(View.GONE);
+                        }
+                    }
+                }
                 notifyDataSetChanged();
             });
             return view2;
@@ -717,9 +845,21 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                     build.close();
                     requireActivity().runOnUiThread(() -> {
                         InventoryItems.this.tagList.clear();
+                        updateValidation();
                         InventoryItems.this.tagSearchList.clear();
                         InventoryItems.this.scannedItems = 0;
+                        if (!isInbound) {
+                            isCheckedStatus = false;
+                        }
+                        binding.txtError.setVisibility(View.GONE);
                         InventoryItems.this.binding.tvCount.setText("0");
+                        if (shipment == null) {
+                            binding.checkStatus.setVisibility(View.VISIBLE);
+                            binding.save.setVisibility(View.GONE);
+                        } else {
+                            binding.checkStatus.setVisibility(View.GONE);
+                            binding.save.setVisibility(View.VISIBLE);
+                        }
                     });
                     new Handler(Looper.getMainLooper()).post(this::doInBackgroundClearDataAsyncTask);
                 }
@@ -748,7 +888,7 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             }
             InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
             InventoryItems.this.mContext.setInventoryItemCount(InventoryItems.this.mContext.getItemCount());
-            InventoryItems.this.clearDataAsyncTask = null;
+            InventoryItems.this.clearDataAsyncTask = new ClearDataAsyncTask();
         }
     }
 
@@ -777,4 +917,85 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
             super.onPostExecute(bool);
         }
     }
+
+    private void setUpCheckStatus(List<String> tagsList) {
+        JsonArray jsonArray = convertListToJsonArray(tagsList);
+        assetViewModel.getAssetHistoryLiveData().observe(getViewLifecycleOwner(), it -> {
+            if (it instanceof ScreenState.Loading) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+            } else if (it instanceof ScreenState.Success) {
+                binding.progressBar.setVisibility(View.GONE);
+                List<Asset> response = ((ScreenState.Success<List<Asset>>) it).getResponse();
+                if (response != null && !response.isEmpty()) {
+                    if (tagsList.size() == response.size()) {
+                        isCheckedStatus = true;
+                        for (Asset asset : response) {
+                            String tagId = asset.getTag();
+                            String status = asset.getLastState();
+
+                            boolean found = false;
+
+                            // Find the matching tagId in tagList and update its status
+                            for (HashMap<String, String> tag : tagList) {
+                                if (tagId.equals(tag.get(InventoryItems.TAG_EPC))) {
+                                    tag.put("status", status);
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            // If tagId not found in tagList, add a new entry
+                            if (!found) {
+                                HashMap<String, String> newTag = new HashMap<>();
+                                newTag.put(InventoryItems.TAG_EPC, tagId);
+                                newTag.put("status", status);
+                                tagList.add(newTag);
+                                updateValidation();
+                            }
+
+                            // If any status is not "Cleaned", set isChecked to false
+                            if (!"CLEANED".equalsIgnoreCase(status)) {
+                                if (!isInbound) {
+                                    isCheckedStatus = false;
+                                }
+                            }
+                        }
+                        InventoryItems.this.adapter.notifyDataSetChanged();
+                        if (isCheckedStatus) {
+                            binding.txtError.setVisibility(View.GONE);
+                            if (orderDetail == null && shipment == null) {
+                                binding.save.setVisibility(View.GONE);
+                                binding.checkStatus.setVisibility(View.VISIBLE);
+                            } else {
+                                binding.save.setVisibility(View.VISIBLE);
+                                binding.checkStatus.setVisibility(View.GONE);
+                            }
+                        } else {
+                            if (shipment == null && orderDetail == null) {
+                                binding.txtError.setVisibility(View.GONE);
+                            } else {
+                                binding.txtError.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                }
+            } else if (it instanceof ScreenState.Error) {
+                binding.progressBar.setVisibility(View.GONE);
+                if (isAdded()) {
+                    Toast.makeText(requireActivity(), ((ScreenState.Error) it).getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        assetViewModel.getAssetByTagID(jsonArray);
+    }
+
+    public JsonArray convertListToJsonArray(List<String> tagsList) {
+        JsonArray jsonArray = new JsonArray();
+        for (String tag : tagsList) {
+            jsonArray.add(new JsonPrimitive(tag));
+        }
+        return jsonArray;
+    }
+
+
 }

@@ -168,12 +168,12 @@
 
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/save"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/button_background"
-                    android:backgroundTint="@color/black"
-                    android:clickable="true"
+                    android:background="@drawable/button_background_save"
+                    android:enabled="false"
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center_vertical|center"
@@ -181,6 +181,41 @@
                     android:text="@string/save_items"
                     android:textAppearance="@style/inter_400_12_16"
                     android:textColor="@color/white" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/checkStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_background_save"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:enabled="false"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center_vertical|center"
+                    android:letterSpacing="-0.02"
+                    android:text="Check Status"
+                    android:textAppearance="@style/inter_400_12_16"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/txtError"
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:letterSpacing="-0.02"
+                    android:singleLine="true"
+                    android:text="Please remove non-shippable items"
+                    android:textAppearance="@style/inter_400_10_10"
+                    android:textColor="@color/color_ff0000" />
             </LinearLayout>
 
             <LinearLayout

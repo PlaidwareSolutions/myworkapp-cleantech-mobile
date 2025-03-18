@@ -4,7 +4,6 @@ import androidx.room.Room.databaseBuilder
 import com.example.rfidapp.database.InvDB
 import com.example.rfidapp.databinding.ActivityInventoryItemsBinding
 import com.example.rfidapp.fragment.AddInspectionFragment
-import com.example.rfidapp.fragment.InspectionFragment
 import com.example.rfidapp.fragment.InventoryItems
 import com.example.rfidapp.model.Data
 import com.example.rfidapp.model.network.Shipment
@@ -24,6 +23,7 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
     private var orderDetail: OrderDetail? = null
     private var shipment: Shipment? = null
     private var isInspection:Boolean = false
+    private var maxQuantity = 10000
 
     override fun bindObjects() {
         intent.getStringExtra("orderDetail")?.let {
@@ -32,6 +32,7 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
         intent.getStringExtra("SHIPMENT")?.let {
             shipment = Gson().fromJson<Shipment>(it)
         }
+        maxQuantity = intent.getIntExtra("maxQuantity",10000)
 
         intent.getBooleanExtra("isInspection",false).let {
             isInspection = it
@@ -55,15 +56,19 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
         val inventoryItems = InventoryItems.newInstance(
             intent.getStringExtra("orderDetail"),
-            intent.getStringExtra("SHIPMENT")
+            intent.getStringExtra("SHIPMENT"),
+            maxQuantity
         )
-        inventoryItems.setCallback { data ->
+        inventoryItems.setCallback { data, status ->
             //Item click
             if (isInspection) {
                 val data: Data? = Gson().fromJson(json = data)
                 val tagId = data?.tagEpc ?: ""
                 val inspectionFragment: AddInspectionFragment =
-                    AddInspectionFragment.newInstance(tagId, {
+                    AddInspectionFragment.newInstance(
+                        tagID = tagId,
+                        status = status,
+                        onDismissListner = {
                         if (it) {
                             inventoryItems.clearDataAsyncTask.execute()
                         }

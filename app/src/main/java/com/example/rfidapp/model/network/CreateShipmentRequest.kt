@@ -10,4 +10,6 @@ data class CreateShipmentRequest(
     @SerializedName("carrier") var carrier: String? = "",
     @SerializedName("driver") var driver: Driver? = Driver(),
     @SerializedName("shipmentDate") var shipmentDate: String? = ""
-)
+) {
+    var carrierName: String? = ""
+}

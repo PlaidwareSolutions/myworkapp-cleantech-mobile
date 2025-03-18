@@ -1,6 +1,5 @@
 package com.example.rfidapp.activity
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
@@ -19,8 +18,6 @@ import com.example.rfidapp.model.network.CreateShipmentRequest
 import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.core.ShipmentUtil
-import com.example.rfidapp.util.downloadPDF
-import com.example.rfidapp.util.openDocument
 import com.example.rfidapp.util.openPdf
 import com.example.rfidapp.viewmodel.ShipmentDetailViewModel
 import com.example.rfidapp.viewmodel.ShipmentViewModel
@@ -200,6 +197,8 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         binding.rcvOrders.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvOrders.adapter = adapter
+        val hasShippedItems = items.any { it.shippedQuantity > 0 }
+        binding.filledButton.isVisible = hasShippedItems
     }
 
     /*private fun updateOrderDetail(orderDetail: OrderDetail) {
@@ -234,7 +233,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                 val desiredFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
                 val formattedDate = desiredFormat.format(date)
                 shipmentDate.text = formattedDate
-                carrierName.text = it.carrier ?: ""
+                carrierName.text = it.carrierName ?: ""
                 driverName.setText(it.driver?.name ?: "")
             }
         }
@@ -246,7 +245,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         val alertDialog = AlertDialog.Builder(this@PrepareShipment1Activity)
             .setIcon(R.drawable.ic_logo)
             .setTitle("Shipment Confirmation")
-            .setMessage("The shipment will be saved and finalize the print of the shipment")
+            .setMessage("This action confirms the item being added to the order. Once confirmed, this action can not be undone.")
             .setPositiveButton("Yes") { dialogInterface, _ ->
                 dialogInterface.dismiss()
                 createShipmentRequest?.let { request -> viewModel.createShipments(request) }

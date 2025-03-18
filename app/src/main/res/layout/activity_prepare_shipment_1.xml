@@ -46,6 +46,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                        android:textSize="@dimen/_11ssp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -55,6 +56,7 @@
 
 
                         <TextView
+                        android:textSize="@dimen/_11ssp"
                             android:id="@+id/txtShipmentId"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -71,6 +73,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                        android:textSize="@dimen/_11ssp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -80,6 +83,7 @@
                             android:textColor="@color/secondary_text_color" />
 
                         <TextView
+                        android:textSize="@dimen/_11ssp"
                             android:id="@+id/shipmentDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -113,6 +117,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                        android:textSize="@dimen/_11ssp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -122,6 +127,7 @@
 
 
                         <TextView
+                        android:textSize="@dimen/_11ssp"
                             android:id="@+id/carrierName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -154,6 +160,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                        android:textSize="@dimen/_11ssp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -192,7 +199,7 @@
                 android:gravity="center_vertical|center"
                 android:letterSpacing="-0.02"
                 android:paddingVertical="@dimen/_5sdp"
-                android:text="Add Orders To Shipment"
+                android:text="Add more orders to shipment"
                 android:textAppearance="@style/inter_400_12_16"
                 android:textColor="@color/white" />
 
@@ -209,6 +216,7 @@
 
                 <!-- Column # -->
                 <TextView
+                        android:textSize="@dimen/_11ssp"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/padding_inside_table_field"
@@ -219,7 +227,7 @@
                     android:gravity="center"
                     android:text="  # "
                     android:textAllCaps="true"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/secondary_text_color" />
 
                 <!-- Divider -->
                 <View
@@ -229,6 +237,7 @@
 
                 <!-- Column ITEM NAME - TYPE -->
                 <TextView
+                        android:textSize="@dimen/_11ssp"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -238,7 +247,7 @@
                     android:letterSpacing="-0.01"
                     android:text="@string/item_name_type"
                     android:textAppearance="@style/inter_400_10_16"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/secondary_text_color" />
 
                 <!-- Divider -->
                 <View
@@ -256,6 +265,7 @@
 
                     <!-- Loop through these TextViews dynamically if required -->
                     <TextView
+                        android:textSize="@dimen/_11ssp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -266,7 +276,7 @@
                         android:text="TOT"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/secondary_text_color" />
 
                     <View
                         android:visibility="invisible"
@@ -275,6 +285,7 @@
                         android:background="@color/bg_stroke_color" />
 
                     <TextView
+                        android:textSize="@dimen/_11ssp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -285,7 +296,7 @@
                         android:text="SHPD"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/secondary_text_color" />
 
                     <View
                         android:visibility="invisible"
@@ -294,6 +305,7 @@
                         android:background="@color/bg_stroke_color" />
 
                     <TextView
+                        android:textSize="@dimen/_11ssp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -304,7 +316,7 @@
                         android:text="ADD"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/secondary_text_color" />
 
                     <View
                         android:visibility="invisible"
@@ -313,6 +325,7 @@
                         android:background="@color/bg_stroke_color" />
 
                     <TextView
+                        android:textSize="@dimen/_11ssp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -323,7 +336,7 @@
                         android:text="BAL"
                         android:textAllCaps="true"
                         android:textAppearance="@style/inter_400_10_16"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/secondary_text_color" />
 
                 </LinearLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>

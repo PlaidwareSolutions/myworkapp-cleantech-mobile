@@ -30,14 +30,18 @@ class AddInspectionFragment(var onDismissListner:(Boolean)->Unit) : BottomSheetD
     private val assetViewModel: AssetViewModel by viewModels()
     private var state: String = "GOOD"
     var tagID: String = ""
-    var isInspected:Boolean = false
+    var isInspected: Boolean = false
+    var status: String = ""
+
     companion object {
         @JvmStatic
         fun newInstance(
             tagID: String,
-            onDismissListner:(Boolean)->Unit
+            status: String,
+            onDismissListner: (Boolean) -> Unit
         ) = AddInspectionFragment(onDismissListner).apply {
             this.tagID = tagID
+            this.status = status
         }
     }
 
@@ -124,7 +128,7 @@ class AddInspectionFragment(var onDismissListner:(Boolean)->Unit) : BottomSheetD
                     inspectionHistoryFragment.tag
                 )
             }
-
+            status.text = this@AddInspectionFragment.status
         }
     }
 

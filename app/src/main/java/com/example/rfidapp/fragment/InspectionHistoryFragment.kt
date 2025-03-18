@@ -1,6 +1,7 @@
 package com.example.rfidapp.fragment
 
 import android.content.DialogInterface
+import android.graphics.Insets.add
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonArray
 
 @AndroidEntryPoint
 class InspectionHistoryFragment(var onDismissListner:()->Unit) : MaxHeightBottomSheet(R.layout.fragment_inspection_history) {
@@ -56,7 +58,10 @@ class InspectionHistoryFragment(var onDismissListner:()->Unit) : MaxHeightBottom
     }
 
     private fun setUpObserver() {
-        assetViewModel.getAssetByTagID(tagID)
+        val jsonArray = com.google.gson.JsonArray().apply {
+            add(tagID)
+        }
+        assetViewModel.getAssetByTagID(jsonArray)
 
         CoroutineScope(Dispatchers.IO).launch {
             assetViewModel.assetHistory.collectLatest {

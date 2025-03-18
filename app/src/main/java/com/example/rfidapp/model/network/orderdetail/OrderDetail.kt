@@ -41,4 +41,6 @@ data class OrderDetail(
         }
         return totalCount
     }
+
+    fun isInbound(): Boolean = type == "INBOUND"
 }

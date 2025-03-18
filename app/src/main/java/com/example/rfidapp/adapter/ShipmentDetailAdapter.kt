@@ -23,6 +23,7 @@ class ShipmentDetailAdapter(
                     srNo.text = pos.toString()
                     txtRequired.text = (requiredQuantity ?: 0).toString()
                     txtFound.text = foundQuantity.toString()
+                    txtRequired.isVisible = requiredQuantity != null && requiredQuantity != 0
 
 //                    ShipmentUtil.orderShipments.value.firstOrNull { it.orderId == orderId }?.let { orderShipmentData ->
 //                        txtShipped.text = orderShipmentData.shippedQuantity.toString()
