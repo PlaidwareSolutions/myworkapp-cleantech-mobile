@@ -135,7 +135,7 @@
                                 android:background="@drawable/radio_button_selector"
                                 android:button="@android:color/transparent"
                                 android:gravity="center"
-                                android:text="Good"
+                                android:text="Cleaned"
                                 android:textColor="@drawable/radio_button_text_selector"
                                 tools:checked="true"
                                 tools:visibility="visible" />

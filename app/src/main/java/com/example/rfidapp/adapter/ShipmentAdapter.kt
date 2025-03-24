@@ -24,7 +24,7 @@ class ShipmentAdapter(
         fun bind(pos: Int) {
             binding.apply {
                 with(orderList[pos]) {
-                    shippedBy.text = createdBy?.name
+                    shippedBy.text = referenceId
                     carrierName.text = carrier?.name ?: ""
                     driverName.text = driver?.name ?: ""
                     shippedDate.text = shipmentDate?.toFormattedDate()
