@@ -1,6 +1,7 @@
 package com.example.rfidapp.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -41,7 +42,7 @@ class ShipmentDetailActivity : ActBase<ActivityShipmentDetailBinding>() {
         binding.shipmentId.text = shipment.referenceId
         binding.carrierName.text = shipment.carrier?.name
         binding.customerName.text = shipment.createdBy?.name
-//        binding.pickupDate.text = shipment.?.toFormattedDate()
+//      binding.pickupDate.text = shipment.?.toFormattedDate()
         binding.shipmentDate.text = shipment.shipmentDate?.toFormattedDate()
         shipment.bols?.firstOrNull()?.items?.let {
             binding.rcvOrders.isVisible = true
@@ -67,6 +68,18 @@ class ShipmentDetailActivity : ActBase<ActivityShipmentDetailBinding>() {
                             "Received Successfully",
                             Toast.LENGTH_SHORT
                         ).show()
+                        val intent = Intent(this@ShipmentDetailActivity, HomeScreenActivity::class.java)
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
+                        finish()
+                    }
+                } else if (it is ScreenState.Error) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@ShipmentDetailActivity,
+                            it.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -89,13 +102,6 @@ class ShipmentDetailActivity : ActBase<ActivityShipmentDetailBinding>() {
                         shipmentId = shipment.id ?: "",
                         shipmentRequest = ReceiveShipmentRequest(tags)
                     )
-//                    startActivity(
-//                        Intent(
-//                            this@ShipmentDetailActivity,
-//                            InventoryItemsActivity::class.java
-//                        ).putExtra("orderDetail", Gson().toJson(orderDetail))
-//                    )
-//                    finish()
                 }
                 outlinedOutlined.setOnClickListener {
 //                    CoroutineScope(Dispatchers.IO).launch {
@@ -109,6 +115,7 @@ class ShipmentDetailActivity : ActBase<ActivityShipmentDetailBinding>() {
 //                            }
 //                        }
 //                    }
+                    finish()
                 }
             }
         }

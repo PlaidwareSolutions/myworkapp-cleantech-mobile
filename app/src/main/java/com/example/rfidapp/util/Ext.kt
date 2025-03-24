@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
+import org.json.JSONObject
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -49,13 +50,18 @@ fun Exception.getErrorMessage(): String {
     return when (this) {
         is HttpException -> {
             // Handle HTTP-related errors (e.g., 404, 500, etc.)
-            val errorMessage = when (val errorCode = code()) {
-                400 -> "Bad request. Please check your credentials."
-                401 -> "Invalid Username or Password"
-                403 -> "Forbidden. You do not have permission."
-                404 -> "Not found. The requested resource does not exist."
-                500 -> "Server error. Please try again later."
-                else -> "Unknown server error. Code: $errorCode"
+            val errorBody = response()?.errorBody()?.string()
+            val errorMessage = try {
+                JSONObject(errorBody ?: "{}").getString("message")
+            } catch (jsonException: Exception) {
+                when (val errorCode = code()) {
+                    400 -> "Bad request. Please check your credentials."
+                    401 -> "Invalid Username or Password"
+                    403 -> "Forbidden. You do not have permission."
+                    404 -> "Not found. The requested resource does not exist."
+                    500 -> "Server error. Please try again later."
+                    else -> "Unknown server error. Code: $errorCode"
+                }
             }
             errorMessage
         }
