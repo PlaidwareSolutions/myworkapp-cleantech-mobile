@@ -38,12 +38,12 @@ class ShipmentViewModel @Inject constructor(
     val selectedShipment: MutableStateFlow<Shipment?> = MutableStateFlow(null)
 
 
-    fun getShipments(orderType: String = "") {
+    fun getShipments() {
         viewModelScope.launch {
             _shipmentList.value = ScreenState.Loading
             SharedPrefs.accessToken?.let { token ->
                 try {
-                    val response = shipmentRepository.getShipments(token,orderType)
+                    val response = shipmentRepository.getShipments(token)
                     if (response.isSuccess()) {
                         _shipmentList.value = ScreenState.Success(response.data ?: emptyList())
                     } else {

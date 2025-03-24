@@ -39,7 +39,7 @@ interface ShipmentApi {
     @GET("v1/shipment/")
     suspend fun getShipments(
         @Header("authorization") token: String,
-        @Query("orderType") orderType:String
+        @Query("forMobileOrders") forMobileOrders: Boolean = true,
     ): ApiResponse<ArrayList<Shipment>>
 
     @GET("v1/shipment/{shipmentId}")

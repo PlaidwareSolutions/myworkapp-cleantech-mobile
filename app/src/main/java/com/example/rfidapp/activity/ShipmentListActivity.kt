@@ -54,7 +54,7 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
     override fun setViewBinding() = ActivityShipmentListBinding.inflate(layoutInflater)
 
     override fun bindObjects() {
-        viewModel.getShipments(orderType = "INBOUND")
+        viewModel.getShipments()
         shipmentType = intent.getStringExtra("shipmentType") ?: ""
         orderViewModel.fetchContacts()
     }
