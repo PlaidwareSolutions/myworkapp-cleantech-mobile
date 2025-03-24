@@ -734,7 +734,11 @@ public class InventoryItems extends KeyDownFragment implements View.OnClickListe
                         stringStringHashMap.getOrDefault(InventoryItems.TAG_COUNT, ""),
                         stringStringHashMap.getOrDefault(InventoryItems.TAG_RSSI_NUMBER, "")
                 );
-                callback.onClickListener(new Gson().toJson(data), InventoryItems.this.tagList.get(i).get("status"));
+                String status = "";
+                if (InventoryItems.this.tagList.get(i).containsKey("status")) {
+                    status = InventoryItems.this.tagList.get(i).get("status");
+                }
+                callback.onClickListener(new Gson().toJson(data), status);
             });
             if (i == InventoryItems.this.selectItem) {
                 view2.setBackgroundColor(InventoryItems.this.mContext.getResources().getColor(R.color.app_color));

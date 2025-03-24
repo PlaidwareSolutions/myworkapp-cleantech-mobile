@@ -28,7 +28,7 @@ class AddInspectionFragment(var onDismissListner:(Boolean)->Unit) : BottomSheetD
 
     lateinit var binding: FragmentAddInspectionBinding
     private val assetViewModel: AssetViewModel by viewModels()
-    private var state: String = "CLEANED"
+    private var state: String = "GOOD"
     var tagID: String = ""
     var isInspected: Boolean = false
     var status: String = ""
