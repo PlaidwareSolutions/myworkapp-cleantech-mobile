@@ -59,26 +59,29 @@ class InventoryItemsActivity : ActBase<ActivityInventoryItemsBinding>() {
             intent.getStringExtra("SHIPMENT"),
             maxQuantity
         )
-        inventoryItems.setCallback { data, status ->
-            //Item click
-            if (isInspection) {
-                val data: Data? = Gson().fromJson(json = data)
-                val tagId = data?.tagEpc ?: ""
-                val inspectionFragment: AddInspectionFragment =
-                    AddInspectionFragment.newInstance(
-                        tagID = tagId,
-                        status = status,
-                        onDismissListner = {
-                        if (it) {
-                            inventoryItems.clearDataAsyncTask.execute()
-                        }
-                    })
-                inspectionFragment.show(
-                    supportFragmentManager,
-                    inspectionFragment.tag
-                )
+        inventoryItems.setCallback(object :InventoryItems.ClickListner{
+            override fun onClickListener(data: String?, status: String?) {
+                    //Item click
+                    if (isInspection) {
+                        val data1: Data? = Gson().fromJson(json = data?:"")
+                        val tagId = data1?.tagEpc ?: ""
+                        val inspectionFragment: AddInspectionFragment =
+                            AddInspectionFragment.newInstance(
+                                tagID = tagId,
+                                status = status?:"",
+                                onDismissListner = {
+                                    if (it) {
+                                        inventoryItems.clearData()
+                                    }
+                                })
+                        inspectionFragment.show(
+                            supportFragmentManager,
+                            inspectionFragment.tag
+                        )
+                    }
             }
-        }
+
+        })
         supportFragmentManager.beginTransaction()
             .replace(
                 binding.fragmentContainerView.id,
