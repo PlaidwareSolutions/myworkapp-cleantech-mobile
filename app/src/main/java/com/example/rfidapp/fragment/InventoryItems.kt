@@ -133,15 +133,13 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
-        if (arguments != null) {
-            val mParam1 = arguments?.getString(ARG_PARAM1)?:""
-            val mParam2 = arguments?.getString(ARG_PARAM2)?:""
-            val mParam3 = arguments?.getInt(ARG_PARAM3)?:0
-            orderDetail = Gson().fromJson(mParam1, OrderDetail::class.java)?:OrderDetail()
-            shipment = Gson().fromJson(mParam2, Shipment::class.java)?:Shipment()
-            maxQuantity = mParam3
-            isInbound =
-                (orderDetail != null && orderDetail?.isInbound() == true) || (shipment != null && shipment?.isInbound() == true)
+        arguments?.let {
+            val mParam1 = it.getString(ARG_PARAM1) ?: ""
+            val mParam2 = it.getString(ARG_PARAM2) ?: ""
+            maxQuantity = it.getInt(ARG_PARAM3)
+            orderDetail = Gson().fromJson(mParam1, OrderDetail::class.java)
+            shipment = Gson().fromJson(mParam2, Shipment::class.java)
+            isInbound = (orderDetail?.isInbound() == true) || (shipment?.isInbound() == true)
         }
     }
 
