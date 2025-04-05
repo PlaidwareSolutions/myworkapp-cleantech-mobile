@@ -88,7 +88,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
     private var isAleart: Boolean = false
     private var limit: Int = 200000
     var loopFlag: Boolean = false
-    var miliSec: String? = null
+    var miliSecString: String? = null
     private var page: Int = 0
     var scannedItems: Int = 0
     var selectItem: Int = -1
@@ -425,7 +425,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
 
     private fun getMiliSec(): String {
         val str = "RS_INV_" + Calendar.getInstance().timeInMillis
-        this.miliSec = str
+        this.miliSecString = str
         return str
     }
 
@@ -439,11 +439,11 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                 override fun onComplete() {
                     PreferenceManager.setStringValue(
                         Constants.INV_ITEM_RFID,
-                        this@InventoryItems.miliSec
+                        this@InventoryItems.miliSecString
                     )
                     PreferenceManager.setStringValue(
                         Constants.INV_ID_RFID,
-                        mContext.getInvId(this@InventoryItems.miliSec).toString()
+                        mContext.getInvId(this@InventoryItems.miliSecString).toString()
                     )
                     this@InventoryItems.readTag()
                 }
