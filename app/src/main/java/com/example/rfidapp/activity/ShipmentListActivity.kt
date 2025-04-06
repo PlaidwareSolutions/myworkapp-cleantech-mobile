@@ -72,6 +72,7 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
 
         binding.receiveShipmentButton.setOnClickListener {
             viewModel.selectedShipment.value?.let {
+                mReader.setPower(6)
                 val intent = Intent(this, InventoryItemsActivity::class.java)
                 intent.putExtra("SHIPMENT", Gson().toJson(it))
                 startActivity(intent)
@@ -402,6 +403,7 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
 
     override fun onResume() {
         super.onResume()
+//        checkBTConnect()
         if (intent.getBooleanExtra("SHOULD_CLEAR", true)) {
             ShipmentUtil.clearAll()
         }

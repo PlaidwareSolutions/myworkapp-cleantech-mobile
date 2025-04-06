@@ -102,6 +102,7 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
 
                 filledButton.setOnClickListener {
                     Log.e("TAG243", "bindListeners: orderDetail"+ Gson().toJson(orderDetail))
+                    mReader.setPower(30)
                     startActivity(
                         Intent(
                             this@OrderDetailActivity,
@@ -186,5 +187,8 @@ class OrderDetailActivity : ActBase<ActivityOrderDetailBinding>() {
         dialog.show()
     }
 
-
+//    override fun onResume() {
+//        checkBTConnect()
+//        super.onResume()
+//    }
 }
