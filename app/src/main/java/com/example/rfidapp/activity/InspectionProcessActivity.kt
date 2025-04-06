@@ -35,9 +35,6 @@ class InspectionProcessActivity : ActBase<ActivityInspectionProcessBinding>() {
     override fun bindMethods() {
         PreferenceManager.setStringValue(Constants.CUR_SC_TYPE, "Rfid")
         val inventoryItems = InventoryItems.newInstance("" ,"",10000)
-        inventoryItems.setCallback { data, status ->
-
-        }
         supportFragmentManager.beginTransaction()
             .replace(binding.fragmentContainerView.id, inventoryItems)
             .commit()

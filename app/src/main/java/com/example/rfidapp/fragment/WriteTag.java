@@ -1,5 +1,7 @@
 package com.example.rfidapp.fragment;
 
+import static java.util.Collections.binarySearch;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -426,7 +428,7 @@ public class WriteTag extends KeyDownFragment {
         if (StringUtils.isEmpty(str)) {
             return -1;
         }
-        return InventoryItems.binarySearch(this.tempDatas, str);
+        return binarySearch(this.tempDatas, str);
     }
 
     public void stopInventory() {
