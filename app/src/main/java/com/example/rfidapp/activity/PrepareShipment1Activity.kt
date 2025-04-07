@@ -19,6 +19,7 @@ import com.example.rfidapp.util.ActBase
 import com.example.rfidapp.util.ScreenState
 import com.example.rfidapp.util.core.ShipmentUtil
 import com.example.rfidapp.util.openPdf
+import com.example.rfidapp.viewmodel.BolViewModel
 import com.example.rfidapp.viewmodel.ShipmentDetailViewModel
 import com.example.rfidapp.viewmodel.ShipmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +35,7 @@ import java.util.Locale
 class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
     private val viewModel: ShipmentViewModel by viewModels()
+    private val bolViewModel: BolViewModel by viewModels()
     private val shipmentDetailVM: ShipmentDetailViewModel by viewModels()
     private var createShipmentRequest: CreateShipmentRequest? = null
 
@@ -75,7 +77,18 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                         is ScreenState.Success -> {
                             it.response.let { it1 ->
                                 Toast.makeText(this@PrepareShipment1Activity, "Shipment created successfully", Toast.LENGTH_SHORT).show()
-                                shipmentDetailVM.fetchShipmentPdf(referenceId = it1.id)
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    runOnUiThread {
+                                        binding.progressBar.isVisible = true
+                                    }
+                                    bolViewModel.fetchOrderPdf(it.response.bols?.firstOrNull() ?: "")
+                                        .collectLatest {
+                                            runOnUiThread {
+                                                binding.progressBar.isVisible = false
+                                                it.data?.url?.let { it1 -> openPdf(it1) }
+                                            }
+                                        }
+                                }
                             }
                         }
 

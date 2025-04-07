@@ -26,8 +26,8 @@ class BolRepository @Inject constructor(private val bolApi: BolApi) {
         )
     }
 
-    suspend fun getBolPdf(orderId: String, token: String): ApiResponse<PdfData> {
-        return bolApi.getBolPdf(orderId, token)
+    suspend fun getBolPdf(bolId: String, token: String): ApiResponse<PdfData> {
+        return bolApi.getBolPdf(bolId, token)
     }
 
 }

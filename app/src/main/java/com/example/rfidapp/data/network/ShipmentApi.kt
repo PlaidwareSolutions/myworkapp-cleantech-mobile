@@ -54,6 +54,12 @@ interface ShipmentApi {
         @Header("authorization") token: String
     ): ApiResponse<PdfData>
 
+    @GET("v1/bol/{bolId}/pdf?forceRegenerate=true")
+    suspend fun getBolPdfById(
+        @Path("bolId") bolId: String,
+        @Header("authorization") token: String
+    ): ApiResponse<PdfData>
+
     @POST("v1/shipment/receive/{shipmentId}")
     suspend fun receiveShipment(
         @Header("authorization") token: String,
