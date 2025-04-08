@@ -222,6 +222,12 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                             binding.txtError.visibility = View.GONE
                         } else {
                             binding.txtError.visibility = View.VISIBLE
+                            if (isInboundShipment()) {
+                                binding.errorText.text =
+                                    "Non-Receivable BIN. Place for inspection before proceeding"
+                            } else {
+                                binding.errorText.text = "Please remove non-shippable items"
+                            }
                         }
                     }
                 }
@@ -237,6 +243,8 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
             }
         }
     }
+
+    private fun isInboundShipment() = shipment != null && shipment?.isInbound() == true
 
     private fun setupUI() {
         if (orderDetail != null) {
