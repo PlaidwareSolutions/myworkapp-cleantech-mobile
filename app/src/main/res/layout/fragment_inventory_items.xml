@@ -213,7 +213,6 @@
                     android:layout_gravity="center"
                     android:ellipsize="end"
                     android:letterSpacing="-0.02"
-                    android:singleLine="true"
                     android:text="Please remove non-shippable items"
                     android:textAppearance="@style/inter_400_10_10"
                     android:textColor="@color/color_ff0000" />
