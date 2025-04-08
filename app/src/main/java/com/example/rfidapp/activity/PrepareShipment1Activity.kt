@@ -86,6 +86,7 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                                             runOnUiThread {
                                                 binding.progressBar.isVisible = false
                                                 it.data?.url?.let { it1 -> openPdf(it1) }
+
                                             }
                                         }
                                 }

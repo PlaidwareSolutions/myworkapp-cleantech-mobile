@@ -75,6 +75,11 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
                 mReader.setPower(6)
                 val intent = Intent(this, InventoryItemsActivity::class.java)
                 intent.putExtra("SHIPMENT", Gson().toJson(it))
+                intent.putExtra(
+                    "maxQuantity",
+                    it.bols?.firstOrNull()?.items?.firstOrNull()?.requiredQuantity
+                        ?: it.bols?.firstOrNull()?.items?.firstOrNull()?.quantity ?: 10000
+                )
                 startActivity(intent)
             }
         }

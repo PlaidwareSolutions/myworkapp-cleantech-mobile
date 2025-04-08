@@ -8,5 +8,6 @@ import kotlinx.serialization.Serializable
 data class Customer(
     @SerializedName("email") var email: List<String?>? = null,
     @SerializedName("_id") var id: String? = null,
-    @SerializedName("name") var name: String? = null
+    @SerializedName("name") var name: String? = null,
+    @SerializedName("address") address: Address
 )

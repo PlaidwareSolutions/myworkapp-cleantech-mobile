@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Location(
-   @SerializedName("coordinates") val coordinates: List<Double>
+   @SerializedName("coordinates") val coordinates: List<Double>,
+   @SerializedName("type") val type: String
 )
