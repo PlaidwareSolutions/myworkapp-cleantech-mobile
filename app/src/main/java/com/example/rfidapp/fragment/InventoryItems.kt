@@ -651,8 +651,10 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         binding.checkStatus.visibility = View.VISIBLE
                         binding.save.visibility = View.GONE
                     } else {
-                        binding.checkStatus.visibility = View.GONE
-                        binding.save.visibility = View.VISIBLE
+//                        binding.checkStatus.visibility = View.GONE
+//                        binding.save.visibility = View.VISIBLE
+                        binding.checkStatus.visibility = View.VISIBLE
+                        binding.save.visibility = View.GONE
                     }
                     btCancel("grey")
                 } else {
@@ -664,8 +666,10 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                             binding.save.visibility = View.GONE
                             binding.checkStatus.visibility = View.VISIBLE
                         } else {
-                            binding.save.visibility = View.VISIBLE
-                            binding.checkStatus.visibility = View.GONE
+//                            binding.save.visibility = View.VISIBLE
+//                            binding.checkStatus.visibility = View.GONE
+                            binding.checkStatus.visibility = View.VISIBLE
+                            binding.save.visibility = View.GONE
                         }
                     }
                     btCancel("appColor")
@@ -796,8 +800,10 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         binding.checkStatus.visibility = View.VISIBLE
                         binding.save.visibility = View.GONE
                     } else {
-                        binding.checkStatus.visibility = View.GONE
-                        binding.save.visibility = View.VISIBLE
+//                        binding.checkStatus.visibility = View.GONE
+//                        binding.save.visibility = View.VISIBLE
+                        binding.checkStatus.visibility = View.VISIBLE
+                        binding.save.visibility = View.GONE
                     }
                 } else {
                     if (!isCheckedStatus && shipment == null) {
@@ -808,8 +814,10 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                             binding.save.visibility = View.GONE
                             binding.checkStatus.visibility = View.VISIBLE
                         } else {
-                            binding.save.visibility = View.VISIBLE
-                            binding.checkStatus.visibility = View.GONE
+//                            binding.save.visibility = View.VISIBLE
+//                            binding.checkStatus.visibility = View.GONE
+                            binding.checkStatus.visibility = View.VISIBLE
+                            binding.save.visibility = View.GONE
                         }
                     }
                 }
@@ -880,8 +888,10 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         binding.checkStatus.visibility = View.VISIBLE
                         binding.save.visibility = View.GONE
                     } else {
-                        binding.checkStatus.visibility = View.GONE
-                        binding.save.visibility = View.VISIBLE
+//                        binding.checkStatus.visibility = View.GONE
+//                        binding.save.visibility = View.VISIBLE
+                        binding.checkStatus.visibility = View.VISIBLE
+                        binding.save.visibility = View.GONE
                     }
 
                     btCancel("grey")
