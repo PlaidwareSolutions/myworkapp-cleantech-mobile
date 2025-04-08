@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
@@ -79,6 +80,11 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
                     "maxQuantity",
                     it.bols?.firstOrNull()?.items?.firstOrNull()?.requiredQuantity
                         ?: it.bols?.firstOrNull()?.items?.firstOrNull()?.quantity ?: 10000
+                )
+                Log.e(
+                    "TAG111", "bindListeners: "
+                            + (it.bols?.firstOrNull()?.items?.firstOrNull()?.requiredQuantity
+                        ?: it.bols?.firstOrNull()?.items?.firstOrNull()?.quantity ?: 1000)
                 )
                 startActivity(intent)
             }
