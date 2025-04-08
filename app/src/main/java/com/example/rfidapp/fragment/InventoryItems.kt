@@ -190,8 +190,19 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         }
 
                         // If any status is not "Cleaned", set isChecked to false
-                        if (!"CLEANED".equals(status, ignoreCase = true)) {
-                            if (!isInbound) {
+//                        if (!"CLEANED".equals(status, ignoreCase = true)) {
+//                            if (!isInbound) {
+//                                isCheckedStatus = false
+//                            }
+//                        }
+                        if (isInbound) {
+                            if (!"ASSIGNED".equals(status, ignoreCase = true)
+                                && !"PROCESSING".equals(status, ignoreCase = true)
+                            ) {
+                                isCheckedStatus = false
+                            }
+                        } else {
+                            if (!"CLEANED".equals(status, ignoreCase = true)) {
                                 isCheckedStatus = false
                             }
                         }
@@ -643,9 +654,9 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                 }
                 if (binding.tvCount.text.toString() == "0") {
                     binding.save.visibility = View.GONE
-                    if (!isInbound) {
+//                    if (!isInbound) {
                         isCheckedStatus = false
-                    }
+//                    }
                     binding.txtError.visibility = View.GONE
                     if (shipment == null) {
                         binding.checkStatus.visibility = View.VISIBLE
@@ -792,9 +803,9 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                 binding.tvCount.text = count.toString()
                 if (count == 0) {
                     binding.save.visibility = View.GONE
-                    if (!isInbound) {
+//                    if (!isInbound) {
                         isCheckedStatus = false
-                    }
+//                    }
                     binding.txtError.visibility = View.GONE
                     if (shipment == null) {
                         binding.checkStatus.visibility = View.VISIBLE
@@ -879,7 +890,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                     tagList.clear()
                     updateValidation()
                     scannedItems = 0
-                    if (!isInbound) isCheckedStatus = false
+                    /*if (!isInbound)*/ isCheckedStatus = false
 
                     binding.txtError.visibility = View.GONE
                     binding.tvCount.text = "0"
