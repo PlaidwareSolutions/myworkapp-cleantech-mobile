@@ -388,9 +388,9 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
             mContext
         ).setIcon(R.drawable.ic_logo).setMessage(
             if (shipment == null) {
-                "You can ship maximum $maxQuantity items"
+                "Max Allowed Scans : $maxQuantity Qty"
             } else {
-                "You can receive maximum $maxQuantity items"
+                "Max Allowed Scans : $maxQuantity Qty"
             }
         ).setPositiveButton(
                 "Ok") { dialogInterface: DialogInterface, _: Int -> dialogInterface.dismiss() }.show()
