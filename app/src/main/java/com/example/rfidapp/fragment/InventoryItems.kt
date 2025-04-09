@@ -175,7 +175,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         // Find the matching tagId in tagList and update its status
                         for (tag in tagList) {
                             if (tagId == tag[TAG_EPC]) {
-                                tag["status"] = status
+                                tag["status"] =  status?.ifEmpty { "UNKNOWN" }
                                 found = true
                                 break
                             }
