@@ -804,8 +804,10 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                 "RSSI: " + tagList[i][TAG_RSSI_NUMBER]
 
             Log.e("TAG243", "status: "+tagList[i]["status"])
-            Log.e("TAG243", "isCheckedStatus: "+isCheckedStatus)
-            val status = if (tagList[i]["status"] == null && isCheckedStatus) "UNKNOWN" else  tagList[i]["status"]?.ifBlank { "UNKNOWN" }
+            Log.e("TAG243", "isCheckedStatus: $isCheckedStatus")
+            val status =
+                if (tagList[i]["status"] == null && tagList.any { it["status"] != null }) "UNKNOWN" else tagList[i]["status"]?.ifBlank { "UNKNOWN" }
+                    ?: "UNKNOWN"
             status.getStatusColor().let { viewHolder.txtUnknown?.setTextColor(it) }
             viewHolder.txtUnknown?.text = status
             viewHolder.llList?.setOnClickListener {
