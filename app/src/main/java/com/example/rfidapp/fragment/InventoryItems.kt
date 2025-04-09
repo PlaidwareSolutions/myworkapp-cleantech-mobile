@@ -424,6 +424,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                 clearDialog()
             }
         } else if (view.id == R.id.bt_start) {
+            clearData()
             if (PreferenceManager.getStringValue(Constants.INV_ITEM_RFID).isEmpty()) {
                 insertValues()
             } else if (mContext.isC5Device) {
