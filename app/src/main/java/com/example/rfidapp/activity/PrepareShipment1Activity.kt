@@ -85,6 +85,16 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                                         .collectLatest {
                                             runOnUiThread {
                                                 binding.progressBar.isVisible = false
+                                                Handler(Looper.getMainLooper()).postDelayed({
+                                                    startActivity(
+                                                        Intent(
+                                                            this@PrepareShipment1Activity,
+                                                            HomeScreenActivity::class.java
+                                                        ).apply {
+                                                            intent.flags =
+                                                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                        })
+                                                }, 1500)
                                                 it.data?.url?.let { it1 -> openPdf(it1) }
 
                                             }
