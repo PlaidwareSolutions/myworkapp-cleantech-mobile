@@ -175,7 +175,11 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         // Find the matching tagId in tagList and update its status
                         for (tag in tagList) {
                             if (tagId == tag[TAG_EPC]) {
+                                Log.e("TAG111", "setupObserver: $status")
                                 tag["status"] = status?.ifEmpty { "UNKNOWN" } ?: "UNKNOWN"
+                                if (tag["status"] == "null" || tag["status"] == null) {
+                                    tag["status"] = "UNKNOWN"
+                                }
                                 found = true
                                 break
                             }
@@ -186,6 +190,9 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                             val newTag = HashMap<String, String?>()
                             newTag[TAG_EPC] = tagId
                             newTag["status"] = status?.ifEmpty { "UNKNOWN" } ?: "UNKNOWN"
+                            if (newTag["status"] == "null" || newTag["status"] == null) {
+                                newTag["status"] = "UNKNOWN"
+                            }
                             tagList.add(newTag)
                             updateValidation()
                         }
