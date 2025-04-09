@@ -519,6 +519,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
             if (!mContext.isBtConnect) {
                 mContext.highlightToast("Kindly Connect Device First..", 2)
             } else if (mBtReader.startInventoryTag()) {
+                clearData()
                 binding.btStart.text =
                     mContext.getString(R.string.title_stop_Inventory)
                 this.loopFlag = true
@@ -529,6 +530,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
         } else if (mReader == null) {
         } else {
             if (mReader.startInventoryTag()) {
+                clearData()
                 /*binding.imgScan.setVisibility(View.GONE);*/
                 binding.btStart.text =
                     mContext.getString(R.string.title_stop_Inventory)

@@ -33,13 +33,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/inter_regular"
-                    android:text="Shipment id:"
+                    android:text="Shipment ID:"
                     android:textColor="@color/black" />
 
-
                 <TextView
-                    android:textSize="@dimen/_11ssp"
                     android:id="@+id/shippedBy"
+                    android:textSize="@dimen/_11ssp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
@@ -49,9 +48,7 @@
             </LinearLayout>
 
             <TextView
-                    android:textSize="@dimen/_11ssp"
                 android:id="@+id/txtStatus"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -60,7 +57,7 @@
                 android:fontFamily="@font/inter_regular"
                 android:gravity="end"
                 android:paddingHorizontal="4dp"
-                android:paddingVertical="4dp"
+                android:textSize="@dimen/_11ssp"
                 android:textAppearance="@style/inter_400_10_10"
                 android:textColor="@color/color_text_status_initiated"
                 tools:text="pending" />
@@ -68,10 +65,36 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/inter_regular"
+                android:text="Processor:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp" />
+
+            <TextView
+                android:id="@+id/processorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11ssp"
+                tools:text="I23246T5" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -109,6 +132,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -143,7 +167,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -207,7 +231,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -223,16 +247,41 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/inter_regular"
                     android:text="Created By:"
-                    android:textColor="@color/secondary_text_color" />
-
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/createdBy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/secondary_dark_text_color"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    tools:text="11/11/11" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="Order By:"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/orderBy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
                     tools:text="11/11/11" />
 
             </LinearLayout>
@@ -248,7 +297,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/inter_regular"
                     android:text="Qty:"
-                    android:textColor="@color/secondary_text_color" />
+                    android:textColor="@color/black" />
 
 
                 <TextView
@@ -256,11 +305,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/secondary_dark_text_color"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
                     tools:text="200" />
 
             </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
 
         </LinearLayout>
 
