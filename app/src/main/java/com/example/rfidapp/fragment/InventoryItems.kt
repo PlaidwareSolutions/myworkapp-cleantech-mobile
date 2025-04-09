@@ -184,7 +184,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         if (!found) {
                             val newTag = HashMap<String, String?>()
                             newTag[TAG_EPC] = tagId
-                            newTag["status"] = status
+                            newTag["status"] = status?.ifEmpty { "UNKNOWN" }
                             tagList.add(newTag)
                             updateValidation()
                         }
@@ -207,6 +207,17 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                             }
                         }
                     }
+                    tagList = ArrayList(
+                        tagList.sortedWith(
+                            compareBy { tag ->
+                                if (isInbound) {
+                                    if (tag["status"].equals("ASSIGNED", ignoreCase = true) || tag["status"].equals("PROCESSING", ignoreCase = true)) 1 else 0
+                                } else {
+                                    if (tag["status"].equals("CLEANED", ignoreCase = true)) 1 else 0
+                                }
+                            }
+                        )
+                    )
                     adapter?.notifyDataSetChanged()
                     if (isCheckedStatus) {
                         binding.txtError.visibility = View.GONE
