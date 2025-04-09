@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -796,6 +797,8 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
             viewHolder.tvTagRssi?.text =
                 "RSSI: " + tagList[i][TAG_RSSI_NUMBER]
 
+            Log.e("TAG243", "status: "+tagList[i]["status"])
+            Log.e("TAG243", "isCheckedStatus: "+isCheckedStatus)
             val status = if (tagList[i]["status"] == null && isCheckedStatus) "UNKNOWN" else  tagList[i]["status"]?.ifBlank { "UNKNOWN" }
             status.getStatusColor().let { viewHolder.txtUnknown?.setTextColor(it) }
             viewHolder.txtUnknown?.text = status
