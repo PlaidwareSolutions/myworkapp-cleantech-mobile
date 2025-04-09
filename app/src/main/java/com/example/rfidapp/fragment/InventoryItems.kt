@@ -374,7 +374,13 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
         if (mContext.isFinishing || mContext.isDestroyed) return
         val alertDialog = AlertDialog.Builder(
             mContext
-        ).setIcon(R.drawable.ic_logo).setMessage("You can ship maximum $maxQuantity items.").setPositiveButton(
+        ).setIcon(R.drawable.ic_logo).setMessage(
+            if (shipment == null) {
+                "You can ship maximum $maxQuantity items"
+            } else {
+                "You can receive maximum $maxQuantity items"
+            }
+        ).setPositiveButton(
                 "Ok") { dialogInterface: DialogInterface, _: Int -> dialogInterface.dismiss() }.show()
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)

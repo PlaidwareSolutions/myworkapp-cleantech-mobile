@@ -154,6 +154,7 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
     }
 
     override fun bindMethods() {
+        binding.toolbar.toolbarTitle.text = "Receive Shipment"
         initTabs()
         initAdapter()
         setupSpinner()

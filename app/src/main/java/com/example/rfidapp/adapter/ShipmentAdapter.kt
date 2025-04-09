@@ -29,6 +29,10 @@ class ShipmentAdapter(
                     driverName.text = driver?.name ?: ""
                     shippedDate.text = shipmentDate?.toFormattedDate()
                     txtDlNumber.text = driver?.dl ?: ""
+                    this@apply.createdBy.text = createdBy?.name ?: ""
+                    this@apply.txtRequiredQuantity.text =
+                        (bols?.firstOrNull()?.items?.firstOrNull()?.requiredQuantity
+                            ?: 0).toString()
 //                    val totalRequiredQuantity = items.sumOf { it.requiredQuantity ?: 0 }
 //                    txtRequiredQuantity.text = "" + totalRequiredQuantity
 

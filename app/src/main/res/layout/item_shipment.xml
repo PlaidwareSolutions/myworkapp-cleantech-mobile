@@ -204,7 +204,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -223,12 +222,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/inter_regular"
-                    android:text="Date:"
+                    android:text="Created By:"
                     android:textColor="@color/secondary_text_color" />
 
 
                 <TextView
-                    android:id="@+id/reqDate1"
+                    android:id="@+id/createdBy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
@@ -238,21 +237,9 @@
 
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <TextView
@@ -265,7 +252,7 @@
 
 
                 <TextView
-                    android:id="@+id/txtRequiredQuantity1"
+                    android:id="@+id/txtRequiredQuantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
