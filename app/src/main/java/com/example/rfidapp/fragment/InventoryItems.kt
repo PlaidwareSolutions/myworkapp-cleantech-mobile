@@ -176,7 +176,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         // Find the matching tagId in tagList and update its status
                         for (tag in tagList) {
                             if (tagId == tag[TAG_EPC]) {
-                                tag["status"] =  status?.ifEmpty { "UNKNOWN" }
+                                tag["status"] =  status?.ifEmpty { "UNKNOWN" }?:"UNKNOWN"
                                 found = true
                                 break
                             }
@@ -186,7 +186,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         if (!found) {
                             val newTag = HashMap<String, String?>()
                             newTag[TAG_EPC] = tagId
-                            newTag["status"] = status?.ifEmpty { "UNKNOWN" }
+                            newTag["status"] = status?.ifEmpty { "UNKNOWN" }?:"UNKNOWN"
                             tagList.add(newTag)
                             updateValidation()
                         }
