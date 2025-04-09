@@ -807,7 +807,6 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
             Log.e("TAG243", "isCheckedStatus: $isCheckedStatus")
             val status =
                 if (tagList[i]["status"] == null && tagList.any { it["status"] != null }) "UNKNOWN" else tagList[i]["status"]?.ifBlank { "UNKNOWN" }
-                    ?: "UNKNOWN"
             status.getStatusColor().let { viewHolder.txtUnknown?.setTextColor(it) }
             viewHolder.txtUnknown?.text = status
             viewHolder.llList?.setOnClickListener {
