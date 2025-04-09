@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -794,6 +795,9 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                 "Read Count: " + tagList[i][TAG_COUNT]
             viewHolder.tvTagRssi?.text =
                 "RSSI: " + tagList[i][TAG_RSSI_NUMBER]
+            tagList[i]["status"]?.getStatusColor()?.let {
+                viewHolder.txtUnknown?.setTextColor(it)
+            }
             viewHolder.txtUnknown?.text = tagList[i]["status"]
             viewHolder.llList?.setOnClickListener {
                 val stringStringHashMap =
@@ -862,6 +866,22 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                 notifyDataSetChanged()
             }
             return view2
+        }
+
+        private fun String?.getStatusColor(): Int {
+            val shouldBeGreen = if (isInbound) {
+                this.equals("ASSIGNED", ignoreCase = true) || this.equals(
+                    "PROCESSING",
+                    ignoreCase = true
+                )
+            } else {
+                this.equals("CLEANED", ignoreCase = true)
+            }
+            return if (shouldBeGreen) {
+                ContextCompat.getColor(requireActivity(), R.color.rs_green)  // Your green color
+            } else {
+                ContextCompat.getColor(requireActivity(), R.color.red)    // Your red color
+            }
         }
     }
 
