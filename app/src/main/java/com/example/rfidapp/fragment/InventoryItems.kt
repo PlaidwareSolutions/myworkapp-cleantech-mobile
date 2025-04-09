@@ -796,10 +796,9 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
             viewHolder.tvTagRssi?.text =
                 "RSSI: " + tagList[i][TAG_RSSI_NUMBER]
 
-            tagList[i]["status"]?.ifBlank { "UNKNOWN" }?.getStatusColor()?.let {
-                viewHolder.txtUnknown?.setTextColor(it)
-            }
-            viewHolder.txtUnknown?.text = if (tagList[i]["status"] == null) "UNKNOWN" else tagList[i]["status"]?.ifBlank { "UNKNOWN" }
+            val status = if (tagList[i]["status"] == null && isCheckedStatus) "UNKNOWN" else  tagList[i]["status"]?.ifBlank { "UNKNOWN" }
+            status.getStatusColor().let { viewHolder.txtUnknown?.setTextColor(it) }
+            viewHolder.txtUnknown?.text = status
             viewHolder.llList?.setOnClickListener {
                 val stringStringHashMap =
                     tagList[i]
