@@ -929,7 +929,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
             val epcList = tagList.mapNotNull { it[TAG_EPC] }
 
             val result = invItemsDao.delData(epcList) > 0
-
+            invItemsDao.deleteAllData()
             withContext(Dispatchers.Main) {
                 binding.progressBar.visibility = View.GONE
 

@@ -22,6 +22,9 @@ public interface InvItemsDao {
     @Query("DELETE FROM InventoryItems WHERE epc IN (:epcList)")
     int delData(List<String> epcList);
 
+    @Query("DELETE FROM InventoryItems")
+    void deleteAllData();
+
     @Query("SELECT * FROM InventoryItems")
     List<InventoryItemsEntity> getData();
 
