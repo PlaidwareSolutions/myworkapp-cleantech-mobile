@@ -241,7 +241,7 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                             binding.txtError.visibility = View.GONE
                         } else {
                             binding.txtError.visibility = View.VISIBLE
-                            if (isInboundShipment()) {
+                            if (isInboundShipment() || shipment != null) {
                                 binding.errorText.text =
                                     "Non-Receivable BIN. Place for inspection before proceeding"
                             } else {

@@ -36,7 +36,7 @@ interface OrderApi {
         @Query("referenceId") referenceId: String? = null,
         @Query("customer") customerId: String? = null,
         @Query("status") status: String? = "APPROVED,SHIPPED-PARTIAL",
-        @Query("orderType") orderType: String? = "OUTBOUND"
+        @Query("type") orderType: String? = "OUTBOUND"
     ): ApiResponse<ArrayList<Order>>
 
     @GET("v1/order/{orderId}")
