@@ -218,8 +218,10 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                     tagList = ArrayList(
                         tagList.sortedWith(
                             compareBy { tag ->
-                                if (isInbound) {
+                                if (shipment != null) {
                                     if (tag["status"].equals("ASSIGNED", ignoreCase = true) || tag["status"].equals("PROCESSING", ignoreCase = true)) 1 else 0
+                                } else if(orderDetail !=null) {
+                                    if (tag["status"].equals("CLEANED", ignoreCase = true)) 1 else 0
                                 } else {
                                     if (tag["status"].equals("CLEANED", ignoreCase = true)) 1 else 0
                                 }
