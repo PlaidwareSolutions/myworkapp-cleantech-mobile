@@ -342,6 +342,11 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
             }.create()
 
         dialog.show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            ?.setTextColor(ContextCompat.getColor(this, R.color.app_color_red))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            ?.setTextColor(ContextCompat.getColor(this, R.color.rs_green))
     }
 
 
