@@ -296,13 +296,11 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
     private fun showDataDialog() {
         val input = EditText(this).apply {
             hint = "Enter Driver Name"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER
             text = binding.driverName.text
         }
 
         val input1 = EditText(this).apply {
             hint = "Enter Trailer ID"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER
             text = binding.trailerID.text
         }
 
