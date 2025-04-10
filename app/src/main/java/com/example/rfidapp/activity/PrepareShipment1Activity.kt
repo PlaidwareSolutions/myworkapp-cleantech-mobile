@@ -336,7 +336,6 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                 createShipmentRequest?.driver?.dl = input1.text.toString()
                 binding.driverName.text = input.text
                 binding.trailerID.text = input1.text
-                confirmationDialog()
                 dialog.dismiss()
             }.setNeutralButton("Skip & Continue") { dialog, _ ->
                 confirmationDialog()
