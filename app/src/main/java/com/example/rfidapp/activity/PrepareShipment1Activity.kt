@@ -3,6 +3,8 @@ package com.example.rfidapp.activity
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -172,7 +174,11 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
             filledButton.setOnClickListener {
                 if (!isFinishing && !isDestroyed) {
-                    confirmationDialog()
+                    if (driverName.text.isNullOrEmpty() || trailerID.text.isNullOrEmpty()) {
+                        showDataDialog()
+                    } else {
+                        confirmationDialog()
+                    }
                 }
             }
 
@@ -282,5 +288,59 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
             ?.setTextColor(ContextCompat.getColor(this, R.color.rs_green))
     }
+
+    private fun showDataDialog() {
+        val input = EditText(this).apply {
+            hint = "Enter Driver Name"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            text = binding.driverName.text
+        }
+
+        val input1 = EditText(this).apply {
+            hint = "Enter Trailer ID"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            text = binding.trailerID.text
+        }
+
+        val container = FrameLayout(this).apply {
+            if(binding.driverName.text.isNullOrEmpty()){
+                addView(input, FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    marginStart = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+                    marginEnd = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+                })
+            }
+
+            if (binding.trailerID.text.isNullOrEmpty()) {
+                addView(input1, FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    marginStart = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+                    marginEnd = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+                })
+            }
+        }
+
+        // Build the AlertDialog
+        val dialog = android.app.AlertDialog.Builder(this)
+            .setTitle("Missing Information")
+            .setMessage("Are you sure you want to continue without entering these details?")
+            .setView(container)
+            .setPositiveButton("Skip & Continue") { dialog, _ ->
+                createShipmentRequest?.driver?.name = input.text.toString()
+                createShipmentRequest?.driver?.dl = input1.text.toString()
+                confirmationDialog()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }.create()
+
+        dialog.show()
+    }
+
 
 }

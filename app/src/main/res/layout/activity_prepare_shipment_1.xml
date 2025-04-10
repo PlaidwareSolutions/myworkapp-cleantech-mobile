@@ -168,7 +168,6 @@
                             android:text="Driver Name:"
                             android:textColor="@color/secondary_text_color" />
 
-
                         <EditText
                             android:background="@null"
                             android:id="@+id/driverName"
@@ -177,6 +176,39 @@
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/inter_regular"
                             tools:text="Anthony Blinken"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:textAppearance="@style/inter_400_10_10"
+                            android:textColor="@color/secondary_dark_text_color" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:textSize="@dimen/_11ssp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="end"
+                            android:text="Trailer ID:"
+                            android:textColor="@color/secondary_text_color" />
+
+                        <EditText
+                            android:background="@null"
+                            android:id="@+id/trailerID"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:fontFamily="@font/inter_regular"
+                            tools:text="#123"
+                            android:singleLine="true"
+                            android:ellipsize="end"
                             android:textAppearance="@style/inter_400_10_10"
                             android:textColor="@color/secondary_dark_text_color" />
 

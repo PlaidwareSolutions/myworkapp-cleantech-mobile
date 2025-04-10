@@ -26,10 +26,13 @@ class ShipmentAdapter(
             binding.apply {
                 with(orderList[pos]) {
                     shippedBy.text = referenceId
+                    orderID.text = ""
+                    orderStatus.text = orderType
+                    customerName.text = ""
+                    txtTrlNumber.text = driver?.dl ?: ""
                     carrierName.text = carrier?.name ?: ""
                     driverName.text = driver?.name ?: ""
                     shippedDate.text = shipmentDate?.toFormattedDate()
-                    txtDlNumber.text = driver?.dl ?: ""
                     this@apply.createdBy.text = createdBy?.name ?: ""
                     this@apply.txtRequiredQuantity.text =
                         (bols?.firstOrNull()?.items?.firstOrNull()?.quantity
