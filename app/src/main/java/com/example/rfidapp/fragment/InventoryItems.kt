@@ -203,20 +203,22 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
 //                                isCheckedStatus = false
 //                            }
 //                        }
-                        if ("UNKNOWN".equals(status, ignoreCase = true)) {
+                        if (tagList.size> response.size) {
                             isCheckedStatus = false
-                        }
-                        if (isInbound) {
-                            if (!"ASSIGNED".equals(status, ignoreCase = true)
-                                && !"PROCESSING".equals(status, ignoreCase = true)
-                            ) {
-                                isCheckedStatus = false
+                        }else{
+                            if (isInbound) {
+                                if (!"ASSIGNED".equals(status, ignoreCase = true)
+                                    && !"PROCESSING".equals(status, ignoreCase = true)
+                                ) {
+                                    isCheckedStatus = false
+                                }
+                            } else {
+                                if (!"CLEANED".equals(status, ignoreCase = true)) {
+                                    isCheckedStatus = false
+                                }
                             }
-                        } else {
-                            if (!"CLEANED".equals(status, ignoreCase = true)) {
-                                isCheckedStatus = false
-                            }
                         }
+
                     }
                     tagList = ArrayList(
                         tagList.sortedWith(
