@@ -26,7 +26,7 @@ class ShipmentAdapter(
             binding.apply {
                 with(orderList[pos]) {
                     shippedBy.text = referenceId
-                    orderID.text = ""
+                    orderID.text = bols?.firstOrNull()?.order?.referenceId
                     orderStatus.text = orderType
                     customerName.text = receiverAddress?.name?:""
                     txtTrlNumber.text = driver?.dl ?: ""

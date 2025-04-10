@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rfidapp.R
 import com.example.rfidapp.adapter.ShipmentOrderAdapter
@@ -330,6 +331,9 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
             .setMessage("Are you sure you want to continue without entering these details?")
             .setView(container)
             .setPositiveButton("Save") { dialog, _ ->
+                if(input.text.toString().isEmpty() || input1.text.toString().isEmpty()){
+                    return@setPositiveButton
+                }
                 createShipmentRequest?.driver?.name = input.text.toString()
                 createShipmentRequest?.driver?.dl = input1.text.toString()
                 binding.driverName.text = input.text
@@ -347,9 +351,33 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
         dialog.show()
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            ?.setTextColor(ContextCompat.getColor(this, R.color.app_color_red))
+            ?.setTextColor(ContextCompat.getColor(this, R.color.gray))
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            ?.setTextColor(ContextCompat.getColor(this, R.color.rs_green))
+            ?.setTextColor(ContextCompat.getColor(this, R.color.black))
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+            ?.setTextColor(ContextCompat.getColor(this, R.color.app_color_red))
+
+        input.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty().not() && input1.text.isNullOrEmpty().not()) {
+                dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
+                    ?.setTextColor(ContextCompat.getColor(this, R.color.rs_green))
+            } else {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    ?.setTextColor(ContextCompat.getColor(this, R.color.gray))
+            }
+        }
+
+        input1.doOnTextChanged { text, _, _, _ ->
+            if (input.text.isNullOrEmpty().not() && text.isNullOrEmpty().not()) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    ?.setTextColor(ContextCompat.getColor(this, R.color.rs_green))
+            } else {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    ?.setTextColor(ContextCompat.getColor(this, R.color.gray))
+            }
+
+        }
+
     }
 
 
