@@ -178,6 +178,8 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
                     if (driverName.text.isNullOrEmpty() || trailerID.text.isNullOrEmpty()) {
                         showDataDialog()
                     } else {
+                        createShipmentRequest?.driver?.name = driverName.text.toString()
+                        createShipmentRequest?.driver?.dl = trailerID.text.toString()
                         confirmationDialog()
                     }
                 }
