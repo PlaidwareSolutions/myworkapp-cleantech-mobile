@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MWorkApp</string>
+    <string name="app_name">MyWorkApp</string>
 
 
     <string name="get_location_permission">Get location permission</string>
