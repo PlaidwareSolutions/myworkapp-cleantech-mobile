@@ -45,7 +45,7 @@ class ShipmentViewModel @Inject constructor(
                 try {
                     val response = shipmentRepository.getShipments(token)
                     if (response.isSuccess()) {
-                        _shipmentList.value = ScreenState.Success(response.data ?: emptyList())
+                        _shipmentList.value = ScreenState.Success(response.data?.filter { it.orderType == "INBOUND" } ?: emptyList())
                     } else {
                         _shipmentList.value =
                             ScreenState.Error(message = response.message ?: "Unknown error")
