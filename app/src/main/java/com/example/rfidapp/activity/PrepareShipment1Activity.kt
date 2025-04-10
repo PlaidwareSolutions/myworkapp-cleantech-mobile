@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -302,7 +303,8 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
             text = binding.trailerID.text
         }
 
-        val container = FrameLayout(this).apply {
+        val container = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
             if(binding.driverName.text.isNullOrEmpty()){
                 addView(input, FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
