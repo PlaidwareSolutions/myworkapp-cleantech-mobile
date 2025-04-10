@@ -307,25 +307,21 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
 
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            if(binding.driverName.text.isNullOrEmpty()){
-                addView(input, FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    marginStart = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
-                    marginEnd = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
-                })
-            }
 
-            if (binding.trailerID.text.isNullOrEmpty()) {
-                addView(input1, FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    marginStart = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
-                    marginEnd = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
-                })
-            }
+            addView(input, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                marginStart = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+                marginEnd = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+            })
+
+            addView(input1, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                marginStart = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+                marginEnd = resources.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
+            })
         }
 
         // Build the AlertDialog
@@ -333,9 +329,14 @@ class PrepareShipment1Activity : ActBase<ActivityPrepareShipment1Binding>() {
             .setTitle("Missing Information")
             .setMessage("Are you sure you want to continue without entering these details?")
             .setView(container)
-            .setPositiveButton("Skip & Continue") { dialog, _ ->
+            .setPositiveButton("Save") { dialog, _ ->
                 createShipmentRequest?.driver?.name = input.text.toString()
                 createShipmentRequest?.driver?.dl = input1.text.toString()
+                binding.driverName.text = input.text
+                binding.trailerID.text = input1.text
+                confirmationDialog()
+                dialog.dismiss()
+            }.setNeutralButton("Skip & Continue") { dialog, _ ->
                 confirmationDialog()
                 dialog.dismiss()
             }

@@ -19,6 +19,7 @@ data class Shipment(
     @SerializedName("orderType") var orderType: String = "",
     @SerializedName("shipmentStatus") var shipmentStatus: String = "",
     @SerializedName("unassignedArrivalsCount") var unassignedArrivalsCount: Int? = null,
+    @SerializedName("receiverAddress") var receiverAddress: ReceiverAddress? = null,
     @SerializedName("__v") var v: Int? = 0
 ){
     fun isInbound(): Boolean = orderType == "INBOUND"
