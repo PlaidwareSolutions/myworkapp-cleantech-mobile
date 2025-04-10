@@ -203,6 +203,9 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
 //                                isCheckedStatus = false
 //                            }
 //                        }
+                        if ("UNKNOWN".equals(status, ignoreCase = true)) {
+                            isCheckedStatus = false
+                        }
                         if (isInbound) {
                             if (!"ASSIGNED".equals(status, ignoreCase = true)
                                 && !"PROCESSING".equals(status, ignoreCase = true)
@@ -350,7 +353,8 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
                         startActivity(intent)
                         requireActivity().finish()
                     }
-                } else if (shipment != null) {
+                }
+                else if (shipment != null) {
                     if (binding.tvCount.text.toString() == "0") {
                         requireActivity().runOnUiThread {
                             Toast.makeText(
