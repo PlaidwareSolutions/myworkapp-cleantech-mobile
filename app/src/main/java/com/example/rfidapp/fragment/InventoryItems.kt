@@ -879,18 +879,28 @@ class InventoryItems : KeyDownFragment(), View.OnClickListener {
         }
 
         private fun String?.getStatusColor(): Int {
-            val shouldBeGreen = if (isInbound) {
+            val isColored: Boolean
+            val shouldBeGreen = if (shipment != null) {
+                isColored = true
                 this.equals("ASSIGNED", ignoreCase = true) || this.equals(
                     "PROCESSING",
                     ignoreCase = true
                 )
-            } else {
+            } else if (orderDetail != null) {
+                isColored = true
                 this.equals("CLEANED", ignoreCase = true)
+            } else {
+                isColored = false
+                false
             }
             return if (shouldBeGreen) {
                 ContextCompat.getColor(requireActivity(), R.color.rs_green)  // Your green color
             } else {
-                ContextCompat.getColor(requireActivity(), R.color.red)    // Your red color
+                if (isColored) {
+                    ContextCompat.getColor(requireActivity(), R.color.red)    // Your red color
+                } else {
+                    ContextCompat.getColor(requireActivity(), R.color.color_0F0F0F)
+                }
             }
         }
     }
