@@ -73,7 +73,9 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
 
         binding.receiveShipmentButton.setOnClickListener {
             viewModel.selectedShipment.value?.let {
-                mReader.setPower(6)
+                if(mReader != null){
+                    mReader.setPower(6)
+                }
                 val intent = Intent(this, InventoryItemsActivity::class.java)
                 intent.putExtra("SHIPMENT", Gson().toJson(it))
                 intent.putExtra(

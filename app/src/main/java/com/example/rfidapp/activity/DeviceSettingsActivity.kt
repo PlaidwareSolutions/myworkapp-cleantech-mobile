@@ -79,8 +79,7 @@ class DeviceSettingsActivity : ActBase<ActivityDeviceSettingsBinding>() {
         }
 
         binding.btSetPwr.setOnClickListener {
-//            if (isC5Device) {
-            if (true) {
+            if (isC5Device) {
                 if (mReader.setPower(power)) {
                     highlightToast("Power Set Successfully", 1)
                 } else {

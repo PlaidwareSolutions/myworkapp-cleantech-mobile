@@ -28,7 +28,7 @@ class ShipmentAdapter(
                     shippedBy.text = referenceId
                     orderID.text = bols?.firstOrNull()?.order?.referenceId
                     orderStatus.text = orderType
-                    customerName.text = receiverAddress?.name?:""
+                    customerName.text = bols?.firstOrNull()?.order?.receiverAddress?.name?:""
                     txtTrlNumber.text = driver?.dl ?: ""
                     carrierName.text = carrier?.name ?: ""
                     driverName.text = driver?.name ?: ""
