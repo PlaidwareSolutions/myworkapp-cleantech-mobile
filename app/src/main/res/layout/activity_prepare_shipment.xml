@@ -28,150 +28,159 @@
         app:tabTextColor="@color/tab_unselected_text_color"
         app:textAllCaps="false" />
 
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/search"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_16sdp"
-                android:background="@drawable/bg_edit_text"
-                android:drawableStart="@drawable/ic_search"
-                android:drawablePadding="12dp"
-                android:hint="@string/search_ellipse"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="14dp"
-                android:singleLine="true"
-                android:imeOptions="actionSearch"
-                android:textAppearance="@style/inter_400_12_16"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/searchAutoComplete"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_16sdp"
-                            android:background="@drawable/bg_edit_text"
-                            android:drawableStart="@drawable/ic_search"
-                            android:drawablePadding="12dp"
-                            android:hint="@string/search_ellipse"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="14dp"
-                            android:singleLine="true"
-                            android:textAppearance="@style/inter_400_12_16"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                <EditText
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="12dp"
+                    android:hint="@string/search_ellipse"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:singleLine="true"
+                    android:imeOptions="actionSearch"
+                    android:textAppearance="@style/inter_400_12_16"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <!--            <Spinner-->
-            <!--                android:id="@+id/searchAutoComplete"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginHorizontal="@dimen/_16sdp"-->
-            <!--                android:background="@drawable/bg_edit_text"-->
-            <!--                android:hint="@string/search_ellipse"-->
-            <!--                android:textAppearance="@style/inter_400_12_16"-->
-            <!--                android:textColor="@color/black"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent" />-->
+                <AutoCompleteTextView
+                    android:id="@+id/searchAutoComplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="12dp"
+                    android:hint="@string/search_ellipse"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:singleLine="true"
+                    android:textAppearance="@style/inter_400_12_16"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <!--<androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/searchAutoComplete"
-                style="@style/spinner_style"
-                android:layout_width="match_parent"
-                android:layout_marginHorizontal="@dimen/_16sdp"
-                android:background="@drawable/bg_spinner_white" />-->
+                <!--            <Spinner-->
+                <!--                android:id="@+id/searchAutoComplete"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_marginHorizontal="@dimen/_16sdp"-->
+                <!--                android:background="@drawable/bg_edit_text"-->
+                <!--                android:hint="@string/search_ellipse"-->
+                <!--                android:textAppearance="@style/inter_400_12_16"-->
+                <!--                android:textColor="@color/black"-->
+                <!--                app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                app:layout_constraintStart_toStartOf="parent"-->
+                <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <TextView
-                android:id="@+id/txtSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_16sdp"
-                android:layout_marginVertical="@dimen/_12sdp"
-                android:text="Order Search"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
+                <!--<androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/searchAutoComplete"
+                    style="@style/spinner_style"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:background="@drawable/bg_spinner_white" />-->
 
-            <FrameLayout
-                android:id="@+id/dataLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txtSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginVertical="@dimen/_12sdp"
+                    android:text="Order Search"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp" />
 
-                <RelativeLayout
+                <FrameLayout
+                    android:id="@+id/dataLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rcvOrders"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:itemCount="4"
-                        tools:listitem="@layout/item_search"
-                        tools:visibility="visible" />
+                        android:layout_height="match_parent">
 
-                    <include
-                        android:id="@+id/no_item"
-                        layout="@layout/layout_no_item"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_16sdp"
-                        android:visibility="gone" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/orderDetailsButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_35sdp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_gravity="bottom"
-                        android:layout_marginHorizontal="@dimen/_16sdp"
-                        android:layout_marginVertical="@dimen/_12sdp"
-                        android:background="@drawable/button_background"
-                        android:enabled="false"
-                        android:padding="@dimen/_8sdp"
-                        android:text="@string/view_order_details"
-                        android:textAllCaps="false"
-                        android:textColor="@drawable/button_text_color" />
-
-                    <FrameLayout
-                        android:id="@+id/noDataLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:paddingHorizontal="@dimen/_16sdp"
-                        android:visibility="gone">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcvOrders"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:itemCount="4"
+                            tools:listitem="@layout/item_search"
+                            tools:visibility="visible" />
 
                         <include
-                            android:id="@+id/noData"
-                            layout="@layout/layout_no_item" />
-                    </FrameLayout>
+                            android:id="@+id/no_item"
+                            layout="@layout/layout_no_item"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_16sdp"
+                            android:visibility="gone" />
 
-                </RelativeLayout>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/orderDetailsButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_gravity="bottom"
+                            android:layout_marginHorizontal="@dimen/_16sdp"
+                            android:layout_marginVertical="@dimen/_12sdp"
+                            android:background="@drawable/button_background"
+                            android:enabled="false"
+                            android:padding="@dimen/_8sdp"
+                            android:text="@string/view_order_details"
+                            android:textAllCaps="false"
+                            android:textColor="@drawable/button_text_color" />
 
-            </FrameLayout>
+                        <FrameLayout
+                            android:id="@+id/noDataLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:paddingHorizontal="@dimen/_16sdp"
+                            android:visibility="gone">
 
-        </LinearLayout>
+                            <include
+                                android:id="@+id/noData"
+                                layout="@layout/layout_no_item" />
+                        </FrameLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_centerInParent="true"
-            android:indeterminateTint="@color/app_color"
-            android:visibility="gone"
-            tools:visibility="visible" />
+                    </RelativeLayout>
 
-    </RelativeLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_centerInParent="true"
+                android:indeterminateTint="@color/app_color"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

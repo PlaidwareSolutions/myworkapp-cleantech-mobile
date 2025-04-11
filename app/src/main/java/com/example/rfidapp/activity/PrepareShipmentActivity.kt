@@ -134,6 +134,13 @@ class PrepareShipmentActivity : ActBase<ActivityPrepareShipmentBinding>() {
 
             }
         })
+
+        binding.swipeRefresh.setOnRefreshListener {
+            resetValues()
+            orderViewModel.fetchOrders()
+            orderViewModel.fetchContacts()
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     override fun bindMethods() {

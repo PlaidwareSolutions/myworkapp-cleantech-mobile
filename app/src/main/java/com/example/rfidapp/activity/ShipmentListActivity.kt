@@ -153,6 +153,13 @@ class ShipmentListActivity : ActBase<ActivityShipmentListBinding>() {
 //            binding.searchAutoComplete.clearFocus()
 //            orderViewModel.performSearchByCustomer(selectedContact.id)
 //        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            resetValues()
+            viewModel.getShipments()
+            orderViewModel.fetchContacts()
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     override fun bindMethods() {
