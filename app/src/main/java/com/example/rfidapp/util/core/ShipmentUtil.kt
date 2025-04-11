@@ -25,7 +25,9 @@ object ShipmentUtil {
     fun addOrUpdateOrderToShipment(orderShipmentData: OrderShipmentData) {
         _orderShipments.value.firstOrNull { it.orderRefId == orderShipmentData.orderRefId }?.let {
             _orderShipments.value.indexOf(it).let { index ->
-                _orderShipments.value[index] = orderShipmentData
+                if (index < _orderShipments.value.size) {
+                    _orderShipments.value[index] = orderShipmentData
+                }
             }
         }?:run {
             _orderShipments.value.add(orderShipmentData)
