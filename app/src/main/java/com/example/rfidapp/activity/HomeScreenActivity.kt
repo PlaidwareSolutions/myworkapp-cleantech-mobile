@@ -3,18 +3,24 @@ package com.example.rfidapp.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.rfidapp.databinding.ActivityHomeScreenBinding
+import com.example.rfidapp.databinding.ActivityInspectionProcessBinding
+import com.example.rfidapp.util.ActBase
+import dagger.hilt.android.AndroidEntryPoint
 
-class HomeScreenActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class HomeScreenActivity :  ActBase<ActivityHomeScreenBinding>() {
 
-    lateinit var binding: ActivityHomeScreenBinding
+    override fun setViewBinding() = ActivityHomeScreenBinding.inflate(layoutInflater)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityHomeScreenBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun bindObjects() {}
+
+    override fun bindListeners() {}
+
+    override fun bindMethods() {
         setupUI()
     }
 
@@ -22,13 +28,17 @@ class HomeScreenActivity : AppCompatActivity() {
     private fun setupUI() {
         binding.apply {
             toolbar.apply {
-                imageButtonBack.isVisible = false
-                textViewTitle.text = "MY Work App"
+                btnBack.isVisible = false
+                toolbarTitle.text = "MyWorkApp"
             }
 
-            orders.setOnClickListener {}
-            billOfLading.setOnClickListener {}
-            iconImage.setOnClickListener {}
+            orders.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java).putExtra("shipmentType", "orders"))
+            }
+
+            billOfLading.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, CreateBoLActivity::class.java))
+            }
             iconImage.setOnClickListener {
                 scanningToggleVisibility()
             }
@@ -38,11 +48,24 @@ class HomeScreenActivity : AppCompatActivity() {
             }
 
             shipping.setOnClickListener {
-                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java))
+                startActivity(Intent(this@HomeScreenActivity, PrepareShipmentActivity::class.java).putExtra("shipmentType", "shipping"))
             }
-            receiving.setOnClickListener {}
-            inventory.setOnClickListener {}
-            settings.setOnClickListener {}
+
+            receiving.setOnClickListener {
+                startActivity(
+                    Intent(
+                        this@HomeScreenActivity,
+                        ShipmentListActivity::class.java
+                    )
+                )
+            }
+
+            inventory.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, InventoryItemsActivity::class.java).putExtra("isInspection",true))
+            }
+            settings.setOnClickListener {
+                startActivity(Intent(this@HomeScreenActivity, SettingsActivity::class.java))
+            }
         }
     }
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_filled_outlined"
+    android:backgroundTint="@color/color_D32F2F"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/noDataText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/inter_semi_bold"
+        android:letterSpacing="-0.01"
+        android:paddingVertical="@dimen/_6sdp"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:text="Oops! Carrier not found"
+        android:textAppearance="@style/inter_400_14_16"
+        android:textColor="@color/color_D32F2F" />
+</LinearLayout>
+

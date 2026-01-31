@@ -10,9 +10,17 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+
+
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -20,7 +28,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -31,9 +38,8 @@
     <uses-permission android:name="android.permission.WRITE_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
-    <uses-permission android:name="com.ruddersoft.rfidscanner.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.example.rfidapp.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".App"
@@ -49,28 +55,75 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.PrepareShipment1Activity"
+            android:exported="true">
+          <!--  <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activity.InventoryItemsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.OrderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ShipmentListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ShipmentDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.PrepareShipmentActivity"
             android:exported="false" />
         <activity
             android:name=".activity.DeviceListActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.HomeScreenActivity"
+            android:name=".activity.SettingsActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.TagFinderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.InventoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.BoLActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.CreateBoLActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activity.InspectionProcessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.HomeScreenActivity"
+            android:exported="true">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
         <activity
             android:name=".ReaderClass"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
             android:screenOrientation="fullSensor">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
 
         <meta-data
@@ -85,6 +138,49 @@
         <meta-data
             android:name="com.android.vending.derived.apk.id"
             android:value="2" />
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
+        <activity
+            android:name=".activity.AboutActivity"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
+        <activity
+            android:name=".activity.AccountSettingsActivity"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
+        <activity
+            android:name=".activity.DeviceSettingsActivity"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
+        <activity
+            android:name=".activity.SplashActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
     </application>
 
 </manifest>

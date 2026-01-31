@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import kotlin.jvm.JvmStatic;
 public class ReaderClass extends AppCompatActivity {
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 100;
     private static final int BLUETOOTH_PERMISSION_REQUEST = 103;
@@ -166,10 +167,10 @@ public class ReaderClass extends AppCompatActivity {
         if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")) {
             this.isBTDevice = true;
             if (!this.isBtConnect) {
-                this.dialog = new AlertDialog.Builder(this).setTitle((CharSequence) "Alert").setMessage((CharSequence) "It is not a UHF enabled device. Please connect UHF device via bluetooth to use UHF functionality").setCancelable(false).setPositiveButton((CharSequence) "Ok", (DialogInterface.OnClickListener) new DialogInterface.OnClickListener() {
+                /*this.dialog = new AlertDialog.Builder(this).setTitle((CharSequence) "Alert").setMessage((CharSequence) "It is not a UHF enabled device. Please connect UHF device via bluetooth to use UHF functionality").setCancelable(false).setPositiveButton((CharSequence) "Ok", (DialogInterface.OnClickListener) new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
-                }).show();
+                }).show();*/
             }
             initBtUHF();
         } else if (PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase(ExifInterface.GPS_MEASUREMENT_2D)) {
@@ -367,7 +368,7 @@ public class ReaderClass extends AppCompatActivity {
             mBtReader.disconnect();
         } catch (Exception unused) {
         }
-        this.btItem.setIcon(R.drawable.bt_d);
+        this.btItem.setIcon(R.drawable.ic_signal_wifi_0_bar);
     }
 
     public void reConnect(String str) {
@@ -409,7 +410,7 @@ public class ReaderClass extends AppCompatActivity {
     public void initUI() {
         this.mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         this.fm = getSupportFragmentManager();
-//        this.mTabHost = (FragmentTabHost) findViewById(16908306);
+        /*this.mTabHost = (FragmentTabHost) findViewById(16908306);*/
     }
 
     public boolean checkLocationEnable() {
@@ -463,6 +464,7 @@ public class ReaderClass extends AppCompatActivity {
         }
     }
 
+    @JvmStatic
     public void showToast(String str) {
         Toast toast2 = this.toast;
         if (toast2 != null) {

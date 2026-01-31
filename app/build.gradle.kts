@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.firebase.crashlytics")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -15,13 +16,20 @@ android {
         minSdk = 24
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", getValue("prodBaseUrl", ""))
+            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
+        }
         release {
+            buildConfigField("String", "BASE_URL", getValue("prodBaseUrl", ""))
+            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -39,6 +47,9 @@ android {
 
     viewBinding {
         enable = true
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
@@ -98,4 +109,33 @@ dependencies {
 
     //GIF Drawable
     implementation(libs.android.gif.drawable)
+
+    //==================== Networking ====================
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+    //==================== HTTP inspector ====================
+    debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+
+    implementation(libs.kotlinx.serialization.json.jvm)
+
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    implementation("com.squareup.moshi:moshi:1.15.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
+
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
+}
+
+fun getValue(key: String, defaultValue: String): String {
+    val value = project.findProperty(key) as String?
+    return if (value != null) "\"$value\"" else "\"$defaultValue\""
 }

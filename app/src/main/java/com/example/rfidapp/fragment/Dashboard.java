@@ -112,7 +112,7 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
         this.binding.detectedDevice.setText("Detected Device: " + Build.MODEL + " (" + Build.MANUFACTURER + ")");
         this.binding.cardRfid.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                /*if (!PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")) {
+                if (!PreferenceManager.getStringValue(Constants.GET_DEVICE).equalsIgnoreCase("1")) {
                     PreferenceManager.setStringValue(Constants.TYPE, "rfid");
                     Dashboard.this.mContext.frm = 2;
                     Dashboard.this.mContext.setTitle("UHF RFID");
@@ -133,15 +133,7 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
                         public void onClick(DialogInterface dialogInterface, int i) {
                         }
                     }).show();
-                }*/
-
-                PreferenceManager.setStringValue(Constants.TYPE, "rfid");
-                Dashboard.this.mContext.frm = 2;
-                Dashboard.this.mContext.setTitle("UHF RFID");
-                ((ActionBar) Objects.requireNonNull(((AppCompatActivity) Dashboard.this.requireActivity()).getSupportActionBar())).setDisplayHomeAsUpEnabled(true);
-                Dashboard.this.binding.llOptions.setVisibility(android.view.View.GONE);
-                Dashboard.this.binding.llQrcode.setVisibility(android.view.View.GONE);
-                Dashboard.this.binding.llRfid.setVisibility(android.view.View.VISIBLE);
+                }
             }
         });
         this.binding.cardNfc.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +211,7 @@ public class Dashboard extends KeyDownFragment implements SliderAdapter.OnItemCl
         });
         this.binding.llSingleSearch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Dashboard.this.mContext.setFragment(new SingleSearch(), "Single Search");
+                    Dashboard.this.mContext.setFragment(new SingleSearch(), "Single Search");
                 Dashboard.this.mContext.frm = 3;
             }
         });
