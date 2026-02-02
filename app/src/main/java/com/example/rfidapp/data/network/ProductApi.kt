@@ -14,7 +14,7 @@ import retrofit2.http.Path
 
 interface ProductApi {
 
-    @POST("v1/pr oduct/create")
+    @POST("v1/product/create")
     suspend fun createProduct(
         @Header("authorization") token: String,
         @Body request: ProductRequest
