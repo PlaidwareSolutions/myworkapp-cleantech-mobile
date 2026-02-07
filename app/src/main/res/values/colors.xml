@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="divider_color">#8d9193</color>
+    <color name="app_color">#667DBE</color>
+    <color name="colorPrimary">#667DBE</color>
+
+    <!--    primary button colors-->
+    <color name="primary_button_border_color">#667DBE</color>
+    <color name="primary_button_enabled_color">@color/colorPrimary</color>
+    <color name="primary_button_disabled_color">#E8E8EC</color>
+    <color name="primary_button_enabled_text_color">@color/white</color>
+    <color name="primary_button_disabled_text_color">#80181818</color>
+
+    <color name="tab_unselected_text_color">#80FFFFFF</color>
+    <color name="tab_selected_text_color">#FFFFFF</color>
+
+    <color name="app_bg">#ffffff</color>
+    <color name="app_color_red">#ffe0044e</color>
+    <color name="barcode_reticle_stroke">#ffffff</color>
+    <color name="base_color">#ff018787</color>
+    <color name="black">#ff000000</color>
+    <color name="colorLightGray">#f0f0f0</color>
+    <color name="gray">#8d9193</color>
+    <color name="gray2">#808080</color>
+    <color name="lApp_color">#2095ac</color>
+    <color name="lbase_color">#20018787</color>
+    <color name="m_back">#ffd4cfc9</color>
+    <color name="m_blue">#ff4eabde</color>
+    <color name="m_green">#ff308695</color>
+    <color name="m_green_50">#50308695</color>
+    <color name="m_purple">#ff8658a5</color>
+    <color name="m_red">#ffd45769</color>
+    <color name="m_soil">#ff455054</color>
+    <color name="m_yellow">#ffe69d45</color>
+    <color name="m_yellow_50">#50e69d45</color>
+    <color name="m_yellow_80">#80e69d45</color>
+    <color name="red">#ffff0909</color>
+    <color name="red_free">#ffe34c5e</color>
+    <color name="rs_blue">#ff133a65</color>
+    <color name="rs_green">#ff57ba4e</color>
+    <color name="rs_red">#fff15c22</color>
+    <color name="rs_red_50">#50f15c22</color>
+    <color name="teal_200">#ff03dac5</color>
+    <color name="teal_700">#ff018787</color>
+    <color name="white">#ffffffff</color>
+    <color name="wine">#ff8e507f</color>
+    <color name="yellow_color">#f6efb5</color>
+    <color name="transparent">#00000000</color>
+    <color name="secondary_text_color">#6A6F73</color>
+    <color name="secondary_dark_text_color">#33383C</color>
+    <color name="bg_stroke_color">#DDDDDD</color>
+    <color name="color_CFDAE5">#CFDAE5</color>
+    <color name="color_909090">#909090</color>
+    <color name="color_181818">#181818</color>
+    <color name="color_D32F2F">#D32F2F</color>
+    <color name="color_388E3C">#388E3C</color>
+    <color name="color_ff0000">#FF0000</color>
+    <color name="color_EFF0F4">#EFF0F4</color>
+    <color name="color_D9D9D9">#D9D9D9</color>
+    <color name="color_0F0F0F">#0F0F0F</color>
+
+    <color name="background_stroke_color">#EBEBEB</color>
+    <color name="placeholderTextColor">#868686</color>
+    <color name="color_121212">#121212</color>
+    <color name="color_787679">#787679</color>
+    <color name="color_text_status_initiated">#0958d9</color>
+    <color name="color_bg_status_initiated">#e6f4ff</color>
+    <color name="color_text_status_other">#ffffff</color>
+    <color name="color_bg_status_other">#fafafa</color>
+
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:elevation="12dp"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="12dp">
+
+    <TextView
+        android:id="@+id/filledButton"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="24dp"
+        android:layout_toEndOf="@+id/divider1"
+        android:background="@drawable/button_background"
+        android:backgroundTint="@color/colorPrimary"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:gravity="center_vertical|center"
+        tools:text="Filled Button"
+        android:textAppearance="@style/inter_700_12_10"
+        android:textColor="@drawable/button_text_color" />
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/outlinedOutlined"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="12dp"
+        android:layout_toStartOf="@+id/divider1"
+        android:background="@drawable/bg_filled_outlined"
+        android:backgroundTint="@color/colorPrimary"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:gravity="center_vertical|center"
+        android:textAppearance="@style/inter_700_12_10"
+        tools:text="Outlined Button"
+        android:textColor="@color/colorPrimary" />
+</RelativeLayout>
+
+

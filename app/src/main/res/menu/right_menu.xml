@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_bt"
+        android:icon="@drawable/bt_d"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_add"
+        android:icon="@drawable/add_24"
+        android:title="Add"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_volume"
+        android:icon="@drawable/volume_up_24"
+        android:title="Volume"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_power"
+        android:icon="@drawable/flash_on_24"
+        android:title="Power"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_inv"
+        android:icon="@drawable/checklist_24"
+        android:title="Inventory Cycle"
+        android:visible="false" />
+    <item
+        android:id="@+id/menu_csv"
+        android:icon="@drawable/download_24"
+        android:title="Export CSV"
+        android:visible="false" />
+</menu>

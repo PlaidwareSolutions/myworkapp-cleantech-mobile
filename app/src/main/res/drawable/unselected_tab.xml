@@ -1,0 +1,7 @@
+<!-- res/drawable/layered_drawable.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/btn_outlined_primary"
+        android:left="4dp"
+        android:right="4dp" />
+</layer-list>

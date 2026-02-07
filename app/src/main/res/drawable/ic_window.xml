@@ -1,0 +1,84 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="390dp"
+    android:height="844dp"
+    android:viewportWidth="390"
+    android:viewportHeight="844">
+  <path
+      android:pathData="M0,0h390v844h-390z"
+      android:fillColor="#ffffff"/>
+  <path
+      android:pathData="M228.77,453.66H220.68L228.77,462.16V453.66Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#79ACDC"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M155.33,430.18H180.9L161.23,409.46L134.68,381.48L97.21,342H93L130.36,394.85L155.33,430.18Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#77ABDC"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M297,530.51L260.48,477.91C260,479.66 259.51,481.37 259,483.04C258.66,484.16 258.31,485.25 257.95,486.33C257.42,487.95 256.86,489.53 256.3,491.07L295.82,532.57L297,530.51Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#79ACDC"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M170.73,453.66L228.77,536L200.31,453.66H170.73Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#76ACDD"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M228.77,480.86L202.97,453.66H200.31L228.77,536V480.86Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#667DBE"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M162.45,338.63C162.16,337.87 162,337.45 162,337.45L161.23,335V338.63H162.45Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#667DBE"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M162.45,338.63C164.44,343.8 172.52,364.96 177.24,379.39C181.83,393.38 189.63,416.64 191.91,423.45L192.08,423.63L198.31,430.18H227.33L166.08,341.98L161.23,335L162,337.46C162,337.46 162.16,337.87 162.45,338.63Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#79ACDC"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M177.24,379.39C172.52,364.96 164.44,343.8 162.45,338.63H161.23V391.24L191.91,423.45C189.63,416.64 181.83,393.38 177.24,379.39Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#667DBE"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M228.77,429.7L227.81,430.18H228.77V429.7Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#FFE16F"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M125.25,433.34C125.25,502.28 161.23,536 161.23,536V453.66H163.23L127.62,406.94C126.14,415.11 125.25,423.93 125.25,433.34Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#FFF56E"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M227.81,430.18H155.33L130.36,394.85C129.31,398.71 128.39,402.74 127.62,406.94L163.23,453.66H180.2L227.81,430.18Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#FFE16F"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M228.77,453.66V506.79L265.82,444.74C266.05,441.05 266.17,437.25 266.17,433.34C266.17,425.84 265.61,418.73 264.64,412.01L228.77,429.7V430.18H227.81L180.2,453.66H228.77V453.66Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#FFCA67"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M257.95,486.33C258.31,485.25 258.66,484.16 259,483.04C259.51,481.37 260,479.66 260.48,477.91C263.11,468.11 265.06,457.05 265.82,444.74L228.77,506.78V536C228.77,536 245.22,521.16 256.3,491.06C256.86,489.53 257.42,487.95 257.95,486.33Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#FFF56E"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M231.4,338.63H231.35C229.73,336.88 228.77,336.01 228.77,336.01V429.7L264.64,412.01C257.92,365.73 231.4,338.63 231.4,338.63Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#FFE76C"
+      android:fillAlpha="0.15"/>
+  <path
+      android:pathData="M161.23,335C161.23,335 150.35,349.15 142.45,364.28C139.76,369.33 137.09,375.07 134.68,381.48L161.23,409.46V335Z"
+      android:strokeAlpha="0.15"
+      android:fillColor="#FFCA67"
+      android:fillAlpha="0.15"/>
+</vector>

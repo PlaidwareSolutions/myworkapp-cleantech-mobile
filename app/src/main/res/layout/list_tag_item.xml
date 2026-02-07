@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_list"
+    android:padding="@dimen/_8sdp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_filled_outlined"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/TvTagUii"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/inter_regular"
+                    android:letterSpacing="-0.02"
+                    android:text="EPC [Hex]: 125836594763439235433"
+                    android:textAppearance="@style/inter_400_10_10"
+                    android:textColor="@color/color_0F0F0F" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtUnknown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/inter_regular"
+                android:gravity="end"
+                android:letterSpacing="-0.02"
+                android:text="Unknown"
+                android:textAppearance="@style/inter_400_10_10"
+                android:textColor="@color/color_0F0F0F" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtCarrier"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/inter_regular"
+                    android:letterSpacing="-0.02"
+                    android:text="Carrier:"
+                    android:textAppearance="@style/inter_400_10_10"
+                    android:textColor="@color/color_0F0F0F" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/TvTagRssi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/inter_regular"
+                android:gravity="end"
+                android:letterSpacing="-0.02"
+                android:textAppearance="@style/inter_400_10_10"
+                android:textColor="@color/color_0F0F0F"
+                tools:text="RSSI:-42.70" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/requestedBy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/inter_regular"
+                    android:letterSpacing="-0.02"
+                    android:text="Request By:"
+                    android:textAppearance="@style/inter_400_10_10"
+                    android:textColor="@color/color_0F0F0F" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/TvTagCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/inter_regular"
+                android:gravity="end"
+                android:letterSpacing="-0.02"
+                android:textAppearance="@style/inter_400_10_10"
+                android:textColor="@color/color_0F0F0F"
+                tools:text="Read Count: 1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/btnDelete"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_gravity="center_vertical"
+        android:padding="@dimen/_6sdp"
+        android:src="@drawable/delete_20"
+        android:visibility="gone"
+        app:tint="@color/black" />
+
+</LinearLayout>
