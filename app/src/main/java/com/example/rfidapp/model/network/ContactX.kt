@@ -1,0 +1,22 @@
+package com.example.rfidapp.model.network
+
+
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ContactX(
+    @SerializedName("active") var active: Boolean = false,
+    @SerializedName("address") var address: Address? = null,
+    @SerializedName("businessDetails") var businessDetails: String = "",
+    @SerializedName("createdAt") var createdAt: String? = null,
+    @SerializedName("email") var email: List<String> = listOf(),
+    @SerializedName("_id") var id: String = "",
+    @SerializedName("name") var name: String = "",
+    @SerializedName("phone") var phone: List<String> = listOf(),
+    @SerializedName("systemUser") var systemUser: SystemUser = SystemUser(),
+    @SerializedName("type") var type: Type = Type(),
+    @SerializedName("updatedAt") var updatedAt: String = "",
+    @SerializedName("updatedBy") var updatedBy: String = "",
+    @SerializedName("__v") var v: Int = 0
+)

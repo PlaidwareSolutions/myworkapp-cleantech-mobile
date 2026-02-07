@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Column # -->
+        <TextView
+            android:id="@+id/srNo"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_inside_table_field"
+            android:layout_marginVertical="@dimen/padding_inside_table_field"
+            android:letterSpacing="-0.01"
+            tools:text="2"
+            android:maxLines="1"
+            android:textSize="@dimen/_11ssp"
+            android:maxEms="2"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:textAppearance="@style/inter_400_10_16"
+            android:textColor="@color/secondary_dark_text_color"
+            android:fontFamily="@font/inter_regular"/>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="@dimen/table_divider_width"
+            android:layout_height="match_parent"
+            android:background="@color/bg_stroke_color" />
+
+        <!-- Column ITEM NAME - TYPE -->
+        <TextView
+                        android:textSize="@dimen/_11ssp"
+            android:id="@+id/itemName"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/padding_inside_table_field"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:letterSpacing="-0.01"
+            android:singleLine="true"
+            android:ellipsize="end"
+            tools:text="@string/item_name_type"
+            android:textAppearance="@style/inter_400_10_16"
+            android:textColor="@color/secondary_dark_text_color"
+            android:fontFamily="@font/inter_regular"/>
+
+        <View
+            android:visibility="invisible"
+            android:layout_width="@dimen/table_divider_width"
+            android:layout_height="match_parent"
+            android:background="@color/bg_stroke_color" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="horizontal">
+
+            <TextView
+                        android:textSize="@dimen/_11ssp"
+                android:id="@+id/txtQty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/padding_inside_table_field"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:letterSpacing="-0.01"
+                tools:text="5"
+                android:textAllCaps="true"
+                android:textAppearance="@style/inter_400_10_16"
+                android:textColor="@color/secondary_dark_text_color"
+                android:fontFamily="@font/inter_regular" />
+
+            <View
+                android:visibility="invisible"
+                android:layout_width="@dimen/table_divider_width"
+                android:layout_height="match_parent"
+                android:background="@color/bg_stroke_color" />
+
+            <TextView
+                        android:textSize="@dimen/_11ssp"
+                android:id="@+id/txtShipped"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/padding_inside_table_field"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:letterSpacing="-0.01"
+                android:textAllCaps="true"
+                android:textAppearance="@style/inter_400_10_16"
+                android:text="0"
+                android:textColor="@color/secondary_dark_text_color"
+                android:fontFamily="@font/inter_regular"/>
+
+            <View
+                android:visibility="invisible"
+                android:layout_width="@dimen/table_divider_width"
+                android:layout_height="match_parent"
+                android:background="@color/bg_stroke_color" />
+
+            <TextView
+                        android:textSize="@dimen/_11ssp"
+                android:id="@+id/txtAdd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/padding_inside_table_field"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:letterSpacing="-0.01"
+                android:text="0"
+                android:textAllCaps="true"
+                android:textAppearance="@style/inter_400_10_16"
+                android:textColor="@color/secondary_dark_text_color"
+                android:fontFamily="@font/inter_regular"/>
+
+            <View
+                android:visibility="invisible"
+                android:layout_width="@dimen/table_divider_width"
+                android:layout_height="match_parent"
+                android:background="@color/bg_stroke_color" />
+
+            <TextView
+                        android:textSize="@dimen/_11ssp"
+                android:id="@+id/txtBalance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/padding_inside_table_field"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:letterSpacing="-0.01"
+                android:text="0"
+                android:textAllCaps="true"
+                android:textAppearance="@style/inter_400_10_16"
+                android:textColor="@color/secondary_dark_text_color"
+                android:fontFamily="@font/inter_regular"/>
+        </LinearLayout>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:id="@+id/views"
+        android:background="@color/bg_stroke_color"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

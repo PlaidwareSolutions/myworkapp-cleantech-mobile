@@ -1,0 +1,72 @@
+package com.example.rfidapp.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.rfidapp.data.repository.ShipmentRepository
+import com.example.rfidapp.model.network.ApiResponse
+import com.example.rfidapp.model.network.CreateShipmentResponse
+import com.example.rfidapp.model.network.PdfData
+import com.example.rfidapp.model.network.Shipment
+import com.example.rfidapp.util.ScreenState
+import com.example.rfidapp.util.SharedPrefs
+import com.example.rfidapp.util.getErrorMessage
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class ShipmentDetailViewModel @Inject constructor(private val shipmentRepository: ShipmentRepository) :
+    ViewModel() {
+
+    private val _shipment: MutableStateFlow<ScreenState<Shipment?>> =
+        MutableStateFlow(ScreenState.Idle)
+    val shipment: StateFlow<ScreenState<Shipment?>> = _shipment.asStateFlow()
+
+    private val _shipmentPdf: MutableStateFlow<ScreenState<PdfData>> =
+        MutableStateFlow(ScreenState.Idle)
+    val shipmentPdf: StateFlow<ScreenState<PdfData>> = _shipmentPdf.asStateFlow()
+
+    fun fetchShipmentDetail(shipmentId: String) {
+        viewModelScope.launch {
+            _shipment.value = ScreenState.Loading
+            SharedPrefs.accessToken?.let { token ->
+                try {
+                    _shipment.value =
+                        ScreenState.Success(
+                            shipmentRepository.getShipmentById(
+                                token = token,
+                                shipmentId = shipmentId
+                            ).data
+                        )
+                } catch (e: Exception) {
+                    _shipment.value = ScreenState.Error(message = e.getErrorMessage())
+                }
+            }
+        }
+    }
+
+    fun fetchShipmentPdf(referenceId: String?) {
+        viewModelScope.launch {
+            _shipmentPdf.value = ScreenState.Loading
+            SharedPrefs.accessToken?.let { token ->
+                try {
+                    val response = shipmentRepository.getShipmentPdf(referenceId ?: "", token)
+                    if (response.isSuccess()) {
+                        _shipmentPdf.value =
+                            ScreenState.Success(response.data ?: PdfData())
+                    } else {
+                        _shipmentPdf.value =
+                            ScreenState.Error(message = response.message ?: "Unknown error")
+                    }
+                } catch (e: Exception) {
+                    _shipmentPdf.value = ScreenState.Error(message = e.getErrorMessage())
+                }
+            }
+        }
+    }
+}

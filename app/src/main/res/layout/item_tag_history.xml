@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/lnrItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_filled_outlined"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/_6sdp"
+        android:padding="12dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/layoutStatus"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    style="@style/inter_500_14_18"
+                    android:letterSpacing="-0.02"
+                    android:textColor="@color/color_121212"
+                    tools:text="Electricity" />
+
+                <LinearLayout
+                    android:id="@+id/layoutStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtState"
+                        android:textSize="@dimen/_11ssp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_order_details"
+                        android:backgroundTint="@color/color_bg_status_initiated"
+                        android:gravity="end"
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="4dp"
+                        android:textAppearance="@style/inter_400_10_10"
+                        android:textColor="@color/color_text_status_initiated"
+                        tools:text="pending" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:autoLink="all"
+                android:ellipsize="end"
+                android:lineSpacingExtra="4dp"
+                style="@style/inter_400_12_16"
+                android:letterSpacing="-0.02"
+                android:textColor="@color/color_121212"
+                tools:text="Lorem ipsum dolor sit amet, consectetur. This is a two line description use case, we will end." />
+
+            <TextView
+                android:id="@+id/textViewTimeStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginTop="6dp"
+                style="@style/inter_400_10_14"
+                android:letterSpacing="-0.02"
+                android:textColor="@color/color_121212"
+                tools:text="19 Sept 2022, 9:30 PM" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </LinearLayout>
+
+</LinearLayout>

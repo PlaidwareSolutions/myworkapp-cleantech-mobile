@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="arrayBank">
+        <item>EPC</item>
+        <item>USER</item>
+    </array>
+    <array name="uri_type">
+        <item>https://</item>
+        <item>https://</item>
+        <item>ftp://</item>
+        <item>sftp://</item>
+        <item>file://</item>
+        <item>rtsp://</item>
+        <item>telnet://</item>
+        <item>smb://</item>
+        <item>nfs</item>
+        <item>dav://</item>
+    </array>
+</resources>

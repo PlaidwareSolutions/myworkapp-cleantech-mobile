@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="inter_400_10_10">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="lineHeight">@dimen/_10sdp</item>
+    </style>
+
+    <style name="inter_400_10_16">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="lineHeight">@dimen/_16sdp</item>
+    </style>
+
+    <style name="inter_400_12_14">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="lineHeight">@dimen/_14sdp</item>
+    </style>
+
+    <style name="inter_400_12_16">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="lineHeight">@dimen/_16sdp</item>
+    </style>
+
+    <style name="inter_400_16_12">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="lineHeight">@dimen/_12sdp</item>
+    </style>
+
+    <style name="inter_400_14_16">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="lineHeight">@dimen/_16sdp</item>
+    </style>
+
+    <style name="inter_400_18_12">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="lineHeight">@dimen/_12sdp</item>
+    </style>
+
+    <style name="inter_600_12_12">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="lineHeight">@dimen/_12sdp</item>
+    </style>
+
+    <style name="inter_700_14_12">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="lineHeight">@dimen/_12sdp</item>
+    </style>
+
+    <style name="inter_700_12_10">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="lineHeight">@dimen/_10sdp</item>
+    </style>
+
+    <style name="inter_500_14_18">
+        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">18sp</item>
+    </style>
+
+    <style name="inter_400_14_20">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <style name="inter_500_16_20">
+        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <style name="inter_600_14_18">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">18sp</item>
+    </style>
+
+    <style name="inter_500_10_12">
+        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">10sp</item>
+        <item name="lineHeight">12sp</item>
+    </style>
+
+    <style name="inter_400_10_14">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">14sp</item>
+    </style>
+
+    <style name="inter_500_24_30">
+        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">24sp</item>
+        <item name="lineHeight">30sp</item>
+    </style>
+
+</resources>
